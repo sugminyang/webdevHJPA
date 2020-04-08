@@ -6,15 +6,21 @@
 <mapper namespace="org.hyojeong.stdmgt.mappers.resultMapper">
 	<select id="validateUser" resultType="UserVO" parameterType="LoginVO">	 		
 			select * 
-			from HJPA.Users
+			from Users
 			where username = #{username} and password=#{password}
 	</select> 
 	
 	<select id="getStudent" resultType="StudentVO"
 		parameterType="int">
 		select * 
-		from HJPA.StudentInfo 
+		from StudentInfo 
 		where pid = #{pid}
 	</select>
+
+	<select id="getStudentAll" resultType="StudentVO">
+		select * 
+		from StudentInfo;
+	</select>
+	 		
 	 		
 </mapper>

@@ -13,7 +13,7 @@
 		<tr>
 			<td>birth: ${student.getBirth()}</td>
 		</tr>
-		<tr>
+		<tr> 
 			<td>nationality: ${student.getNationality()}</td>
 		</tr>
 		<tr>

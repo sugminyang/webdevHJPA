@@ -14,6 +14,7 @@ public class Student {
 	String dept;
 	int sno;
 	int grade;
+	
 	public int getPid() {
 		return pid;
 	}

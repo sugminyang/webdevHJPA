@@ -16,9 +16,9 @@
 	        class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
 	        <property name="url"
-	            value="jdbc:mysql://hjdb.cm79va8uqnwa.ap-northeast-2.rds.amazonaws.com:3306/HJPA?useSSL=false&amp;serverTimezone=UTC"></property>
-	        <property name="username" value="dean"></property>
-	        <property name="password" value="1q2w1q2w"></property>
+	            value="jdbc:mysql://147.47.56.201:3306/dean?useSSL=false&amp;serverTimezone=UTC"></property>
+	        <property name="username" value="bike"></property>
+	        <property name="password" value="123qwe"></property>
 	</bean>
     
     <!-- mybatis SqlSessionFactoryBean -->

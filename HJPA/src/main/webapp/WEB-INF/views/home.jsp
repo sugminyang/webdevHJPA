@@ -10,7 +10,7 @@
   <meta name="description" content="">
   <meta name="author" content="dean">
 
-  <title>HJPA Demo Page</title>
+  <title>HJPA Demo Page</title> 
 
   <!-- Bootstrap core CSS -->
   <link href="${pageContext.request.contextPath}/resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -56,10 +56,10 @@
       					<a class="btn btn-primary" href="/">내 정보 수정</a>
       				</c:when>
       				<c:when test="${sessionScope.auth == 1}">
-      					<a class="btn btn-primary" href="/">학생 정보 검색</a>
+      					<a class="btn btn-primary" href="/search">학생 정보 검색</a>
       				</c:when>
       				<c:when test="${sessionScope.auth == 2}">
-      					<a class="btn btn-primary" href="/">학생 정보 검색</a>
+      					<a class="btn btn-primary" href="/search">학생 정보 검색</a>
       					<a class="btn btn-primary" href="/">관리자 모드</a>
       				</c:when>      				
       				<c:otherwise>

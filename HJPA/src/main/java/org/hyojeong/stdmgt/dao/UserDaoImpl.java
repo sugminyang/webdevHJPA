@@ -1,6 +1,7 @@
 package org.hyojeong.stdmgt.dao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -33,6 +34,12 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public Student getStudent(int pid) {
 		return sqlSession.selectOne(Namespace+".getStudent",pid);
+	}
+
+	@Override
+	public List<Student> getStudentAll() {
+		System.out.println("DAO - Enter a getStudentAll()");
+		return sqlSession.selectList(Namespace+".getStudentAll");
 	}
 
 }

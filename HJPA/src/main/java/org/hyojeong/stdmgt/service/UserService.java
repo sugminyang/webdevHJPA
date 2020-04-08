@@ -1,5 +1,7 @@
 package org.hyojeong.stdmgt.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.hyojeong.stdmgt.model.Login;
@@ -14,4 +16,6 @@ public interface UserService {
 	public User validateUser(Login login, HttpSession session);
 
 	public Student getStudent(int pid);
+
+	public List<Student> getStudentAll();
 }

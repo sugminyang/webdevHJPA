@@ -1,15 +1,22 @@
 package org.hyojeong.stdmgt.controller;
 
-import java.text.DateFormat;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
+import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
+
+import org.hyojeong.stdmgt.model.Student;
+import org.hyojeong.stdmgt.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import net.sf.json.JSONArray;
 
 /**
  * Handles requests for the application home page.
@@ -18,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	@Inject
+	private UserService userService;
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -33,6 +42,28 @@ public class HomeController {
 	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index(Locale locale, Model model) {
-		return "index";
+		return "search";
+	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public String search(HttpSession session, Model model) {
+		logger.info("Welcome search");
+		
+		List<Student> voList = userService.getStudentAll();
+//		List<Student> voList = new ArrayList<Student>();
+//		voList.add(userService.getStudent(1));
+		System.out.println(voList);
+		
+		JSONArray jsonArray = null;
+		
+		if(voList != null)	{
+			jsonArray = JSONArray.fromObject(voList);
+			System.out.println(jsonArray);
+			
+			model.addAttribute("data", jsonArray);
+			
+		}
+		  
+		return "search";
 	}
 }

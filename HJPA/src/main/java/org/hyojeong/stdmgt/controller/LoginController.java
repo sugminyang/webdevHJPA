@@ -20,7 +20,7 @@ public class LoginController {
 
 	@Inject
 	private UserService userService;
-
+ 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView showLogin() {
 		ModelAndView mav = new ModelAndView("login");
@@ -32,7 +32,7 @@ public class LoginController {
 	@RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
 	public ModelAndView loginProcess(HttpSession session, @ModelAttribute("login") Login vo) {
 		ModelAndView mav = null;
-
+		System.out.println("enter.. loginProcess");
 		User user = userService.validateUser(vo,session);
 		
 		System.out.println(user);

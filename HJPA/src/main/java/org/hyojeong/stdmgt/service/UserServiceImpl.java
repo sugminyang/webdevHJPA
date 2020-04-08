@@ -1,5 +1,8 @@
 package org.hyojeong.stdmgt.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
@@ -35,6 +38,19 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		return user;
+	}
+
+	@Override
+	public List<Student> getStudentAll() {
+		System.out.println("enter getStudentAll()");
+		ArrayList<Student> voList = new ArrayList<Student>();
+		
+		for(Student vo : userDao.getStudentAll()) {
+			System.out.println(vo);
+			voList.add(vo);
+		}
+		
+		return voList; 
 	}
 
 
