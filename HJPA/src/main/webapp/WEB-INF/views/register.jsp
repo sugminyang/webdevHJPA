@@ -1,50 +1,293 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Registration</title>
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Login</title>
+  <!-- Bootstrap core CSS -->
+  <link href="${pageContext.request.contextPath}/resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="${pageContext.request.contextPath}/resources/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/resources/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+  <!-- Custom styles for this template -->
+  <link href="${pageContext.request.contextPath}/resources/css/landing-page.min.css" rel="stylesheet">
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
+  <script type="text/javascript">
+	  $(document).on('click', 'input[name="registerGroup"]', function () {
+		  if (document.getElementById("btnKorEdu").checked == true)	{
+			  /* alert('한교원') */
+			  document.getElementById("sno_acad").disabled = false
+			  document.getElementById("sno_univ").disabled = true
+		  }
+		  else {
+			  /* alert('대학교') */
+			  document.getElementById("sno_acad").disabled = true
+			  document.getElementById("sno_univ").disabled = false
+		  }
+	    });
+	  
+	  
+	  $(document).ready(function(){
+			// 취소
+			$(".cancel").on("click", function(){
+				location.href = "/";
+			})
+			
+			//첫 데이터는 대학교
+			document.getElementById("sno_acad").disabled = true
+			document.getElementById("sno_univ").disabled = false
+			  
+			$("#register").on("click", function(){
+				if($("#id").val()==""){
+					alert("아이디를 입력해주세요.");
+					$("#id").focus();
+					return false;
+				}
+				if($("#password").val()==""){
+					alert("비밀번호를 입력해주세요.");
+					$("#password").focus();
+					return false;
+				}
+				if($("#name_kor").val()==""){
+					alert("한글 이름을 입력해주세요.");
+					$("#name_kor").focus();
+					return false;
+				}
+				if($("#name_eng").val()==""){
+					alert("영어 이름을 입력해주세요.");
+					$("#name_eng").focus();
+					return false;
+				}
+				if($("#email").val()==""){
+					alert("이메일을 입력해주세요.");
+					$("#email").focus();
+					return false;
+				}
+				if($("#address").val()==""){
+					alert("주소를 입력해주세요.");
+					$("#address").focus();
+					return false;
+				}
+				if($("#birth").val()==""){
+					alert("생년월일을 입력해주세요.");
+					$("#birth").focus();
+					return false;
+				}
+				if($("#nationality").val()==""){
+					alert("국적을 입력해주세요.");
+					$("#nationality").focus();
+					return false;
+				}
+				if($("#phone").val()==""){
+					alert("휴대전화 번호를 입력해주세요.");
+					$("#phone").focus();
+					return false;
+				}
+				if($("#sns_id").val()==""){
+					alert("sns id를 입력해주세요.");
+					$("#sns_id").focus();
+					return false;
+				}
+				if($("#college").val()==""){
+					alert("단과대를 입력해주세요.");
+					$("#college").focus();
+					return false;
+				}
+				
+				var isUniv = $('input[name="registerGroup"]:checked').val(); 
+				if(isUniv == "대학교학생")	{
+					if($("#sno_univ").val()==""){
+						alert("학부 학번을 입력해주세요.");
+						$("#sno_univ").focus();
+						return false;
+					}
+				}
+				else	{
+					if($("#sno_acad").val()==""){
+						alert("학교원 학번을 입력해주세요.");
+						$("#sno_acad").focus();
+						return false;
+					}
+				}
+				
+				var idChkVal = $("#idChkBox").val();
+				if(idChkVal == "N"){
+					alert("중복확인 버튼을 눌러주세요.");
+				}else if(idChkVal == "Y"){
+					$("#id").prop('disabled', false);
+					$("#regForm").submit();
+				}
+			});
+		})
+		
+		
+		
+	  function fn_idChk(){
+			$.ajax({
+				url : "/idchk",
+				type : "post",
+				dataType : "json",
+				data : {"id" : $("#id").val()},
+				success : function(data){
+					/* console.log(data) */
+					var data = JSON.stringify(data);
+					
+					if(data == 1){
+						alert("중복된 아이디입니다.");
+						$("#idChkBox").attr("value", "N");
+						$("#id").prop('disabled', false);
+					}else if(data == 0){
+						$("#idChkBox").attr("value", "Y");
+						$("#id").prop('disabled', true);
+						alert("사용가능한 아이디입니다.");
+					}
+				}
+			})
+	}
+  </script>
+  
 </head>
-<body>
-	<form:form id="regForm" action="registerProcess" method="post"> 
+<body> 
+
+	<!-- Navigation -->
+	<nav class="navbar navbar-light bg-light static-top">
+	<div class="container">
+		<a class="navbar-brand" href="/">HyoJeong</a>
+		<div class="float-right">
+			<a class="btn btn-primary" href="register">Register</a> 
+			<a class="btn btn-primary" id="loginBtn" href="login">Sign In</a>
+		</div>
+	</div>
+	</nav>
+	<form id="regForm" action="registerProcess" method="post"> 
 		<table align="center">
 			<tr>
-				<td><label>Username</label></td>
-				<td><input name="username" id="username" /></td>
+				<td align="center"><label >Register classification</label></td>
+				<td align="center">
+					<input type="radio" name="registerGroup" id="btnFstudent" value="대학교학생" checked="checked"/>
+					<label for="btnFstudent">대학교학생</label>
+				<td align="center">
+					<input type="radio" name="registerGroup" id="btnKorEdu" value="한교원학생"/>
+					<label for="btnKorEdu">한교원학생</label>
+				</td>
 			</tr>
 			<tr>
-				<td><label >Password</label></td>
-				<td><password name="password" id="password" /></td>
+				<td><label>id</label></td>
+				<td><input name="id" id="id" /></td>
+				<td><input type="button" value="중복 확인" id="idChk" onclick="fn_idChk();"/></td>
+				<td><input type="hidden" id="idChkBox"value="N"/></td>
 			</tr>
 			<tr>
-				<td><label >FirstName</label></td>
-				<td><input name="firstname" id="firstname" /></td>
+				<td><label>Password</label></td>
+				<td><input name="password" type="password" id="password" /></td>
 			</tr>
 			<tr>
-				<td><label path="lastname">LastName</label></td>
-				<td><form:input path="lastname" name="lastname" id="lastname" /></td>
+				<td><label>대학교 학번</label></td>
+				<td><input name="sno_univ" id="sno_univ" /></td>
+			</tr>	
+			<tr>
+				<td><label>한교원 학번</label></td>
+				<td><input name="sno_acad" id="sno_acad" /></td>
+			</tr>						
+			<tr>
+				<td><label>name_kor</label></td>
+				<td><input name="name_kor" id="name_kor" /></td>
 			</tr>
 			<tr>
-				<td><form:label path="email">Email</form:label></td>
-				<td><form:input path="email" name="email" id="email" /></td>
+				<td><label >name_eng</label></td>
+				<td><input name="name_eng" id="name_eng" /></td>
+			</tr>			
+			<tr>
+				<td><label>Email</label></td>
+				<td><input name="email" id="email" /></td>
 			</tr>
 			<tr>
-				<td><form:label path="address">Address</form:label></td>
-				<td><form:input path="address" name="address" id="address" /></td>
+				<td><label>Address</label></td>
+				<td><input name="address" id="address" /></td>
 			</tr>
 			<tr>
-				<td><form:label path="phone">Phone</form:label></td>
-				<td><form:input path="phone" name="phone" id="phone" /></td>
+				<td><label>birthday</label></td>
+				<td><input name="birth" id="birth" placeholder="901124"/></td>
 			</tr>
-
+			<tr>
+				<td><label >nationality</label></td>
+				<td>
+				    <select name="continent" id="continent">
+				        <option value="Asia">Asia</option>
+				        <option value="Africa">Africa</option>
+				        <option value="North America">North America</option>
+				        <option value="South America">South America</option>
+				        <option value="Antarctica">Antarctica</option>
+				        <option value="Europe">Europe</option>
+				        <option value="Australia">Australia</option>
+					</select>
+				</td>   
+				<td>
+					<input name="nationality" id="nationality" />
+				</td>
+			</tr>	
+			<tr>
+				<td><label >phone</label></td>
+				<td><input name="phone" id="phone" placeholder="01011112222"/></td>
+			</tr>				
+			<tr>
+				<td align="left">
+					<label>sns</label>
+				</td>
+				<td>
+				    <select name="snsType" id="snsType">
+				        <option value="kakotalk">kakotalk</option>
+				        <option value="Line">Line</option>
+					</select>
+				</td>    
+				<td align="center">   
+				    <input name="sns_id" id="sns_id">
+			    </td>
+			</tr>	
+			<tr>
+				<td><label >gender</label></td>
+				<td align="center">
+					<input type="radio" id="male" name="sex" value="male" checked="checked" >
+					<label for="male">Male</label></td>
+				<td align="center">
+					<input type="radio" id="female" name="sex" value="female">
+					<label for="female">Female</label><br>
+				</td>
+			</tr>
+			<tr>
+				<td><label >college</label></td>
+				<td><input name="college" id="college" /></td>
+			</tr>	
+			<tr>
+				<td align="left">
+					<label>department</label>
+				</td>
+				<td>
+					<select name="dept" id="dept">
+				        <option value="컴퓨터공학과" >컴퓨터공학과</option>
+				        <option value="영어영문과">영어영문과</option>
+				        <option value="경영학과">경영학과</option>
+				        <option value="사회체육과">사회체육과</option>
+					</select>
+				</td>
+			<tr>
+			</tr>	    
 			<tr>
 				<td></td>
-				<td><form:button id="register" name="register">Register</form:button></td>
+				<td><button id="register" name="register">Register</button></td>
+				<td><button id="cancel" name="cancel">Cancel</button></td>
 			</tr>
 		</table>
-	</form:form>
-
+		
+		
+	</form>
+  <!-- Bootstrap core JavaScript -->
+  <script src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

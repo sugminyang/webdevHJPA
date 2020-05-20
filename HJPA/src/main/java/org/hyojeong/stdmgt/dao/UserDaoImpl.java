@@ -19,9 +19,11 @@ public class UserDaoImpl implements UserDao {
 	private SqlSession sqlSession;
 
 	private static final String Namespace = "org.hyojeong.stdmgt.mappers.resultMapper";
+	public static final String STD_AUTHORITY = "0";
 	
-	public int register(Student student) {
-		return 1;
+	public int register(User user) {
+		user.setAuthority(STD_AUTHORITY);
+		return sqlSession.insert(Namespace+".register",user);
 	}
 
 	public User validateUser(Login login) {
@@ -40,6 +42,13 @@ public class UserDaoImpl implements UserDao {
 	public List<Student> getStudentAll() {
 		System.out.println("DAO - Enter a getStudentAll()");
 		return sqlSession.selectList(Namespace+".getStudentAll");
+	}
+
+	@Override
+	public int idCheck(String id) {
+		User user = new User();
+		user.setId(id);
+		return sqlSession.selectOne(Namespace+".idCheck",user);
 	}
 
 }

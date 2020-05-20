@@ -2,9 +2,9 @@ package org.hyojeong.stdmgt.model;
 
 public class User {
 	int pid;
-	String username;
+	String id;
 	String password;
-	int authority; // 0 : student, 1 : teacher, 2 : amdin
+	String authority; // 0 : student, 1 : teacher, 2 : amdin
 	
 	public int getPid() {
 		return pid;
@@ -12,11 +12,11 @@ public class User {
 	public void setPid(int pid) {
 		this.pid = pid;
 	}
-	public String getUsername() {
-		return username;
+	public String getId() {
+		return id;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setId(String id) {
+		this.id = id;
 	}
 	public String getPassword() {
 		return password;
@@ -24,17 +24,16 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public int getAuthority() {
+	public String getAuthority() {
 		return authority;
 	}
-	public void setAuthority(int authority) {
+	public void setAuthority(String authority) {
 		this.authority = authority;
 	}
 	
 	@Override
 	public String toString() {
-		return "User [pid=" + pid + ", username=" + username + ", password=" + password + ", authority=" + authority
-				+ "]";
+		return "User [pid=" + pid + ", id=" + id + ", password=" + password + ", authority=" + authority + "]";
 	}
 	
 	

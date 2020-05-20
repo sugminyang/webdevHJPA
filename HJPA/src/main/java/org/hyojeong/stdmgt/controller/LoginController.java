@@ -39,7 +39,6 @@ public class LoginController {
 		if (null != user) {
 			mav = new ModelAndView("home");
 			mav.addObject("authority",user.getAuthority());
-			mav.addObject("isLogined",true);
 			
 			Student student = userService.getStudent(user.getPid());
 			if(student != null)	{

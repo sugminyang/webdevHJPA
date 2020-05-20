@@ -8,11 +8,13 @@ import org.hyojeong.stdmgt.model.User;
 
 public interface UserDao {
 
-	public int register(Student student);
+	public int register(User user);
 
 	public User validateUser(Login login);
 
 	public Student getStudent(int pid);
 
 	public List<Student> getStudentAll();
+
+	public int idCheck(String id);
 }

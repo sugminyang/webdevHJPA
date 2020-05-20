@@ -2,30 +2,41 @@ package org.hyojeong.stdmgt.model;
 
 public class Student {
 	int pid;
-	int birth;
+	String birth;
 	String nationality;
 	String name_kor;
 	String name_eng;
 	String email;
 	String phone;
 	String sns_id;
-	int sex;
+	String sex;
 	String college;
 	String dept;
-	int sno;
+	String sno_univ;
+	String sno_acad;
+	String snsType;
+	String continent;
 	int grade;
+
 	
+	
+	public String getSnsType() {
+		return snsType;
+	}
+	public void setSnsType(String snsType) {
+		this.snsType = snsType;
+	}
+	public String getContinent() {
+		return continent;
+	}
+	public void setContinent(String continent) {
+		this.continent = continent;
+	}
 	public int getPid() {
 		return pid;
 	}
 	public void setPid(int pid) {
 		this.pid = pid;
-	}
-	public int getBirth() {
-		return birth;
-	}
-	public void setBirth(int birth) {
-		this.birth = birth;
 	}
 	public String getNationality() {
 		return nationality;
@@ -63,12 +74,6 @@ public class Student {
 	public void setSns_id(String sns_id) {
 		this.sns_id = sns_id;
 	}
-	public int getSex() {
-		return sex;
-	}
-	public void setSex(int sex) {
-		this.sex = sex;
-	}
 	public String getCollege() {
 		return college;
 	}
@@ -81,18 +86,44 @@ public class Student {
 	public void setDept(String dept) {
 		this.dept = dept;
 	}
-	public int getSno() {
-		return sno;
-	}
-	public void setSno(int sno) {
-		this.sno = sno;
-	}
 	public int getGrade() {
 		return grade;
 	}
 	public void setGrade(int grade) {
 		this.grade = grade;
 	}
+	public String getBirth() {
+		return birth;
+	}
+	public void setBirth(String birth) {
+		this.birth = birth;
+	}
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+	public String getSno_univ() {
+		return sno_univ;
+	}
+	public void setSno_univ(String sno_univ) {
+		this.sno_univ = sno_univ;
+	}
+	public String getSno_acad() {
+		return sno_acad;
+	}
+	public void setSno_acad(String sno_acad) {
+		this.sno_acad = sno_acad;
+	}
+	@Override
+	public String toString() {
+		return "Student [pid=" + pid + ", birth=" + birth + ", nationality=" + nationality + ", name_kor=" + name_kor
+				+ ", name_eng=" + name_eng + ", email=" + email + ", phone=" + phone + ", sns_id=" + sns_id + ", sex="
+				+ sex + ", college=" + college + ", dept=" + dept + ", sno_univ=" + sno_univ + ", sno_acad=" + sno_acad
+				+ ", snsType=" + snsType + ", continent=" + continent + ", grade=" + grade + "]";
+	}
+	
 
 	
 }

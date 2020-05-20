@@ -4,10 +4,15 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
 <mapper namespace="org.hyojeong.stdmgt.mappers.resultMapper">
+
+	<insert id="register" parameterType="UserVO">
+		insert into Users(id,`password`,authority) values(#{id},#{password},#{authority});
+	</insert>
+
 	<select id="validateUser" resultType="UserVO" parameterType="LoginVO">	 		
 			select * 
 			from Users
-			where username = #{username} and password=#{password}
+			where id = #{id} and password=#{password}
 	</select> 
 	
 	<select id="getStudent" resultType="StudentVO"
@@ -22,5 +27,7 @@
 		from StudentInfo;
 	</select>
 	 		
-	 		
+	 <select id="idCheck" resultType="int" parameterType="UserVO">
+	 	select count(*) from Users where id like #{id};
+	 </select>
 </mapper>

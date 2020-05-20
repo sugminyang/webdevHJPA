@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.hyojeong.stdmgt.dao.UserDao;
 import org.hyojeong.stdmgt.model.Login;
 import org.hyojeong.stdmgt.model.Student;
+import org.hyojeong.stdmgt.model.StudentDomestic;
 import org.hyojeong.stdmgt.model.User;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +18,9 @@ public class UserServiceImpl implements UserService {
 
 	@Inject
 	public UserDao userDao;
-
-	public int register(Student student) {
-		return userDao.register(student);
+	
+	public int register(User user) {
+		return userDao.register(user);  
 	}
 
 	@Override
@@ -30,11 +31,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User validateUser(Login login, HttpSession session) {
 		User user = userDao.validateUser(login);
+		System.out.println(user);
 		if(user != null) {
-			session.setAttribute("username",user.getUsername());
+			session.setAttribute("id",user.getId());
 			session.setAttribute("pid",user.getPid());
 			session.setAttribute("auth",user.getAuthority());
-			System.out.println(session.toString());
+			System.out.println("session: "+session.toString());
 		}
 		
 		return user;
@@ -51,6 +53,19 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		return voList; 
+	}
+
+	@Override
+	public List<StudentDomestic> getStudentDomesticAll() {
+		List<StudentDomestic> list = new ArrayList<StudentDomestic>();
+		list.add(new StudentDomestic("18-0001","2018 원모장학생","대학활동","홍길동","22"));
+		return list;
+	}
+
+	@Override
+	public int idCheck(String id) {
+		int isDuplicated = userDao.idCheck(id);
+		return isDuplicated;
 	}
 
 

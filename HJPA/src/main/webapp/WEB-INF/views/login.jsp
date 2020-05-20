@@ -26,8 +26,8 @@
 	<div class="container">
 		<a class="navbar-brand" href="/">HyoJeong</a>
 		<div class="float-right">
-			<a class="btn btn-primary" href="register">Sign In</a> 
-			<a class="btn btn-primary" id="loginBtn" href="login">Login</a>
+			<a class="btn btn-primary" href="register">Register</a> 
+			<a class="btn btn-primary" id="loginBtn" href="login">Sign In</a>
 		</div>
 	</div>
 	</nav>
@@ -41,10 +41,10 @@
 						<table align="center">
 							<tr>
 								<td>
-									<form:label class="col-sd-3" path="username">Username: </form:label>
+									<form:label class="col-sd-3" path="id">id: </form:label>
 								</td>
 								<td>
-									<form:input class="col-sd-4" path="username" name="username" id="username" />
+									<form:input class="col-sd-4" path="id" name="id" id="id" />
 								</td>
 							</tr>
 							<tr>

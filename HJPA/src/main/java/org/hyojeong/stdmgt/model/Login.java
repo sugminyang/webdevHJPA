@@ -2,15 +2,19 @@ package org.hyojeong.stdmgt.model;
 
 public class Login {
 
-	private String username;
+	private String id;
 	private String password;
 
 	public String getUsername() {
-		return username;
+		return id;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getPassword() {
@@ -23,7 +27,7 @@ public class Login {
 
 	@Override
 	public String toString() {
-		return "Login [username=" + username + ", password=" + password + "]";
+		return "Login [id=" + id + ", password=" + password + "]";
 	}
 
 }

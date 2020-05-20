@@ -26,18 +26,7 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 	<script type="text/javascript">
 			$(document).ready(function() { 
-				/*   
-			if (${isLogined} == true) {
-				$("#register").hide();
-				$("#loginBtn").text('Logout');
-				$("#loginBtn").attr("href", "/logout");
-				
-			} else {
-				$("#register").show();
-				$("#loginBtn").text('Login');
-				$("#loginBtn").attr("href", "/login");
-			}
-				*/
+			
 		}); 
 	</script>
 </head>
@@ -53,13 +42,14 @@
       				<c:when test="${sessionScope.auth == null}">
       				</c:when>
       				<c:when test="${sessionScope.auth == 0}">      				
-      					<a class="btn btn-primary" href="/">내 정보 수정</a>
+      					<a class="btn btn-primary" href="/studentInfo">내 정보 수정</a>
       				</c:when>
       				<c:when test="${sessionScope.auth == 1}">
       					<a class="btn btn-primary" href="/search">학생 정보 검색</a>
       				</c:when>
       				<c:when test="${sessionScope.auth == 2}">
       					<a class="btn btn-primary" href="/search">학생 정보 검색</a>
+      					<a class="btn btn-primary" href="/search_domestic">국내학생 정보 검색</a>
       					<a class="btn btn-primary" href="/">관리자 모드</a>
       				</c:when>      				
       				<c:otherwise>
@@ -67,12 +57,12 @@
       				</c:otherwise>
 	      	</c:choose>
       		<c:choose>
-      			<c:when test="${sessionScope.username == null}">
-      				<a class="btn btn-primary" id="register" href="register">Sign In</a>
-      				<a class="btn btn-primary" id="loginBtn" href="login">Login</a>
+      			<c:when test="${sessionScope.id == null}">
+					<a class="btn btn-primary" href="register">Register</a> 
+					<a class="btn btn-primary" id="loginBtn" href="login">Sign In</a>      				
       			</c:when>
       			<c:otherwise>
-      				<a class="btn btn-outline-default btn-rounded waves-effect" href="/">${sessionScope.username}</a>
+      				<a class="btn btn-outline-default btn-rounded waves-effect" href="/">${sessionScope.id}</a>
 					<a class="btn btn-primary" id="logoutBtn" href="logout">Logout</a>
       			</c:otherwise>
       		</c:choose>

@@ -8,7 +8,8 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>Search</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <!-- Bootstrap core CSS -->
+
+  <!-- Bootstrap core CSS -->
   <link href="${pageContext.request.contextPath}/resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Custom fonts for this template -->
@@ -73,13 +74,15 @@
 					<a class="btn btn-primary" id="logoutBtn" href="logout">Logout</a>
       			</c:otherwise>
       		</c:choose>
+<!-- 	      <a class="btn btn-primary" id="register" href="register">Sign In</a>
+	      <a class="btn btn-primary" id="loginBtn" href="login">Login</a> -->
       </div>
     </div>
   </nav>
   
 <div class="container" >
 	<div class="col-lg-12">
-        <h3 class="page-header">Student Search</h3>
+        <h3 class="page-header">Domestic-Student Search</h3>
     </div>
     <div class="col-lg-12" id="searchContent">
     	<!-- <p>search drug name: <b>${drugname}</b></p> -->
@@ -150,8 +153,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
-    <link href="${pageContext.request.contextPath}/resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	
+
 <script>
         $(document).ready( function () {
         	/* searchctx = ""
@@ -173,7 +175,7 @@
         		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
         		var tr = $("<tr></tr>")
         		//var vars = ['disease','gene','interaction_types','drug_name','drug_summary','interaction_claim_source']	//old
-        		var vars = ['pid','sno','name_kor','grade','college','dept','nationality','name_eng','email','phone']
+        		var vars = ["접수번호","장학구분","지원분야","이름","나이"]
         		$(vars).each(function(k, v) {
         			tr.append('<th>' + v + '</th>')
         		})
@@ -227,7 +229,6 @@
 //                'autoWidth': true
         		})
         	}
-        	
         	
 			function rowinfo_fail(error) {
         		console.log("no information")
