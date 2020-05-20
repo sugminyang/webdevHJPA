@@ -173,7 +173,7 @@
         		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
         		var tr = $("<tr></tr>")
         		//var vars = ['disease','gene','interaction_types','drug_name','drug_summary','interaction_claim_source']	//old
-        		var vars = ['pid','sno','name_kor','grade','college','dept','nationality','name_eng','email','phone']
+        		var vars = ['pid','birth','nationality','name_kor','name_eng','email','phone','sns_id','sex','college','dept','sno_univ','sno_acad','snsType','continent','grade']/* ['pid','sno_univ','sno_acad','name_kor','grade','college','dept','nationality','name_eng','email','phone'] */
         		$(vars).each(function(k, v) {
         			tr.append('<th>' + v + '</th>')
         		})

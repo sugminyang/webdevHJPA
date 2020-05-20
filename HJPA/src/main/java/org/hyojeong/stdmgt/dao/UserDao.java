@@ -17,4 +17,6 @@ public interface UserDao {
 	public List<Student> getStudentAll();
 
 	public int idCheck(String id);
+
+	public int addStudent(Student student);
 }

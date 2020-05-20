@@ -30,4 +30,15 @@ public class Login {
 		return "Login [id=" + id + ", password=" + password + "]";
 	}
 
+	public Login(String id, String password) {
+		super();
+		this.id = id;
+		this.password = password;
+	}
+
+	public Login() {
+		super();
+	}
+	
+
 }

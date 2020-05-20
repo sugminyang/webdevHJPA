@@ -5,7 +5,9 @@ import java.io.IOException;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.hyojeong.stdmgt.model.Login;
 import org.hyojeong.stdmgt.model.Student;
 import org.hyojeong.stdmgt.model.User;
 import org.hyojeong.stdmgt.service.UserService;
@@ -30,20 +32,18 @@ public class RegistrationController {
 
 	@RequestMapping(value = "/registerProcess", method = RequestMethod.POST)
 	public ModelAndView addUser(HttpServletRequest request, HttpServletResponse response,
-			@ModelAttribute("student") Student student, @ModelAttribute("user") User user) {
-		ModelAndView mav = new ModelAndView();
-		
+			@ModelAttribute("student") Student student, @ModelAttribute("user") User user, HttpSession session) {
+		ModelAndView mav = new ModelAndView("home");
+		System.out.println(student);
 		if(userService.idCheck(user.getId()) == 0)	{	//신규 
 			userService.register(user);
+			Login vo = new Login(user.getId(),user.getPassword());
+			User validUser = userService.validateUser(vo,session);
+			student.setPid(validUser.getPid());
 			
-			if(student != null)	{
-				mav = new ModelAndView("studentInfo");
-				mav.addObject("student", student);
-				mav.addObject("authority",0);
-			}
-			else	{
-				mav.addObject("student", new Student());
-			}
+			System.out.println("new user pid: " +validUser.getPid());
+			System.out.println(student);
+			userService.addStudent(student);
 		}
 		else	{
 			mav = new ModelAndView("register");

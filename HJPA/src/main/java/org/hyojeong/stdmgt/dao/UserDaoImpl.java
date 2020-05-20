@@ -51,4 +51,10 @@ public class UserDaoImpl implements UserDao {
 		return sqlSession.selectOne(Namespace+".idCheck",user);
 	}
 
+	@Override
+	public int addStudent(Student student) {
+		
+		return sqlSession.insert(Namespace+".addStudent",student);
+	}
+
 }

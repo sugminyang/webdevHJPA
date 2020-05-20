@@ -118,10 +118,16 @@ public class Student {
 	}
 	@Override
 	public String toString() {
-		return "Student [pid=" + pid + ", birth=" + birth + ", nationality=" + nationality + ", name_kor=" + name_kor
+		return "Student pid=" + pid + ", birth=" + birth + ", nationality=" + nationality + ", name_kor=" + name_kor
 				+ ", name_eng=" + name_eng + ", email=" + email + ", phone=" + phone + ", sns_id=" + sns_id + ", sex="
 				+ sex + ", college=" + college + ", dept=" + dept + ", sno_univ=" + sno_univ + ", sno_acad=" + sno_acad
-				+ ", snsType=" + snsType + ", continent=" + continent + ", grade=" + grade + "]";
+				+ ", snsType=" + snsType + ", continent=" + continent + ", grade=" + grade + "";
+		
+//		return pid+"\t"+ birth + "\t" + nationality + "\t" + name_kor +"\t" + name_eng + "\t"
+//					+ email + "\t" + phone + "\t" + sns_id + "\t" + sex + "\t" + college + "\t" + dept +"\t"
+//					+ sno_univ + "\t" + sno_acad + "\t" + snsType + "\t" + continent + "\t" + grade;
+		
+				
 	}
 	
 

@@ -68,5 +68,8 @@ public class UserServiceImpl implements UserService {
 		return isDuplicated;
 	}
 
-
+	@Override
+	public void addStudent(Student student) {
+		userDao.addStudent(student);
+	}
 }

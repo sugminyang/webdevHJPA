@@ -5,6 +5,11 @@
  
 <mapper namespace="org.hyojeong.stdmgt.mappers.resultMapper">
 
+	<insert id="addStudent" parameterType="StudentVO">
+		insert into StudentInfo(pid,sno_univ,sno_acad,name_kor,name_eng,college,dept,continent,nationality,sex,birth,email,phone,snsType,sns_id)
+		values(#{pid},#{sno_univ},#{sno_acad},#{name_kor},#{name_eng},#{college},#{dept},#{continent},#{nationality},#{sex},#{birth},#{email},#{phone},#{snsType},#{sns_id})
+	</insert>
+
 	<insert id="register" parameterType="UserVO">
 		insert into Users(id,`password`,authority) values(#{id},#{password},#{authority});
 	</insert>

@@ -119,6 +119,8 @@
 				if(idChkVal == "N"){
 					alert("중복확인 버튼을 눌러주세요.");
 				}else if(idChkVal == "Y"){
+					$("#sno_univ").prop('disabled', false);
+					$("#sno_acad").prop('disabled', false);
 					$("#id").prop('disabled', false);
 					$("#regForm").submit();
 				}

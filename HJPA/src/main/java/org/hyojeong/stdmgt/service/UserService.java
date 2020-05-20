@@ -23,4 +23,6 @@ public interface UserService {
 	public List<StudentDomestic> getStudentDomesticAll();
 
 	public int idCheck(String id);
+
+	public void addStudent(Student student);
 }
