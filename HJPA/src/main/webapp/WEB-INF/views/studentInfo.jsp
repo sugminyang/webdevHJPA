@@ -137,9 +137,6 @@
 			</tr>	
 			
 		</table>
-		<div align="center">
-    		<textarea rows="10" col="10"></textarea>
-    	</div>
     </div>    
     
 </div>

@@ -1,6 +1,5 @@
 package org.hyojeong.stdmgt.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import net.sf.json.JSONArray;
@@ -94,8 +94,16 @@ public class HomeController {
 		logger.info("Welcome studentInfo");
 		
 		//자신의 학생 정보를 DB에서 가져오기
-		int studentPid= (Integer) session.getAttribute("pid");
-		System.out.println("[개인 정보 변경] pid=>"+ studentPid);
+		String auth = (String) session.getAttribute("auth");
+		int studentPid = -1;
+		if(auth.equalsIgnoreCase("0"))	{	//student
+			studentPid = (Integer) session.getAttribute("pid");	
+		}
+		else	{
+			studentPid = (Integer) session.getAttribute("sid");
+		}
+		
+		System.out.println("[학생] pid=>"+ studentPid);				
 		Student student = userService.getStudent(studentPid);
 		
 		ModelAndView mav = new ModelAndView("studentInfo");
@@ -111,4 +119,11 @@ public class HomeController {
 		  
 		return mav;
 	}
+	
+	@RequestMapping(value = "/getStudentInfo", method = RequestMethod.POST)
+	public String getStudentInfo(HttpSession session, @RequestParam("pid") int pid) {
+		//관심학생 등록
+		session.setAttribute("sid",pid);
+		return "";
+	}	
 }

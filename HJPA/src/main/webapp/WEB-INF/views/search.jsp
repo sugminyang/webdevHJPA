@@ -198,6 +198,7 @@
         			dom: 'Bfrtip',
                     buttons: ['copy', 'excel', 'pdf', 'print'],
                 'paging': true,
+                "scrollX": true,
                 'lengthChange': false,
                 'searching': true,
                 'ordering': true,
@@ -228,10 +229,17 @@
         		})
         	}
         	
-        	
-			function rowinfo_fail(error) {
-        		console.log("no information")
-			}
+        	$('#MydataTable tbody').on( 'click', 'tr', function () {
+        		var table = $('#MydataTable').DataTable();
+    			var pid = table.row( this ).data()[0];
+    			$.ajax({
+    				'type': "POST", 
+    				'url': 'getStudentInfo',
+    				'data':{pid:pid},
+    			   });
+    			
+    			window.location.href = "/studentInfo";
+        	});
         });
 </script>        
 </body>
