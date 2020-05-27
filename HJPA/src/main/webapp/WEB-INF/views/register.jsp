@@ -17,6 +17,20 @@
   <!-- Custom styles for this template -->
   <link href="${pageContext.request.contextPath}/resources/css/landing-page.min.css" rel="stylesheet">
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
+
+<style>
+	td {
+		height: 30;
+	  	vertical-align: middle;
+	}
+	table{
+		margin-bottom: 15px;
+	}
+	button{
+		margin-left: 15px;
+		margin-right: 15px;
+	}
+</style>
 <script type="text/javascript">
 	$(document).on('click', 'input[name="registerGroup"]', function() {
 		if (document.getElementById("btnKorEdu").checked == true) {
@@ -215,7 +229,8 @@
 		</div>
 	</div>
 	</nav>
-	<form id="regForm" action="registerProcess" method="post"> 
+	
+	<div> 
 		<table align="center">
 			<tr>
 				<td align="center"><label >Register classification</label></td>
@@ -248,10 +263,17 @@
 			<tr>
 				<td><label>name_kor</label></td>
 				<td><input name="name_kor" id="name_kor" /></td>
+				<td style="text-align: center;">
+					<label style="font-style: italic; color: red;">외국인 등록증 기준</label>
+				</td>
+				
 			</tr>
 			<tr>
 				<td><label >name_eng</label></td>
 				<td><input name="name_eng" id="name_eng" /></td>
+				<td style="text-align: center;">
+					<label style="font-style: italic; color: red;">외국인 등록증 기준</label>
+				</td>
 			</tr>			
 			<tr>
 				<td><label>Email</label></td>
@@ -260,6 +282,10 @@
 			<tr>
 				<td><label>Address</label></td>
 				<td><input name="address" id="address" /></td>
+				<td style="text-align: center;">
+					<label style="font-style: italic; color: red;">parent’s address</label>
+				</td>
+				
 			</tr>
 			<tr>
 				<td><label>birthday</label></td>
@@ -267,7 +293,7 @@
 			</tr>
 			<tr>
 				<td><label >nationality</label></td>
-				<td>
+				<td style="text-align: center;">
 				    <select name="continent" id="continent">
 				        <option value="Asia">Asia</option>
 				        <option value="Africa">Africa</option>
@@ -278,19 +304,23 @@
 				        <option value="Australia">Australia</option>
 					</select>
 				</td>   
-				<td>
+				<td style="text-align: center;">
 					<input name="nationality" id="nationality" />
 				</td>
 			</tr>	
 			<tr>
 				<td><label >phone</label></td>
 				<td><input name="phone" id="phone" placeholder="01011112222"/></td>
+				<td style="text-align: center;">
+					<label style="font-style: italic; color: red;">휴대폰이 없을 시 '휴대폰 없음'입력</label>
+				</td>
+				
 			</tr>				
 			<tr>
 				<td align="left">
 					<label>sns</label>
 				</td>
-				<td>
+				<td style="text-align: center;">
 				    <select name="snsType" id="snsType">
 				        <option value="kakotalk">kakotalk</option>
 				        <option value="Line">Line</option>
@@ -298,6 +328,9 @@
 				</td>    
 				<td align="center">   
 				    <input name="sns_id" id="sns_id">
+			    </td>
+			    <td style="text-align: center;">
+			    	<label style="font-style: italic; color: red;">'kakaotalk'권장</label>
 			    </td>
 			</tr>	
 			<tr>
@@ -314,7 +347,7 @@
 				<td align="left">
 					<label>department</label>
 				</td>
-				<td>
+				<td style="text-align: center;">
 				    <select name="college" id="college" onchange="itemChange()">
 				        <option value="인문사회대학">인문사회대학</option>
 				        <option value="글로벌비즈니스대학">글로벌비즈니스대학</option>
@@ -325,21 +358,20 @@
 				        
 					</select>
 				</td> 
-				<td>
+				<td style="text-align: center;">
 					<select name="dept" id="dept">
 					</select>
 				</td>
 			<tr>
 			</tr>	    
-			<tr>
-				<td></td>
-				<td><button id="register" name="register">Register</button></td>
-				<td><button id="cancel" name="cancel">Cancel</button></td>
-			</tr>
 		</table>
-		
-		
-	</form>
+	</div>
+	<div align="center" class="container">	
+		<form id="regForm" action="registerProcess" method="post">		
+			<button id="register" name="register">Register</button>
+			<button id="cancel" name="cancel" value="Y">Cancel</button>
+		</form>
+	</div>
   <!-- Bootstrap core JavaScript -->
   <script src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
   <script src="${pageContext.request.contextPath}/resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
