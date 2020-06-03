@@ -6,8 +6,8 @@
 <mapper namespace="org.hyojeong.stdmgt.mappers.resultMapper">
 
 	<insert id="addStudent" parameterType="StudentVO">
-		insert into StudentInfo(pid,sno_univ,sno_acad,name_kor,name_eng,college,dept,continent,nationality,sex,birth,email,phone,snsType,sns_id)
-		values(#{pid},#{sno_univ},#{sno_acad},#{name_kor},#{name_eng},#{college},#{dept},#{continent},#{nationality},#{sex},#{birth},#{email},#{phone},#{snsType},#{sns_id})
+		insert into StudentInfo(pid,sno_univ,sno_acad,name_kor,name_eng,college,dept,continent,nationality,sex,birth,email,phone,snsType,sns_id,address)
+		values(#{pid},#{sno_univ},#{sno_acad},#{name_kor},#{name_eng},#{college},#{dept},#{continent},#{nationality},#{sex},#{birth},#{email},#{phone},#{snsType},#{sns_id},#{address})
 	</insert>
 
 	<insert id="register" parameterType="UserVO">
@@ -35,4 +35,20 @@
 	 <select id="idCheck" resultType="int" parameterType="UserVO">
 	 	select count(*) from Users where id like #{id};
 	 </select>
+	 
+	 <update id="updateStudentInfo" parameterType="StudentVO">
+		update StudentInfo
+		set 
+		sno_univ = #{sno_univ}, sno_acad = #{sno_acad}, grade = #{grade}, 
+		status = #{status}, awardStatus = #{awardStatus}, profile = #{profile},
+		email = #{email}, phone = #{phone}, college = #{college}, dept = #{dept},
+	 	snsType = #{snsType}, sns_id = #{sns_id}, address = #{address}
+		where pid = #{pid};
+	</update>
+
+	<insert id="insertUpdateStudentInfoHistory" parameterType="UpdateHisoryVO" >
+		insert 
+		into updateHistory(pid,memo,updateDate)
+		values(#{pid},#{memo},#{updateDate});
+	</insert>
 </mapper>

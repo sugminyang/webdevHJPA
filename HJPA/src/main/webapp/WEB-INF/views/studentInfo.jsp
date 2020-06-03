@@ -1,12 +1,11 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-  <meta charset="utf-8">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>Search</title>
+  <title>Student Information</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap core CSS -->
   <link href="${pageContext.request.contextPath}/resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -15,7 +14,7 @@
   <link href="${pageContext.request.contextPath}/resources/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/resources/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
@@ -25,16 +24,11 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
-	
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>	
 
   <!-- Custom styles for this template -->
   <link href="${pageContext.request.contextPath}/resources/css/landing-page.min.css" rel="stylesheet">
   
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
-  
-<link rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-
     <style>
             .ui-autocomplete {
               max-height: 100px;
@@ -65,7 +59,7 @@
            	}
     </style>
     
-<script>
+<script type="text/javascript">
 		$(document).on('click', 'input[name="registerGroup"]', function() {
 			if (document.getElementById("btnKorEdu").checked == true) {
 				/* alert('한교원') */
@@ -78,10 +72,42 @@
 			}
 		});
 		
+    	
         $(document).ready( function () {
+        	$("#btnUpdate").on("click", function() {
+        		var deliminator = "!@#";
+				var sendData = 
+					$('#sno_univ').val()+deliminator+$('#sno_acad').val()+deliminator
+					+ $('#grade').val()+deliminator+$('#status').val()+deliminator
+					+ $('#awardStatus').val()+deliminator+$('#email').val()+deliminator
+					+ $('#phone').val()+deliminator+$('#college').val()+deliminator
+					+ $('#dept').val()+deliminator+$('#snsType').val()+deliminator
+					+ $('#sns_id').val()+deliminator+$('#address').val()+deliminator
+					+ $('#profile').prop("title");
+					
+				//console.log(sendData)
+				$.ajax({ 
+					data :  sendData,
+					type : "POST", 
+					contentType:"application/json;charset=UTF-8",
+					url : "/updateStudentInfo", 
+					success : function(data) { 
+						if(data == 1)	{
+							alert("수정 사항이 올바르게 변경되었습니다.");
+						}
+						else	{
+							alert("변경 사항이 올바르지 않습니다.");
+						}
+					}, 
+					error : function(data) { 
+						alert("데이터 변경을 실패하였습니다."); 
+					} 
+					}); 				
+        	})        	
+        	
         	/* console.log(${data}) */
         	
-        	file = "${fileName}"
+        	file = "${student.profile}"
         	if(file == "")	{
         		file = "/resources/img/image.jpeg"	
         	}
@@ -125,15 +151,19 @@
         	//공통적으로 모두 열람 및 수정할 수 있는 사항들
         	/****************************************************************************/
         	//단과대, 학과
-    		$("#college").val("${student.getCollege()}").prop("selected", true);
+    		$("#college").val("${student.college}").prop("selected", true);
     		itemChange()
     		
     		//SNS 정보 
-    		$("#snsType").val("${student.getSnsType()}").prop("selected", true);
+    		$("#snsType").val("${student.snsType}").prop("selected", true);
     		
-    		$("#grade").val("${student.getGrade()}").prop("selected", true);
+    		$("#grade").val("${student.grade}").prop("selected", true);
     		
-    		type = "${student.getSno_univ()}"
+    		$("#status").val("${student.status}").prop("selected", true);
+    		$("#awardStatus").val("${student.awardStatus}").prop("selected", true);
+    		
+    		
+    		type = "${student.sno_univ}"
     		if(type.length == 0 || type == "null")	{ // 한교원 
     			document.getElementById("sno_acad").disabled = false
 				document.getElementById("sno_univ").disabled = true
@@ -476,7 +506,6 @@
     		}
     	}        
 </script>       
-    
 </head>
 <body>
   <!-- Navigation -->
@@ -519,246 +548,250 @@
   </nav>
   
 <div class="container" >
-	<div class="row" >
-		<div class="col-sm-12" style="text-align: center;">
-        	<h3 class="page-header">학생 정보 조회</h3>
-        </div>
-    </div>
-	<div class="row">
-		<div class="col-sm-6">
-        	<h3 class="page-header">기본 정보</h3>
-        </div>
-        <div class="col-sm-6" style="text-align: right;">
-        	<form action="/updateStudentInfo" method="POST">
-        		<button id="updateInfo" name="updateInfo">정보 수정</button>
-        	</form>
-        </div>
-        
-	</div>
-	<div class="row">
-		<div class="col-sm-3">
-			<img id="profile" src="" width="200" height="200" alt="profile">
-			<form action="/uploadform" enctype="multipart/form-data" method="post">
-				<input type="file" name="file" style="width:100%;">
-				<input type="submit" value="업로드"> 
-			</form>
+		<div class="row" >
+			<div class="col-sm-12" style="text-align: center;">
+	        	<h3 class="page-header">학생 정보 조회</h3>
+	        </div>
+	    </div>
+		<div class="row">
+			<div class="col-sm-6">
+	        	<h3 class="page-header">기본 정보</h3>
+	        </div>
+	        <div class="col-sm-6" style="text-align: right;">
+	        		<button id="btnUpdate" name="register">정보 수정</button> 
+	        </div>
 		</div>
-		<div class="col-sm-3">
-			<div>
-				<label>구분:</label>
+		<div class="row">
+			<div class="col-sm-3">
+				<img id="profile" src="" width="200" height="200" alt="profile" title="${student.profile}">
+				<%-- <form action="/uploadform" enctype="multipart/form-data" method="POST">
+					<input type="file" name="file" style="width:100%;">
+					<input type="submit" value="업로드"> 
+				</form> --%>
 			</div>
-			<div>
-				<input type="radio" name="registerGroup" id="btnFstudent" value="대학교학생"/>
-				<label for="btnFstudent">대학교학생</label>
-				<input type="radio" name="registerGroup" id="btnKorEdu" value="한교원학생"/>
-				<label for="btnKorEdu">한교원학생</label>
+			<div class="col-sm-3">
+				<div>
+					<label>구분:</label>
+				</div>
+				<div>
+					<input type="radio" name="registerGroup" id="btnFstudent" value="대학교학생"/>
+					<label for="btnFstudent">대학교학생</label>
+					<input type="radio" name="registerGroup" id="btnKorEdu" value="한교원학생"/>
+					<label for="btnKorEdu">한교원학생</label>
+				</div>
+				
+				<div>
+		        	<label>학부 학번:</label> 
+		        </div>
+		        <div>
+		        	<input class="inputLabel" name="sno_univ" id="sno_univ" value="${student.sno_univ}">
+		        </div>
+		        
+		        <div>
+					<label>name(한글):</label>
+				</div>
+				<div>
+					<input class="inputLabel" name="name_kor" id="name_kor" value="${student.name_kor}">
+				</div>
+				
+			</div>
+			<div class="col-sm-3" >
+				<div>
+					<label>학년:</label>
+				</div>
+				<div>
+					<select name="grade" id="grade">
+						<option value="1">1학년</option>
+						<option value="2">2학년</option>
+						<option value="3">3학년</option>
+						<option value="4">4학년</option>
+						<option value="5">5학년 이상</option>
+						<option value="0">해당 없음</option>
+					</select>
+				</div>
+				<div>
+		        	<label>한교원 학번:</label> 
+		        </div>
+		        <div>
+		        	<input class="inputLabel" name="sno_acad" id="sno_acad" value="${student.sno_acad}">
+		        </div>
+				<div>
+					<label>name(영어):</label>
+				</div>
+				<div>
+					<input class="inputLabel" name="name_eng" id="name_eng" value="${student.name_eng}">
+				</div>
 			</div>
 			
-			<div>
-	        	<label>학부 학번:</label> 
-	        </div>
-	        <div>
-	        	<input class="inputLabel" id="sno_univ" value="${student.getSno_univ()}">
-	        </div>
-	        
-	        <div>
-				<label>name(한글):</label>
+			<div class="col-sm-3" style="text-align: left;">
+				<div>
+					<label>[현재상태]</label>
+				</div>
+				<div>
+					<label class="inputLabel">학적:</label>
+					<select name="status" id="status">
+						<option value="재학">재학</option>
+						<option value="휴학">휴학</option>
+						<option value="인턴십">인턴십</option>
+					</select>
+				</div>
+				<div>
+					<label class="inputLabel">장학:</label>
+					<select name="awardStatus" id="awardStatus">
+						<option value="유지">유지</option>
+						<option value="중지">중지</option>
+						<option value="박탈">박탈</option>
+					</select>
+				</div>
 			</div>
-			<div>
-				<input class="inputLabel" id="name_kor" value="${student.getName_kor()}">
+		</div>
+		
+		</br>
+		
+		<div class="row">
+			<div class="col-sm">
+				<label>birth:</label>
+			</div>
+			<div class="col-sm">
+				<input class="inputLabel" name="birth" id="birth" value="${student.birth}">
+			</div>
+			<div class="col-sm">
+				<label>sex:</label>
+			</div>
+			<div class="col-sm">
+				<input type="radio" id="male" name="sex" value="male" checked="checked" >
+				<label for="male">Male</label></td>
+				<input type="radio" id="female" name="sex" value="female">
+				<label for="female">Female</label><br>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm">
+				<label >continent:</label>
 			</div>
 			
-		</div>
-		<div class="col-sm-3" >
-			<div>
-				<label>학년:</label>
+			<div class="col-sm">
+					<select name="continent" id="continent">
+						<option value="Asia">Asia</option>
+						<option value="Africa">Africa</option>
+						<option value="North America">North America</option>
+						<option value="South America">South America</option>
+						<option value="Antarctica">Antarctica</option>
+						<option value="Europe">Europe</option>
+						<option value="Australia">Australia</option>
+					</select>
 			</div>
-			<div>
-				<select name="grade" id="grade">
-					<option value="1">1학년</option>
-					<option value="2">2학년</option>
-					<option value="3">3학년</option>
-					<option value="4">4학년</option>
-					<option value="5">5학년 이상</option>
-					<option value="0">해당 없음</option>
+			<div class="col-sm">
+				<label >nationality:</label>
+			</div>
+			<div class="col-sm">
+				<input class="inputLabel" name="nationality" id="nationality" value="${student.nationality}"/>
+			</div>
+		</div>    
+		<div class="row">
+			<div class="col-sm">
+				<label >email:</label>
+			</div>
+			<div class="col-sm">
+				<input class="inputLabel" name="email" id="email"  value="${student.email}">
+			</div>
+			<div class="col-sm">
+				<label >phone:</label>
+			</div>
+			<div class="col-sm">
+				<input class="inputLabel" name="phone" id="phone" value="${student.phone}">
+			</div>
+		</div>    
+		<div class="row">
+			<div class="col-sm">
+				<label >college:</label>
+			</div>
+			<div class="col-sm">
+				<select name="college" id="college" onchange="itemChange()">
+					<option value="인문사회대학">인문사회대학</option>
+					<option value="글로벌비즈니스대학">글로벌비즈니스대학</option>
+					<option value="신학순결대학">신학순결대학</option>
+					<option value="건강보건대학">건강보건대학</option>
+					<option value="공과대학">공과대학</option>
+					<option value="SW융합대학">SW융합대학</option>
 				</select>
 			</div>
-			<div>
-	        	<label>한교원 학번:</label> 
+			<div class="col-sm">
+				<label >dept:</label>
+			</div>
+			<div class="col-sm">
+				<select name="dept" id="dept">
+				</select>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm">
+				<label >sns:</label>
+			</div>
+			<div class="col-sm">
+				<select name="snsType" id="snsType">
+			        <option value="kakotalk">kakotalk</option>
+			        <option value="Line">Line</option>
+				</select>
+			</div>
+			<div class="col-sm">
+				<label >id:</label>
+			</div>
+			<div class="col-sm">
+				<input class="inputLabel" name="sns_id" id="sns_id" value="${student.sns_id}">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm">
+				<label >address:</label>
+			</div>
+			<div class="col-sm">
+				<input class="inputLabel" name="address" id="address" value="${student.address}">
+			</div>
+		</div>
+			
+		<div>
+			<div class="row">
+	        	<h3 class="page-header">1. 학적 및 성적 이력</h3>
 	        </div>
-	        <div>
-	        	<input class="inputLabel" id="sno_acad" value="${student.getSno_acad()}">
+	        <div class="row">
+	        	<div class="table table-bordered table-hover dataTable" id="semesterInfo"></div>
 	        </div>
-			<div>
-				<label>name(영어):</label>
-			</div>
-			<div>
-				<input class="inputLabel" id="name_eng" value="${student.getName_eng()}">
-			</div>
-		</div>
-		
-		<div class="col-sm-3" style="text-align: left;">
-			<div>
-				<label>[현재상태]</label>
-			</div>
-			<div>
-				<label class="inputLabel">학적:</label>
-				<select name="status" id="status">
-					<option value="재학">재학</option>
-					<option value="휴학">휴학</option>
-					<option value="인턴십">인턴십</option>
-				</select>
-			</div>
-			<div>
-				<label class="inputLabel">장학:</label>
-				<select name="awardStatus" id="awardStatus">
-					<option value="유지">유지</option>
-					<option value="중지">중지</option>
-					<option value="박탈">박탈</option>
-				</select>
-			</div>
-		</div>
-	</div>
-	
-	</br>
-	
-	<div class="row">
-		<div class="col-sm">
-			<label>birth:</label>
-		</div>
-		<div class="col-sm">
-			<input class="inputLabel" id="birth" value="${student.getBirth()}">
-		</div>
-		<div class="col-sm">
-			<label>sex:</label>
-		</div>
-		<div class="col-sm">
-			<input type="radio" id="male" name="sex" value="male" checked="checked" >
-			<label for="male">Male</label></td>
-			<input type="radio" id="female" name="sex" value="female">
-			<label for="female">Female</label><br>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-sm">
-			<label >continent:</label>
-		</div>
-		
-		<div class="col-sm">
-				<select name="continent" id="continent">
-					<option value="Asia">Asia</option>
-					<option value="Africa">Africa</option>
-					<option value="North America">North America</option>
-					<option value="South America">South America</option>
-					<option value="Antarctica">Antarctica</option>
-					<option value="Europe">Europe</option>
-					<option value="Australia">Australia</option>
-				</select>
-		</div>
-		<div class="col-sm">
-			<label >nationality:</label>
-		</div>
-		<div class="col-sm">
-			<input class="inputLabel" name="nationality" id="nationality" value="${student.getNationality()}"/>
-		</div>
-	</div>    
-	<div class="row">
-		<div class="col-sm">
-			<label >email:</label>
-		</div>
-		<div class="col-sm">
-			<input class="inputLabel" value="${student.getEmail()}">
-		</div>
-		<div class="col-sm">
-			<label >phone:</label>
-		</div>
-		<div class="col-sm">
-			<input class="inputLabel" value="${student.getPhone()}">
-		</div>
-	</div>    
-	<div class="row">
-		<div class="col-sm">
-			<label >college:</label>
-		</div>
-		<div class="col-sm">
-			<select name="college" id="college" onchange="itemChange()">
-				<option value="인문사회대학">인문사회대학</option>
-				<option value="글로벌비즈니스대학">글로벌비즈니스대학</option>
-				<option value="신학순결대학">신학순결대학</option>
-				<option value="건강보건대학">건강보건대학</option>
-				<option value="공과대학">공과대학</option>
-				<option value="SW융합대학">SW융합대학</option>
-			</select>
-		</div>
-		<div class="col-sm">
-			<label >dept:</label>
-		</div>
-		<div class="col-sm">
-			<select name="dept" id="dept">
-			</select>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-sm">
-			<label >sns:</label>
-		</div>
-		<div class="col-sm">
-			<select name="snsType" id="snsType">
-		        <option value="kakotalk">kakotalk</option>
-		        <option value="Line">Line</option>
-			</select>
-		</div>
-		<div class="col-sm">
-			<label >id:</label>
-		</div>
-		<div class="col-sm">
-			<input class="inputLabel" name="sns_id" id="sns_id" value="${student.getSns_id()}">
-		</div>
-	</div>
-		
-	<div>
-		<div class="row">
-        	<h3 class="page-header">1. 학적 및 성적 이력</h3>
-        </div>
-        <div class="row">
-        	<div class="table table-bordered table-hover dataTable" id="semesterInfo"></div>
-        </div>
-    </div>    
-    
-    <div>
-		<div class="row">
-        	<h3 class="page-header">2. 신앙출석률 이력</h3>
-        </div>
-        <div class="row">
-        	<div class="table table-bordered table-hover dataTable" id="holyInfo"></div>
-        </div>
-    </div>  
-    
-    <div>
-		<div class="row">
-        	<h3 class="page-header">3. 방중 프로그램 참석 이력</h3>
-        </div>
-        <div class="row">
-        	<div class="table table-bordered table-hover dataTable" id="activeInfo"></div>
-        </div>
-    </div>  
-    <div>
-		<div class="row">
-        	<h3 class="page-header">4. 수상 이력</h3>
-        </div>
-        <div class="row">
-        	<div class="table table-bordered table-hover dataTable" id="awardsInfo"></div>
-        </div>
-    </div>  
-    <div>
-		<div class="row">
-        	<h3 class="page-header">5. 상담 이력</h3>
-        </div>
-        <div class="row">
-        	<div class="table table-bordered table-hover dataTable" id="consultInfo"></div>
-        </div>
-    </div>  
-    
+	    </div>    
+	    
+	    <div>
+			<div class="row">
+	        	<h3 class="page-header">2. 신앙출석률 이력</h3>
+	        </div>
+	        <div class="row">
+	        	<div class="table table-bordered table-hover dataTable" id="holyInfo"></div>
+	        </div>
+	    </div>  
+	    
+	    <div>
+			<div class="row">
+	        	<h3 class="page-header">3. 방중 프로그램 참석 이력</h3>
+	        </div>
+	        <div class="row">
+	        	<div class="table table-bordered table-hover dataTable" id="activeInfo"></div>
+	        </div>
+	    </div>  
+	    <div>
+			<div class="row">
+	        	<h3 class="page-header">4. 수상 이력</h3>
+	        </div>
+	        <div class="row">
+	        	<div class="table table-bordered table-hover dataTable" id="awardsInfo"></div>
+	        </div>
+	    </div>  
+	    <div>
+			<div class="row">
+	        	<h3 class="page-header">5. 상담 이력</h3>
+	        </div>
+	        <div class="row">
+	        	<div class="table table-bordered table-hover dataTable" id="consultInfo"></div>
+	        </div>
+	    </div>  
 </div>
 </body>
 </html>

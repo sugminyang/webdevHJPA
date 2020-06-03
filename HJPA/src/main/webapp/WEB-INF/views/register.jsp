@@ -215,7 +215,7 @@
 		</div>
 	</div>
 	</nav>
-	<form id="regForm" action="/registerProcess" method="post" modelAttribute="student"> 
+	<form id="regForm" action="/registerProcess" method="post"> 
 		<table align="center">
 			<tr>
 				<td align="center"><label >Register classification</label></td>
@@ -248,10 +248,16 @@
 			<tr>
 				<td><label>name_kor</label></td>
 				<td><input name="name_kor" id="name_kor" /></td>
+				<td style="text-align: center;">
+					<label style="font-style: italic; color: red;">외국인 등록증 기준</label>
+				</td>
 			</tr>
 			<tr>
 				<td><label >name_eng</label></td>
 				<td><input name="name_eng" id="name_eng" /></td>
+				<td style="text-align: center;">
+					<label style="font-style: italic; color: red;">외국인 등록증 기준</label>
+				</td>
 			</tr>			
 			<tr>
 				<td><label>Email</label></td>
@@ -260,6 +266,9 @@
 			<tr>
 				<td><label>Address</label></td>
 				<td><input name="address" id="address" /></td>
+				<td style="text-align: center;">
+					<label style="font-style: italic; color: red;">parent’s address</label>
+				</td>
 			</tr>
 			<tr>
 				<td><label>birthday</label></td>
@@ -285,6 +294,9 @@
 			<tr>
 				<td><label >phone</label></td>
 				<td><input name="phone" id="phone" placeholder="01011112222"/></td>
+				<td style="text-align: center;">
+					<label style="font-style: italic; color: red;">휴대폰이 없을 시 '휴대폰 없음'입력</label>
+				</td>
 			</tr>				
 			<tr>
 				<td align="left">
@@ -298,6 +310,9 @@
 				</td>    
 				<td align="center">   
 				    <input name="sns_id" id="sns_id">
+			    </td>
+			    <td style="text-align: center;">
+			    	<label style="font-style: italic; color: red;">'kakaotalk'권장</label>
 			    </td>
 			</tr>	
 			<tr>

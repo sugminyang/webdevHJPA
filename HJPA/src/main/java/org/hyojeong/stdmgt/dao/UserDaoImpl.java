@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.hyojeong.stdmgt.model.Login;
 import org.hyojeong.stdmgt.model.Student;
+import org.hyojeong.stdmgt.model.UpdateHisory;
 import org.hyojeong.stdmgt.model.User;
 import org.springframework.stereotype.Repository;
 
@@ -55,6 +56,16 @@ public class UserDaoImpl implements UserDao {
 	public int addStudent(Student student) {
 		
 		return sqlSession.insert(Namespace+".addStudent",student);
+	}
+
+	@Override
+	public int insertUpdateStudentInfoHistory(UpdateHisory uhistory) {
+		return sqlSession.insert(Namespace+".insertUpdateStudentInfoHistory",uhistory);
+	}
+
+	@Override
+	public int updateStudentInfo(Student originStudent) {
+		return sqlSession.insert(Namespace+".updateStudentInfo",originStudent);
 	}
 
 }

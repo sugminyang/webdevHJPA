@@ -49,7 +49,7 @@
       				<c:when test="${sessionScope.auth == null}">
       				</c:when>
       				<c:when test="${sessionScope.auth == 0}">      				
-      					<a class="btn btn-primary" href="/">내 정보 수정</a>
+      					<a class="btn btn-primary" href="/studentInfo">내 정보 수정</a>
       				</c:when>
       				<c:when test="${sessionScope.auth == 1}">
       					<a class="btn btn-primary" href="/search">학생 정보 검색</a>
@@ -161,7 +161,7 @@
         		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
         		var tr = $("<tr></tr>")
         		//var vars = ['disease','gene','interaction_types','drug_name','drug_summary','interaction_claim_source']	//old
-        		var vars = ['pid','birth','nationality','name_kor','name_eng','email','phone','sns_id','sex','college','dept','sno_univ','sno_acad','snsType','continent','grade']/* ['pid','sno_univ','sno_acad','name_kor','grade','college','dept','nationality','name_eng','email','phone'] */
+        		var vars = ['pid','birth','nationality','name_kor','name_eng','email','phone','sns_id','sex','college','dept','sno_univ','sno_acad','snsType','continent','grade','status','awardStatus']
         		$(vars).each(function(k, v) {
         			tr.append('<th>' + v + '</th>')
         		})
@@ -193,7 +193,7 @@
                 'info': true,
                 "bFilter": true,
                 "bSort": true,
-                "order": [[ 1, "asc" ]],
+                "order": [[ 0, "asc" ]],
                 scrollCollapse: true,
                 "retrieve": true
         		})

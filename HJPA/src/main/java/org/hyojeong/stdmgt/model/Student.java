@@ -2,20 +2,21 @@ package org.hyojeong.stdmgt.model;
 
 public class Student {
 	int pid;
-	String birth;
-	String nationality;
-	String name_kor;
-	String name_eng;
-	String email;
-	String phone;
-	String sns_id;
-	String sex;
-	String college;
-	String dept;
-	String sno_univ;
-	String sno_acad;
-	String snsType;
-	String continent;
+	String birth = "";
+	String nationality= "";
+	String name_kor= "";
+	String name_eng= "";
+	String email= "";
+	String phone= "";
+	String sns_id= "";
+	String address= "";
+	String sex= "";
+	String college= "";
+	String dept= "";
+	String sno_univ= "";
+	String sno_acad= "";
+	String snsType= "";
+	String continent= "";
 	int grade;
 	String status = "재학";
 	String awardStatus = "유지";
@@ -23,6 +24,12 @@ public class Student {
 	
 	
 	
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
 	public String getStatus() {
 		return status;
 	}
@@ -137,16 +144,39 @@ public class Student {
 	public void setSno_acad(String sno_acad) {
 		this.sno_acad = sno_acad;
 	}
-	
 	@Override
 	public String toString() {
 		return "Student [pid=" + pid + ", birth=" + birth + ", nationality=" + nationality + ", name_kor=" + name_kor
-				+ ", name_eng=" + name_eng + ", email=" + email + ", phone=" + phone + ", sns_id=" + sns_id + ", sex="
-				+ sex + ", college=" + college + ", dept=" + dept + ", sno_univ=" + sno_univ + ", sno_acad=" + sno_acad
-				+ ", snsType=" + snsType + ", continent=" + continent + ", grade=" + grade + ", status=" + status
-				+ ", awardStatus=" + awardStatus + ", profile=" + profile + "]";
+				+ ", name_eng=" + name_eng + ", email=" + email + ", phone=" + phone + ", sns_id=" + sns_id
+				+ ", address=" + address + ", sex=" + sex + ", college=" + college + ", dept=" + dept + ", sno_univ="
+				+ sno_univ + ", sno_acad=" + sno_acad + ", snsType=" + snsType + ", continent=" + continent + ", grade="
+				+ grade + ", status=" + status + ", awardStatus=" + awardStatus + ", profile=" + profile + "]";
 	}
-
+	public Student() {
+		super();
+	}
+	
+	public Student(String sno_univ, String sno_acad, int grade, String status, 
+			String awardStatus, String email, String phone, String college, 
+			String dept, String snsType, String sns_id, String address,
+			String profile) {
+		super();
+		this.email = email;
+		this.phone = phone;
+		this.sns_id = sns_id;
+		this.address = address;
+		this.college = college;
+		this.dept = dept;
+		this.sno_univ = sno_univ;
+		this.sno_acad = sno_acad;
+		this.snsType = snsType;
+		this.grade = grade;
+		this.status = status;
+		this.awardStatus = awardStatus;
+		this.profile = profile;
+	}
+	
+	
 	
 
 	

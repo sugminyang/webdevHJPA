@@ -25,4 +25,8 @@ public interface UserService {
 	public int idCheck(String id);
 
 	public void addStudent(Student student);
+
+	public int updateStudentInfo(Student updateStudentInfo);
+
+	public int updateAllItemsStudentInfo(Student updateStudentInfo);
 }

@@ -1,27 +1,22 @@
 package org.hyojeong.stdmgt.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import javax.annotation.Resource;
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.hyojeong.stdmgt.model.Student;
 import org.hyojeong.stdmgt.model.StudentDomestic;
-import org.hyojeong.stdmgt.model.User;
 import org.hyojeong.stdmgt.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 /**
  * Handles requests for the application home page.
@@ -102,7 +98,7 @@ public class HomeController {
 	
 	@RequestMapping(value = "/studentInfo", method = RequestMethod.GET)
 	public ModelAndView studentInfo(HttpSession session, Model model) {
-		logger.info("Welcome studentInfo");
+		System.out.println("Welcome studentInfo");
 		
 		//자신의 학생 정보를 DB에서 가져오기
 		String auth = (String) session.getAttribute("auth");
@@ -160,27 +156,46 @@ public class HomeController {
 	}	
 	
 	@RequestMapping(value = "/updateStudentInfo", method = RequestMethod.POST)
-	public ModelAndView updateStudentInfo(HttpServletRequest request, HttpServletResponse response,
-			@ModelAttribute("student") Student student, HttpSession session) {
+	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
+	public String updateStudentInfo(@RequestBody String filterJSON, HttpSession session) {
+		System.out.println("updateStudentInfo... 학생 정보 수정..request: ");
+//		System.out.println(filterJSON);
 		
-		ModelAndView mav = new ModelAndView("home");
+		String[] items = filterJSON.split("!@#");
+//		System.out.println("학생 정보 변경사항: " + items.length);
+		Student updateStdInfo = new Student(items[0], items[1], Integer.parseInt(items[2]),items[3], 
+				items[4], items[5], items[6], items[7], items[8], items[9], items[10],
+				items[11], items[12]);
 		
-		System.out.println("updateStudentInfo... 학생 정보 수정..request: \n" + student);
-//		if(userService.idCheck(user.getId()) == 0)	{	//신규 
-//			userService.register(user);
-//			Login vo = new Login(user.getId(),user.getPassword());
-//			User validUser = userService.validateUser(vo,session);
-//			student.setPid(validUser.getPid());
-//			
-//			System.out.println("new user pid: " +validUser.getPid());
-//			System.out.println(student);
-//			userService.addStudent(student);
-//		}
-//		else	{
-//			mav = new ModelAndView("register");
-//		}
+//		System.out.println(updateStdInfo);
+		//학생의 pid 설정
+		String auth = (String) session.getAttribute("auth");
+		int studentPid = -1;
+		int result = -1;
 		
-		return mav;
+		if(auth.equalsIgnoreCase("0"))	{	//student
+			studentPid = (Integer) session.getAttribute("pid");
+			updateStdInfo.setPid(studentPid);
+			result = userService.updateStudentInfo(updateStdInfo);
+		}
+		else	{
+			studentPid = (Integer) session.getAttribute("sid");
+			updateStdInfo.setPid(studentPid);
+			result = userService.updateAllItemsStudentInfo(updateStdInfo);
+		}
+		
+		
+		String test = "";
+		if(result == 1)	{
+			System.out.println("수정 사항이 올바르게 변경되었습니다.");
+			test = "1";
+		}
+		else	{
+			System.out.println("변경 사항이 올바르지 않습니다.");
+			test = "0";
+		}
+		
+	    return test;
 	}
 	
 	

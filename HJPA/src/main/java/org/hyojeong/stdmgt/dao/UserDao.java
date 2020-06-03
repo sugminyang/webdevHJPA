@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hyojeong.stdmgt.model.Login;
 import org.hyojeong.stdmgt.model.Student;
+import org.hyojeong.stdmgt.model.UpdateHisory;
 import org.hyojeong.stdmgt.model.User;
 
 public interface UserDao {
@@ -19,4 +20,8 @@ public interface UserDao {
 	public int idCheck(String id);
 
 	public int addStudent(Student student);
+
+	public int insertUpdateStudentInfoHistory(UpdateHisory uhistory);
+
+	public int updateStudentInfo(Student originStudent);
 }

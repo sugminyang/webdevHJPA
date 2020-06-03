@@ -7,5 +7,6 @@
             <typeAlias type="org.hyojeong.stdmgt.model.Login" alias="LoginVO"/>
             <typeAlias type="org.hyojeong.stdmgt.model.User" alias="UserVO"/>
             <typeAlias type="org.hyojeong.stdmgt.model.Student" alias="StudentVO"/>
+            <typeAlias type="org.hyojeong.stdmgt.model.UpdateHisory" alias="UpdateHisoryVO"/>
         </typeAliases>
     </configuration>
