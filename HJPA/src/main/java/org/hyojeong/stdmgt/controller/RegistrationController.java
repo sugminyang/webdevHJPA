@@ -34,7 +34,7 @@ public class RegistrationController {
 	public ModelAndView addUser(HttpServletRequest request, HttpServletResponse response,
 			@ModelAttribute("student") Student student, @ModelAttribute("user") User user, HttpSession session) {
 		ModelAndView mav = new ModelAndView("home");
-		
+		System.out.println(user);
 		System.out.println(student);
 		if(userService.idCheck(user.getId()) == 0)	{	//신규 
 			userService.register(user);

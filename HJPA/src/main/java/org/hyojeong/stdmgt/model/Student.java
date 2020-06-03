@@ -17,9 +17,30 @@ public class Student {
 	String snsType;
 	String continent;
 	int grade;
-
+	String status = "재학";
+	String awardStatus = "유지";
+	String profile = "/resources/img/image.jpeg";
 	
 	
+	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getAwardStatus() {
+		return awardStatus;
+	}
+	public void setAwardStatus(String awardStatus) {
+		this.awardStatus = awardStatus;
+	}
+	public String getProfile() {
+		return profile;
+	}
+	public void setProfile(String profile) {
+		this.profile = profile;
+	}
 	public String getSnsType() {
 		return snsType;
 	}
@@ -116,19 +137,16 @@ public class Student {
 	public void setSno_acad(String sno_acad) {
 		this.sno_acad = sno_acad;
 	}
+	
 	@Override
 	public String toString() {
-		return "Student pid=" + pid + ", birth=" + birth + ", nationality=" + nationality + ", name_kor=" + name_kor
+		return "Student [pid=" + pid + ", birth=" + birth + ", nationality=" + nationality + ", name_kor=" + name_kor
 				+ ", name_eng=" + name_eng + ", email=" + email + ", phone=" + phone + ", sns_id=" + sns_id + ", sex="
 				+ sex + ", college=" + college + ", dept=" + dept + ", sno_univ=" + sno_univ + ", sno_acad=" + sno_acad
-				+ ", snsType=" + snsType + ", continent=" + continent + ", grade=" + grade + "";
-		
-//		return pid+"\t"+ birth + "\t" + nationality + "\t" + name_kor +"\t" + name_eng + "\t"
-//					+ email + "\t" + phone + "\t" + sns_id + "\t" + sex + "\t" + college + "\t" + dept +"\t"
-//					+ sno_univ + "\t" + sno_acad + "\t" + snsType + "\t" + continent + "\t" + grade;
-		
-				
+				+ ", snsType=" + snsType + ", continent=" + continent + ", grade=" + grade + ", status=" + status
+				+ ", awardStatus=" + awardStatus + ", profile=" + profile + "]";
 	}
+
 	
 
 	

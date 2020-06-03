@@ -154,19 +154,7 @@
 	
 <script>
         $(document).ready( function () {
-        	/* searchctx = ""
-        	
-        	if("${drugname}".length != 0)	{
-        		//$("#searchContent").innerHTML("<p>search drug name: <b>${drugname}</b></p>");
-        		searchctx = "<p>search drug name: <b>${drugname}</b></p>";
-        	}
-        	
-        	if("${diseasename}".length != 0)	{
-        		searchctx += "<p>search disease name: <b>${diseasename}</b></p>";
-        	}
-        	
-        	$("#searchContent").text(searchctx); */
-        	
+        	/* console.log(${data}) */
         	if(${data} != null)	{
         		//alert(${data})
         		$('#result').empty()

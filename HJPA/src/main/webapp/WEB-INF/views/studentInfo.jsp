@@ -15,6 +15,17 @@
   <link href="${pageContext.request.contextPath}/resources/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/resources/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.flash.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
+	
 
   <!-- Custom styles for this template -->
   <link href="${pageContext.request.contextPath}/resources/css/landing-page.min.css" rel="stylesheet">
@@ -41,7 +52,431 @@
         		border: 1px solid #333333;
             	border-spacing: 5px;
             }
+           	div {
+           		margin-bottom: 2px;
+           		margin-top: 2px;
+           	}
+           	select {
+           		width:100%;
+           		margin-bottom: 9px;
+           	}
+           	.inputLabel{
+           		width:100%;
+           	}
     </style>
+    
+<script>
+		$(document).on('click', 'input[name="registerGroup"]', function() {
+			if (document.getElementById("btnKorEdu").checked == true) {
+				/* alert('한교원') */
+				document.getElementById("sno_acad").disabled = false
+				document.getElementById("sno_univ").disabled = true
+			} else {
+				/* alert('대학교') */
+				document.getElementById("sno_acad").disabled = true
+				document.getElementById("sno_univ").disabled = false
+			}
+		});
+		
+        $(document).ready( function () {
+        	/* console.log(${data}) */
+        	
+        	file = "${fileName}"
+        	if(file == "")	{
+        		file = "/resources/img/image.jpeg"	
+        	}
+        	
+        	$('#profile').prop("src", file);
+        	
+        	//권한 값에 따라서 tag를 설정
+        	//일단 학생 : 0
+        	//console.log(${sessionScope.auth})
+        	if(${sessionScope.auth} == 2) 	{	// 관리자 
+        		
+        	}
+        	else if(${sessionScope.auth} == 1)	{	//선생님
+        		
+        	}
+        	else {	//학생 & 그 이외..
+        		
+        		//이름
+        		document.getElementById("name_kor").disabled = true
+        		document.getElementById("name_eng").disabled = true
+
+        		//성별
+        		if(${student.getSex()} == 1)	{ //male : 1
+        			document.getElementById("male").checked = true
+        		}
+        		else	{ //female : 0
+        			document.getElementById("female").checked = true
+        		}
+        		document.getElementById("male").disabled = true
+        		document.getElementById("female").disabled = true
+        		
+        		//생년월일
+        		document.getElementById("birth").disabled = true
+        		
+        		//대륙, 국적
+        		document.getElementById("continent").disabled = true
+        		document.getElementById("nationality").disabled = true
+        	}
+        	
+        	
+        	//공통적으로 모두 열람 및 수정할 수 있는 사항들
+        	/****************************************************************************/
+        	//단과대, 학과
+    		$("#college").val("${student.getCollege()}").prop("selected", true);
+    		itemChange()
+    		
+    		//SNS 정보 
+    		$("#snsType").val("${student.getSnsType()}").prop("selected", true);
+    		
+    		$("#grade").val("${student.getGrade()}").prop("selected", true);
+    		
+    		type = "${student.getSno_univ()}"
+    		if(type.length == 0 || type == "null")	{ // 한교원 
+    			document.getElementById("sno_acad").disabled = false
+				document.getElementById("sno_univ").disabled = true
+				document.getElementById("btnKorEdu").checked = true
+    		}
+    		else	{ //대학교
+    			document.getElementById("sno_acad").disabled = true
+				document.getElementById("sno_univ").disabled = false
+				document.getElementById("btnFstudent").checked = true
+    		}        	
+    		/****************************************************************************/
+    		
+    		
+        	//TODO: 데이터 controller에서 받아와야 함
+        	
+			// 학적 정보 테이블        	
+        	data = ${semesterInfo}
+        	if(data != null)	{
+        		$('#semesterInfo').empty()
+        		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
+        		var tr = $("<tr></tr>")
+        		var vars = ['학기','이수 학점','성적','경고']
+        		$(vars).each(function(k, v) {
+        			tr.append('<th>' + v + '</th>')
+        		})
+        		var thead = $("<thead></thead>")
+        		thead.append(tr)
+        		$(table).append(thead)
+        		
+        		var tbody = $("<tbody></tbody>")
+        		//var bindings = ${data}
+        		var bindings = data
+        		$(bindings).each(function(k, b) {
+        			tr = $("<tr></tr>")
+    					    					
+        			$(vars).each(function(k2, v) {
+        				tr.append('<td>' + b[v] + '</td>')
+        			})
+        			tbody.append(tr)
+        		})
+        		$(table).append(tbody)
+
+        		$('#semesterInfo').append(table)
+        		table.DataTable({
+        			dom: 'Bfrtip',
+                    buttons: [],
+                'paging': true,
+                'lengthChange': false,
+                'searching': false,
+                'ordering': true,
+                'info': true,
+                "bFilter": true,
+                "bSort": true,
+                "order": [[ 1, "asc" ]],
+                scrollCollapse: true,
+                "retrieve": true
+        		})
+        		
+        	}
+        	else {
+        		$('#semesterInfo').empty()
+        		error = JSON.stringify(${data})
+        		var table = $('<table class="table table-bordered table-hover"><tbody><tr><td>error: ' + error + '</td></tr></tbody></table>')
+        		$('#semesterInfo').append(table)
+        		table.DataTable({
+        			bPaginate : false,		    
+        	        'paging': true
+        		})
+        	} 
+        	
+        	
+        	//신앙 정보 테이블
+			data = ${holyInfo}
+        	
+        	//TODO: 데이터 controller에서 받아와야 함
+        	if(data != null)	{
+        		$('#holyInfo').empty()
+        		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
+        		var tr = $("<tr></tr>")
+        		var vars = ['학기', '훈독회','예배','경고']
+        		$(vars).each(function(k, v) {
+        			tr.append('<th>' + v + '</th>')
+        		})
+        		var thead = $("<thead></thead>")
+        		thead.append(tr)
+        		$(table).append(thead)
+        		
+        		var tbody = $("<tbody></tbody>")
+        		//var bindings = ${data}
+        		var bindings = data
+        		$(bindings).each(function(k, b) {
+        			tr = $("<tr></tr>")
+    					    					
+        			$(vars).each(function(k2, v) {
+        				tr.append('<td>' + b[v] + '</td>')
+        			})
+        			tbody.append(tr)
+        		})
+        		$(table).append(tbody)
+
+        		$('#holyInfo').append(table)
+        		table.DataTable({
+        			dom: 'Bfrtip',
+                    buttons: [],
+                'paging': true,
+                'lengthChange': false,
+                'ordering': true,
+                'info': true,
+                'searching': false,
+                "bFilter": true,
+                "bSort": true,
+                "order": [[ 1, "asc" ]],
+                scrollCollapse: true,
+                "retrieve": true
+        		})
+        		
+        	}
+        	else {
+        		$('#holyInfo').empty()
+        		error = JSON.stringify(${data})
+        		var table = $('<table class="table table-bordered table-hover"><tbody><tr><td>error: ' + error + '</td></tr></tbody></table>')
+        		$('#holyInfo').append(table)
+        		table.DataTable({
+        			bPaginate : false,		    
+        	        'paging': true
+        		})
+        	} 
+        	
+        	//프로그램 참여 정보 테이블
+			data = ${activeInfo}
+        	
+        	//TODO: 데이터 controller에서 받아와야 함
+        	if(data != null)	{
+        		$('#activeInfo').empty()
+        		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
+        		var tr = $("<tr></tr>")
+        		var vars = ['연도','프로그램 내용','비고']
+        		$(vars).each(function(k, v) {
+        			tr.append('<th>' + v + '</th>')
+        		})
+        		var thead = $("<thead></thead>")
+        		thead.append(tr)
+        		$(table).append(thead)
+        		
+        		var tbody = $("<tbody></tbody>")
+        		//var bindings = ${data}
+        		var bindings = data
+        		$(bindings).each(function(k, b) {
+        			tr = $("<tr></tr>")
+    					    					
+        			$(vars).each(function(k2, v) {
+        				tr.append('<td>' + b[v] + '</td>')
+        			})
+        			tbody.append(tr)
+        		})
+        		$(table).append(tbody)
+
+        		$('#activeInfo').append(table)
+        		table.DataTable({
+        			dom: 'Bfrtip',
+                    buttons: [],
+                'paging': true,
+                'lengthChange': false,
+                'ordering': true,
+                'info': true,
+                'searching': false,
+                "bFilter": true,
+                "bSort": true,
+                "order": [[ 1, "asc" ]],
+                scrollCollapse: true,
+                "retrieve": true
+        		})
+        		
+        	}
+        	else {
+        		$('#activeInfo').empty()
+        		error = JSON.stringify(${data})
+        		var table = $('<table class="table table-bordered table-hover"><tbody><tr><td>error: ' + error + '</td></tr></tbody></table>')
+        		$('#activeInfo').append(table)
+        		table.DataTable({
+        			bPaginate : false,		    
+        	        'paging': true
+        		})
+        	} 
+			
+        	//수상 이력 정보 테이블
+			data = ${awardsInfo}
+        	
+        	//TODO: 데이터 controller에서 받아와야 함
+        	if(data != null)	{
+        		$('#awardsInfo').empty()
+        		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
+        		var tr = $("<tr></tr>")
+        		var vars = ['연도','내용','주최 기관','비고']
+        		$(vars).each(function(k, v) {
+        			tr.append('<th>' + v + '</th>')
+        		})
+        		var thead = $("<thead></thead>")
+        		thead.append(tr)
+        		$(table).append(thead)
+        		
+        		var tbody = $("<tbody></tbody>")
+        		//var bindings = ${data}
+        		var bindings = data
+        		$(bindings).each(function(k, b) {
+        			tr = $("<tr></tr>")
+    					    					
+        			$(vars).each(function(k2, v) {
+        				tr.append('<td>' + b[v] + '</td>')
+        			})
+        			tbody.append(tr)
+        		})
+        		$(table).append(tbody)
+
+        		$('#awardsInfo').append(table)
+        		table.DataTable({
+        			dom: 'Bfrtip',
+                    buttons: [],
+                'paging': true,
+                'lengthChange': false,
+                'ordering': true,
+                'info': true,
+                'searching': false,
+                "bFilter": true,
+                "bSort": true,
+                "order": [[ 1, "asc" ]],
+                scrollCollapse: true,
+                "retrieve": true
+        		})
+        		
+        	}
+        	else {
+        		$('#awardsInfo').empty()
+        		error = JSON.stringify(${data})
+        		var table = $('<table class="table table-bordered table-hover"><tbody><tr><td>error: ' + error + '</td></tr></tbody></table>')
+        		$('#awardsInfo').append(table)
+        		table.DataTable({
+        			bPaginate : false,		    
+        	        'paging': true
+        		})
+        	} 
+			
+			
+        	//상담 이력 정보 테이블
+			data = ${consultInfo}
+        	
+        	//TODO: 데이터 controller에서 받아와야 함
+        	if(data != null)	{
+        		$('#consultInfo').empty()
+        		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
+        		var tr = $("<tr></tr>")
+        		var vars = ['일자','상담자','내용','비고']
+        		$(vars).each(function(k, v) {
+        			tr.append('<th>' + v + '</th>')
+        		})
+        		var thead = $("<thead></thead>")
+        		thead.append(tr)
+        		$(table).append(thead)
+        		
+        		var tbody = $("<tbody></tbody>")
+        		//var bindings = ${data}
+        		var bindings = data
+        		$(bindings).each(function(k, b) {
+        			tr = $("<tr></tr>")
+    					    					
+        			$(vars).each(function(k2, v) {
+        				tr.append('<td>' + b[v] + '</td>')
+        			})
+        			tbody.append(tr)
+        		})
+        		$(table).append(tbody)
+
+        		$('#consultInfo').append(table)
+        		table.DataTable({
+        			dom: 'Bfrtip',
+                    buttons: [],
+                'paging': true,
+                'lengthChange': false,
+                'ordering': true,
+                'info': true,
+                'searching': false,
+                "bFilter": true,
+                "bSort": true,
+                "order": [[ 1, "asc" ]],
+                scrollCollapse: true,
+                "retrieve": true
+        		})
+        		
+        	}
+        	else {
+        		$('#consultInfo').empty()
+        		error = JSON.stringify(${data})
+        		var table = $('<table class="table table-bordered table-hover"><tbody><tr><td>error: ' + error + '</td></tr></tbody></table>')
+        		$('#consultInfo').append(table)
+        		table.DataTable({
+        			bPaginate : false,		    
+        	        'paging': true
+        		})
+        	} 
+        	
+        });
+        
+        function itemChange() {
+
+    		var collegeOfEngineering = [ "건축학과", "토목방재공학과", "기계공학과", "정보통신공학과",
+    				"디스플레이반도체공학과", "전자공학과", "신소재공학과", "환경생명화학공학과", "산업경영공학과" ];
+    		var collegeOfHumanitiesNSocialSciences = [ "국어국문학과", "사회복지학과",
+    				"상담산업심리학과", "역사문화콘텐츠학부", "미디어커뮤니케이션학과", "법/경찰학과", "글로벌한국학과",
+    				"시각디자인학과" ];
+    		var collegeOfGlobalBusiness = [ "외국어자율전공학과", "경영학과", "IT경영학과",
+    				"국제경제통상학과", "글로벌관광학과", "국제관계학과", "행정학과" ];
+    		var collegeOfTheologicalCelibacy = [ "신학순결학과" ];
+    		var collegeOfHealthNHealth = [ "제약생명공학과", "식품과학과", "수산생명의학과", "간호학과",
+    				"물리치료학과", "치위생학과", "응급구조학과", "스포츠과학과", "무도경호학과" ];
+    		var collegeOfSWConvergence = [ "스마트자동차공학과", "컴퓨터공학과", "글로벌소프트웨어학과" ];
+
+    		var selectItem = $("#college").val();
+
+    		var changeItem;
+
+    		if (selectItem == "공과대학") {
+    			changeItem = collegeOfEngineering;
+    		} else if (selectItem == "인문사회대학") {
+    			changeItem = collegeOfHumanitiesNSocialSciences;
+    		} else if (selectItem == "글로벌비즈니스대학") {
+    			changeItem = collegeOfGlobalBusiness;
+    		} else if (selectItem == "신학순결대학") {
+    			changeItem = collegeOfTheologicalCelibacy;
+    		} else if (selectItem == "건강보건대학") {
+    			changeItem = collegeOfHealthNHealth;
+    		} else if (selectItem == "SW융합대학") {
+    			changeItem = collegeOfSWConvergence;
+    		}
+
+    		$('#dept').empty();
+
+    		for (var count = 0; count < changeItem.length; count++) {
+    			var option = $("<option>" + changeItem[count] + "</option>");
+    			$('#dept').append(option);
+    		}
+    	}        
+</script>       
+    
 </head>
 <body>
   <!-- Navigation -->
@@ -84,60 +519,245 @@
   </nav>
   
 <div class="container" >
-	<div class="col-lg-12">
-        <h3 class="page-header">학생 정보 조회</h3>
+	<div class="row" >
+		<div class="col-sm-12" style="text-align: center;">
+        	<h3 class="page-header">학생 정보 조회</h3>
+        </div>
     </div>
-	<div class="col-lg-12">
-        <h3 class="page-header">1. 개인정보</h3>
-		<table align="center" >
-			<tr>
-				<td>한교원 학번: </td>
-				<td><input value="${student.getSno_acad()}"> </td>
-				<td>학부 학번: </td>
-				<td><input value="${student.getSno_univ()}"> </td>
-			</tr>
-			<tr>
-				<td>name(한글): </td>
-				<td><input value="${student.getName_kor()}"> </td>
-				<td>name(영어): </td>	
-				<td><input value="${student.getName_eng()}"> </td>
-			</tr>
-			<tr>
-				<td>birth: </td>
-				<td><input value="${student.getBirth()}"> </td>
-				<td>sex: </td>
-				<td><input value="${student.getSex()}"> </td>
-			</tr>
-			<tr> 
-				<td>continent: </td>
-				<td><input value="${student.getContinent()}"> </td>
-				<td>nationality: </td>
-				<td><input value="${student.getNationality()}"> </td>
-			</tr>
+	<div class="row">
+		<div class="col-sm-6">
+        	<h3 class="page-header">기본 정보</h3>
+        </div>
+        <div class="col-sm-6" style="text-align: right;">
+        	<form action="/updateStudentInfo" method="POST">
+        		<button id="updateInfo" name="updateInfo">정보 수정</button>
+        	</form>
+        </div>
+        
+	</div>
+	<div class="row">
+		<div class="col-sm-3">
+			<img id="profile" src="" width="200" height="200" alt="profile">
+			<form action="/uploadform" enctype="multipart/form-data" method="post">
+				<input type="file" name="file" style="width:100%;">
+				<input type="submit" value="업로드"> 
+			</form>
+		</div>
+		<div class="col-sm-3">
+			<div>
+				<label>구분:</label>
+			</div>
+			<div>
+				<input type="radio" name="registerGroup" id="btnFstudent" value="대학교학생"/>
+				<label for="btnFstudent">대학교학생</label>
+				<input type="radio" name="registerGroup" id="btnKorEdu" value="한교원학생"/>
+				<label for="btnKorEdu">한교원학생</label>
+			</div>
 			
-			<tr>
-				<td>college: </td>
-				<td><input value="${student.getCollege()}"> </td>
-				<td>dept: </td>
-				<td><input value="${student.getDept()}"> </td>
-			</tr>		
+			<div>
+	        	<label>학부 학번:</label> 
+	        </div>
+	        <div>
+	        	<input class="inputLabel" id="sno_univ" value="${student.getSno_univ()}">
+	        </div>
+	        
+	        <div>
+				<label>name(한글):</label>
+			</div>
+			<div>
+				<input class="inputLabel" id="name_kor" value="${student.getName_kor()}">
+			</div>
 			
-			<tr>
-				<td>email: </td>
-				<td><input value="${student.getEmail()}"> </td>
-				<td>phone: </td>
-				<td><input value="${student.getPhone()}"> </td>
-			</tr>
-							
-			<tr>
-				<td>snsType: </td>
-				<td><input value="${student.getSnsType()}"> </td>
-				<td>sns_id: </td>
-				<td><input value="${student.getSns_id()}"> </td>
-			</tr>	
-			
-		</table>
+		</div>
+		<div class="col-sm-3" >
+			<div>
+				<label>학년:</label>
+			</div>
+			<div>
+				<select name="grade" id="grade">
+					<option value="1">1학년</option>
+					<option value="2">2학년</option>
+					<option value="3">3학년</option>
+					<option value="4">4학년</option>
+					<option value="5">5학년 이상</option>
+					<option value="0">해당 없음</option>
+				</select>
+			</div>
+			<div>
+	        	<label>한교원 학번:</label> 
+	        </div>
+	        <div>
+	        	<input class="inputLabel" id="sno_acad" value="${student.getSno_acad()}">
+	        </div>
+			<div>
+				<label>name(영어):</label>
+			</div>
+			<div>
+				<input class="inputLabel" id="name_eng" value="${student.getName_eng()}">
+			</div>
+		</div>
+		
+		<div class="col-sm-3" style="text-align: left;">
+			<div>
+				<label>[현재상태]</label>
+			</div>
+			<div>
+				<label class="inputLabel">학적:</label>
+				<select name="status" id="status">
+					<option value="재학">재학</option>
+					<option value="휴학">휴학</option>
+					<option value="인턴십">인턴십</option>
+				</select>
+			</div>
+			<div>
+				<label class="inputLabel">장학:</label>
+				<select name="awardStatus" id="awardStatus">
+					<option value="유지">유지</option>
+					<option value="중지">중지</option>
+					<option value="박탈">박탈</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	
+	</br>
+	
+	<div class="row">
+		<div class="col-sm">
+			<label>birth:</label>
+		</div>
+		<div class="col-sm">
+			<input class="inputLabel" id="birth" value="${student.getBirth()}">
+		</div>
+		<div class="col-sm">
+			<label>sex:</label>
+		</div>
+		<div class="col-sm">
+			<input type="radio" id="male" name="sex" value="male" checked="checked" >
+			<label for="male">Male</label></td>
+			<input type="radio" id="female" name="sex" value="female">
+			<label for="female">Female</label><br>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm">
+			<label >continent:</label>
+		</div>
+		
+		<div class="col-sm">
+				<select name="continent" id="continent">
+					<option value="Asia">Asia</option>
+					<option value="Africa">Africa</option>
+					<option value="North America">North America</option>
+					<option value="South America">South America</option>
+					<option value="Antarctica">Antarctica</option>
+					<option value="Europe">Europe</option>
+					<option value="Australia">Australia</option>
+				</select>
+		</div>
+		<div class="col-sm">
+			<label >nationality:</label>
+		</div>
+		<div class="col-sm">
+			<input class="inputLabel" name="nationality" id="nationality" value="${student.getNationality()}"/>
+		</div>
+	</div>    
+	<div class="row">
+		<div class="col-sm">
+			<label >email:</label>
+		</div>
+		<div class="col-sm">
+			<input class="inputLabel" value="${student.getEmail()}">
+		</div>
+		<div class="col-sm">
+			<label >phone:</label>
+		</div>
+		<div class="col-sm">
+			<input class="inputLabel" value="${student.getPhone()}">
+		</div>
+	</div>    
+	<div class="row">
+		<div class="col-sm">
+			<label >college:</label>
+		</div>
+		<div class="col-sm">
+			<select name="college" id="college" onchange="itemChange()">
+				<option value="인문사회대학">인문사회대학</option>
+				<option value="글로벌비즈니스대학">글로벌비즈니스대학</option>
+				<option value="신학순결대학">신학순결대학</option>
+				<option value="건강보건대학">건강보건대학</option>
+				<option value="공과대학">공과대학</option>
+				<option value="SW융합대학">SW융합대학</option>
+			</select>
+		</div>
+		<div class="col-sm">
+			<label >dept:</label>
+		</div>
+		<div class="col-sm">
+			<select name="dept" id="dept">
+			</select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm">
+			<label >sns:</label>
+		</div>
+		<div class="col-sm">
+			<select name="snsType" id="snsType">
+		        <option value="kakotalk">kakotalk</option>
+		        <option value="Line">Line</option>
+			</select>
+		</div>
+		<div class="col-sm">
+			<label >id:</label>
+		</div>
+		<div class="col-sm">
+			<input class="inputLabel" name="sns_id" id="sns_id" value="${student.getSns_id()}">
+		</div>
+	</div>
+		
+	<div>
+		<div class="row">
+        	<h3 class="page-header">1. 학적 및 성적 이력</h3>
+        </div>
+        <div class="row">
+        	<div class="table table-bordered table-hover dataTable" id="semesterInfo"></div>
+        </div>
     </div>    
+    
+    <div>
+		<div class="row">
+        	<h3 class="page-header">2. 신앙출석률 이력</h3>
+        </div>
+        <div class="row">
+        	<div class="table table-bordered table-hover dataTable" id="holyInfo"></div>
+        </div>
+    </div>  
+    
+    <div>
+		<div class="row">
+        	<h3 class="page-header">3. 방중 프로그램 참석 이력</h3>
+        </div>
+        <div class="row">
+        	<div class="table table-bordered table-hover dataTable" id="activeInfo"></div>
+        </div>
+    </div>  
+    <div>
+		<div class="row">
+        	<h3 class="page-header">4. 수상 이력</h3>
+        </div>
+        <div class="row">
+        	<div class="table table-bordered table-hover dataTable" id="awardsInfo"></div>
+        </div>
+    </div>  
+    <div>
+		<div class="row">
+        	<h3 class="page-header">5. 상담 이력</h3>
+        </div>
+        <div class="row">
+        	<div class="table table-bordered table-hover dataTable" id="consultInfo"></div>
+        </div>
+    </div>  
     
 </div>
 </body>
