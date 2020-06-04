@@ -7,6 +7,11 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
+import org.hyojeong.stdmgt.model.ActiveHistory;
+import org.hyojeong.stdmgt.model.AwardsHistory;
+import org.hyojeong.stdmgt.model.ConsultHistory;
+import org.hyojeong.stdmgt.model.GradeHistory;
+import org.hyojeong.stdmgt.model.HolyHistory;
 import org.hyojeong.stdmgt.model.Login;
 import org.hyojeong.stdmgt.model.Student;
 import org.hyojeong.stdmgt.model.UpdateHisory;
@@ -66,6 +71,31 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public int updateStudentInfo(Student originStudent) {
 		return sqlSession.insert(Namespace+".updateStudentInfo",originStudent);
+	}
+
+	@Override
+	public List<GradeHistory> getGradeHistory(int pid) {
+		return sqlSession.selectList(Namespace+".getGradeHistory",pid);
+	}
+
+	@Override
+	public List<HolyHistory> getHolyHistory(int pid) {
+		return sqlSession.selectList(Namespace+".getHolyHistory",pid);
+	}
+
+	@Override
+	public List<ActiveHistory> getActiveHistory(int pid) {
+		return sqlSession.selectList(Namespace+".getActiveHistory",pid);
+	}
+
+	@Override
+	public List<AwardsHistory> getAwardsHistory(int pid) {
+		return sqlSession.selectList(Namespace+".getAwardsHistory",pid);
+	}
+
+	@Override
+	public List<ConsultHistory> getConsultHistory(int pid) {
+		return sqlSession.selectList(Namespace+".getConsultHistory",pid);
 	}
 
 }

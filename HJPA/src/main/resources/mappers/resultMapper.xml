@@ -51,4 +51,23 @@
 		into updateHistory(pid,memo,updateDate)
 		values(#{pid},#{memo},#{updateDate});
 	</insert>
+	
+	<select id="getGradeHistory" resultType="GradeHistoryVO" parameterType="int">
+	 	select * from gradeHistory where pid = #{pid};
+	 </select>
+	 
+	 <select id="getHolyHistory" resultType="HolyHistoryVO" parameterType="int">
+	 	select * from holyHistory where pid = #{pid};
+	 </select>
+	
+	<select id="getActiveHistory" resultType="ActiveHistoryVO" parameterType="int">
+	 	select * from activeHistory where pid = #{pid};
+	 </select>
+	 <select id="getAwardsHistory" resultType="AwardsHistoryVO" parameterType="int">
+	 	select * from awardsHistory where pid = #{pid};
+	 </select>
+	 <select id="getConsultHistory" resultType="ConsultHistoryVO" parameterType="int">
+	 	select * from consultHistory where pid = #{pid};
+	 </select>	 	 	 
+	
 </mapper>

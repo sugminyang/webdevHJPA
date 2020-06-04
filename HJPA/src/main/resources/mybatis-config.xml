@@ -8,5 +8,11 @@
             <typeAlias type="org.hyojeong.stdmgt.model.User" alias="UserVO"/>
             <typeAlias type="org.hyojeong.stdmgt.model.Student" alias="StudentVO"/>
             <typeAlias type="org.hyojeong.stdmgt.model.UpdateHisory" alias="UpdateHisoryVO"/>
+            <typeAlias type="org.hyojeong.stdmgt.model.GradeHistory" alias="GradeHistoryVO"/>
+            <typeAlias type="org.hyojeong.stdmgt.model.HolyHistory" alias="HolyHistoryVO"/>
+            <typeAlias type="org.hyojeong.stdmgt.model.ActiveHistory" alias="ActiveHistoryVO"/>
+            <typeAlias type="org.hyojeong.stdmgt.model.AwardsHistory" alias="AwardsHistoryVO"/>
+            <typeAlias type="org.hyojeong.stdmgt.model.ConsultHistory" alias="ConsultHistoryVO"/>
+            
         </typeAliases>
     </configuration>

@@ -6,9 +6,13 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.hyojeong.stdmgt.model.ActiveHistory;
+import org.hyojeong.stdmgt.model.AwardsHistory;
+import org.hyojeong.stdmgt.model.ConsultHistory;
+import org.hyojeong.stdmgt.model.GradeHistory;
+import org.hyojeong.stdmgt.model.HolyHistory;
 import org.hyojeong.stdmgt.model.Student;
 import org.hyojeong.stdmgt.model.StudentDomestic;
 import org.hyojeong.stdmgt.service.UserService;
@@ -25,7 +29,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 /**
  * Handles requests for the application home page.
@@ -119,32 +122,59 @@ public class HomeController {
 			System.out.println(student);
 			
 			mav.addObject("student", student);
+			
+			JSONArray jsonArray = null;
+			
+//			학적 이력 load
+			List<GradeHistory> gradeHistoryList = userService.getGradeHistory(student.getPid());
+			if(gradeHistoryList != null)	{
+				jsonArray = JSONArray.fromObject(gradeHistoryList);
+				System.out.println("학적 이력: "+jsonArray);
+				
+				model.addAttribute("semesterInfo", jsonArray);
+			}
+			
+//			신앙 이력 load
+			List<HolyHistory> holyHistoryList = userService.getHolyHistory(student.getPid());
+			if(holyHistoryList != null)	{
+				jsonArray = JSONArray.fromObject(holyHistoryList);
+				System.out.println("신앙 이력: "+jsonArray);
+				
+				model.addAttribute("holyInfo", jsonArray);
+			}
+			
+//			프로그램 활동 이력 load
+			List<ActiveHistory> activeHistoryList = userService.getActiveHistory(student.getPid());
+			if(activeHistoryList != null)	{
+				jsonArray = JSONArray.fromObject(activeHistoryList);
+				System.out.println("프로그램 활동 이력: "+jsonArray);
+				
+				model.addAttribute("activeInfo", jsonArray);
+			}
+			
+//			수상 이력 load
+			List<AwardsHistory> awardsHistoryList = userService.getAwardsHistory(student.getPid());
+			if(awardsHistoryList != null)	{
+				jsonArray = JSONArray.fromObject(awardsHistoryList);
+				System.out.println("수상 이력: "+jsonArray);
+				
+				model.addAttribute("awardsInfo", jsonArray);
+			}
+			
+//			상담 이력 load
+			
+			List<ConsultHistory> consultHistoryList = userService.getConsultHistory(student.getPid());
+			if(consultHistoryList != null)	{
+				jsonArray = JSONArray.fromObject(consultHistoryList);
+				System.out.println("상담 이력: "+jsonArray);
+				
+				model.addAttribute("consultInfo", jsonArray);
+			}
 		}
 		else	{
 			mav = new ModelAndView("home");
 		}
 		 
-		String semesterJson = "[{\"학기\":'2019-1', \"이수 학점\":19, '성적': 4.1, '경고':0},"
-				+ "{\"학기\":'2019-2', \"이수 학점\":21, '성적': 3.8, '경고':1}]";
-		mav.addObject("semesterInfo", semesterJson);
-		
-		String holyJson = "[{\"학기\":'2019-1', \"훈독회\":90, '예배': 30, '경고':1},"
-				+ "{\"학기\":'2019-2', \"훈독회\":20, '예배': 40, '경고':2},"
-				+ "{\"학기\":'2020-1', \"훈독회\":80, '예배': 100, '경고':1}]";
-		mav.addObject("holyInfo", holyJson);
-
-		String activeJson = "[{\"연도\":'2019', \"프로그램 내용\":'선학 캠프', \"비고\": ''},"
-				+ "{\"연도\":'2019', \"프로그램 내용\":\"교내 영어캠프\",  \"비고\":'장학금 지원받음'},"
-				+ "{\"연도\":'2020', \"프로그램 내용\":\"취업 박람회\", \"비고\":'인턴쉽 확정'}]";
-		mav.addObject("activeInfo", activeJson);
-		
-		String awardsJson = "[{\"연도\":'2019', \"내용\":'대학생 경진대회','주최 기관':'서울시', \"비고\": '우수상'},"
-				+ "{\"연도\":'2020', \"내용\":\"교내 마라톤\", '주최 기관':'대학교', \"비고\": '3등'}]";
-		mav.addObject("awardsInfo", awardsJson);
-		
-		String consultJson = "[{\"일자\":'20190701', \"상담자\":'김경진','내용':'교우관계 상담', \"비고\": '-'},"
-				+ "{\"일자\":'20200503', \"상담자\":\"양교수\", '내용':'취업 상담', \"비고\": '인턴쉽 연계 회사에서 스카웃제의'}]";
-		mav.addObject("consultInfo", consultJson);
 		return mav;
 	}
 	

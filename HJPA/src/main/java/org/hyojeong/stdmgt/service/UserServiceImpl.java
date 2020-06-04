@@ -9,6 +9,11 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.hyojeong.stdmgt.dao.UserDao;
+import org.hyojeong.stdmgt.model.ActiveHistory;
+import org.hyojeong.stdmgt.model.AwardsHistory;
+import org.hyojeong.stdmgt.model.ConsultHistory;
+import org.hyojeong.stdmgt.model.GradeHistory;
+import org.hyojeong.stdmgt.model.HolyHistory;
 import org.hyojeong.stdmgt.model.Login;
 import org.hyojeong.stdmgt.model.Student;
 import org.hyojeong.stdmgt.model.StudentDomestic;
@@ -190,5 +195,30 @@ public class UserServiceImpl implements UserService {
 	public int updateAllItemsStudentInfo(Student updateStudentInfo) {
 		System.out.println("enter.. updateAllItemsStudentInfo()");
 		return 0;
+	}
+
+	@Override
+	public List<GradeHistory> getGradeHistory(int pid) {
+		return userDao.getGradeHistory(pid);
+	}
+
+	@Override
+	public List<HolyHistory> getHolyHistory(int pid) {
+		return userDao.getHolyHistory(pid);
+	}
+
+	@Override
+	public List<ActiveHistory> getActiveHistory(int pid) {
+		return userDao.getActiveHistory(pid);
+	}
+
+	@Override
+	public List<AwardsHistory> getAwardsHistory(int pid) {
+		return userDao.getAwardsHistory(pid);
+	}
+
+	@Override
+	public List<ConsultHistory> getConsultHistory(int pid) {
+		return userDao.getConsultHistory(pid);
 	}
 }

@@ -49,6 +49,11 @@
            	div {
            		margin-bottom: 2px;
            		margin-top: 2px;
+/*            		font-family: Consolas, monospace;
+        		font-size: 13px; */
+           	}
+           	.sinfo	{
+           		border: 1px dashed #bcbcbc;
            	}
            	select {
            		width:100%;
@@ -83,7 +88,7 @@
 					+ $('#phone').val()+deliminator+$('#college').val()+deliminator
 					+ $('#dept').val()+deliminator+$('#snsType').val()+deliminator
 					+ $('#sns_id').val()+deliminator+$('#address').val()+deliminator
-					+ $('#profile').prop("title");
+					+ $('#profile').prop("src");
 					
 				//console.log(sendData)
 				$.ajax({ 
@@ -153,6 +158,7 @@
         	//단과대, 학과
     		$("#college").val("${student.college}").prop("selected", true);
     		itemChange()
+    		$("#dept").val("${student.dept}").prop("selected", true);
     		
     		//SNS 정보 
     		$("#snsType").val("${student.snsType}").prop("selected", true);
@@ -185,7 +191,8 @@
         		$('#semesterInfo').empty()
         		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
         		var tr = $("<tr></tr>")
-        		var vars = ['학기','이수 학점','성적','경고']
+        		//var vars = ['학기','이수 학점','성적','경고']
+        		var vars = ['semester','credit','degree','warnings']
         		$(vars).each(function(k, v) {
         			tr.append('<th>' + v + '</th>')
         		})
@@ -243,7 +250,7 @@
         		$('#holyInfo').empty()
         		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
         		var tr = $("<tr></tr>")
-        		var vars = ['학기', '훈독회','예배','경고']
+        		var vars = ['semester', 'reading_session','worship','warnings']
         		$(vars).each(function(k, v) {
         			tr.append('<th>' + v + '</th>')
         		})
@@ -300,7 +307,7 @@
         		$('#activeInfo').empty()
         		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
         		var tr = $("<tr></tr>")
-        		var vars = ['연도','프로그램 내용','비고']
+        		var vars = ['year',	'content', 'memo']
         		$(vars).each(function(k, v) {
         			tr.append('<th>' + v + '</th>')
         		})
@@ -357,7 +364,7 @@
         		$('#awardsInfo').empty()
         		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
         		var tr = $("<tr></tr>")
-        		var vars = ['연도','내용','주최 기관','비고']
+        		var vars = ['year','content','organization','memo']
         		$(vars).each(function(k, v) {
         			tr.append('<th>' + v + '</th>')
         		})
@@ -415,7 +422,7 @@
         		$('#consultInfo').empty()
         		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
         		var tr = $("<tr></tr>")
-        		var vars = ['일자','상담자','내용','비고']
+        		var vars = ['date','topic','memo','consultant']
         		$(vars).each(function(k, v) {
         			tr.append('<th>' + v + '</th>')
         		})
@@ -563,13 +570,14 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-3">
-				<img id="profile" src="" width="200" height="200" alt="profile" title="${student.profile}">
-				<%-- <form action="/uploadform" enctype="multipart/form-data" method="POST">
-					<input type="file" name="file" style="width:100%;">
+				<img id="profile" src="" width="200px" height="200px" alt="profile" title="${student.profile}">
+				<form action="/uploadform" enctype="multipart/form-data" method="POST">
+					<input type="file" name="file" style="width:76%;">
 					<input type="submit" value="업로드"> 
-				</form> --%>
+				</form>
 			</div>
-			<div class="col-sm-3">
+			
+			<div class="col-sm-3 sinfo" >
 				<div>
 					<label>구분:</label>
 				</div>
@@ -595,7 +603,7 @@
 				</div>
 				
 			</div>
-			<div class="col-sm-3" >
+			<div class="col-sm-3 sinfo" >
 				<div>
 					<label>학년:</label>
 				</div>
@@ -623,7 +631,7 @@
 				</div>
 			</div>
 			
-			<div class="col-sm-3" style="text-align: left;">
+			<div class="col-sm-3 sinfo" style="text-align: left;">
 				<div>
 					<label>[현재상태]</label>
 				</div>
@@ -646,110 +654,112 @@
 			</div>
 		</div>
 		
-		</br>
-		
-		<div class="row">
-			<div class="col-sm">
-				<label>birth:</label>
+		<div class="row sinfo">
+			<div class="row col-sm-12">
+				<div class="col-sm-3">
+					<label>birth:</label>
+				</div>
+				<div class="col-sm-3">
+					<input class="inputLabel" name="birth" id="birth" value="${student.birth}">
+				</div>
+				<div class="col-sm-3">
+					<label>sex:</label>
+				</div>
+				<div class="col-sm-3">
+					<input type="radio" id="male" name="sex" value="male" checked="checked" >
+					<label for="male">Male</label></td>
+					<input type="radio" id="female" name="sex" value="female">
+					<label for="female">Female</label><br>
+				</div>
 			</div>
-			<div class="col-sm">
-				<input class="inputLabel" name="birth" id="birth" value="${student.birth}">
-			</div>
-			<div class="col-sm">
-				<label>sex:</label>
-			</div>
-			<div class="col-sm">
-				<input type="radio" id="male" name="sex" value="male" checked="checked" >
-				<label for="male">Male</label></td>
-				<input type="radio" id="female" name="sex" value="female">
-				<label for="female">Female</label><br>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm">
-				<label >continent:</label>
-			</div>
-			
-			<div class="col-sm">
-					<select name="continent" id="continent">
-						<option value="Asia">Asia</option>
-						<option value="Africa">Africa</option>
-						<option value="North America">North America</option>
-						<option value="South America">South America</option>
-						<option value="Antarctica">Antarctica</option>
-						<option value="Europe">Europe</option>
-						<option value="Australia">Australia</option>
+			<div class="row col-sm-12">
+				<div class="col-sm-3">
+					<label >continent:</label>
+				</div>
+				
+				<div class="col-sm-3">
+						<select name="continent" id="continent">
+							<option value="Asia">Asia</option>
+							<option value="Africa">Africa</option>
+							<option value="North America">North America</option>
+							<option value="South America">South America</option>
+							<option value="Antarctica">Antarctica</option>
+							<option value="Europe">Europe</option>
+							<option value="Australia">Australia</option>
+						</select>
+				</div>
+				<div class="col-sm-3">
+					<label >nationality:</label>
+				</div>
+				<div class="col-sm-3">
+					<input class="inputLabel" name="nationality" id="nationality" value="${student.nationality}"/>
+				</div>
+			</div>    
+			<div class="row col-sm-12">
+				<div class="col-sm-3">
+					<label >email:</label>
+				</div>
+				<div class="col-sm-3">
+					<input class="inputLabel" name="email" id="email"  value="${student.email}">
+				</div>
+				<div class="col-sm-3">
+					<label >phone:</label>
+				</div>
+				<div class="col-sm-3">
+					<input class="inputLabel" name="phone" id="phone" value="${student.phone}">
+				</div>
+			</div>    
+			<div class="row col-sm-12">
+				<div class="col-sm-3">
+					<label >college:</label>
+				</div>
+				<div class="col-sm-3">
+					<select name="college" id="college" onchange="itemChange()">
+						<option value="인문사회대학">인문사회대학</option>
+						<option value="글로벌비즈니스대학">글로벌비즈니스대학</option>
+						<option value="신학순결대학">신학순결대학</option>
+						<option value="건강보건대학">건강보건대학</option>
+						<option value="공과대학">공과대학</option>
+						<option value="SW융합대학">SW융합대학</option>
 					</select>
+				</div>
+				<div class="col-sm-3">
+					<label >dept:</label>
+				</div>
+				<div class="col-sm-3">
+					<select name="dept" id="dept">
+					</select>
+				</div>
 			</div>
-			<div class="col-sm">
-				<label >nationality:</label>
+			<div class="row col-sm-12">
+				<div class="col-sm-3">
+					<label >sns:</label>
+				</div>
+				<div class="col-sm-3">
+					<select name="snsType" id="snsType">
+				        <option value="kakotalk">kakotalk</option>
+				        <option value="Line">Line</option>
+					</select>
+				</div>
+				<div class="col-sm-3">
+					<label >id:</label>
+				</div>
+				<div class="col-sm-3">
+					<input class="inputLabel" name="sns_id" id="sns_id" value="${student.sns_id}">
+				</div>
 			</div>
-			<div class="col-sm">
-				<input class="inputLabel" name="nationality" id="nationality" value="${student.nationality}"/>
-			</div>
-		</div>    
-		<div class="row">
-			<div class="col-sm">
-				<label >email:</label>
-			</div>
-			<div class="col-sm">
-				<input class="inputLabel" name="email" id="email"  value="${student.email}">
-			</div>
-			<div class="col-sm">
-				<label >phone:</label>
-			</div>
-			<div class="col-sm">
-				<input class="inputLabel" name="phone" id="phone" value="${student.phone}">
-			</div>
-		</div>    
-		<div class="row">
-			<div class="col-sm">
-				<label >college:</label>
-			</div>
-			<div class="col-sm">
-				<select name="college" id="college" onchange="itemChange()">
-					<option value="인문사회대학">인문사회대학</option>
-					<option value="글로벌비즈니스대학">글로벌비즈니스대학</option>
-					<option value="신학순결대학">신학순결대학</option>
-					<option value="건강보건대학">건강보건대학</option>
-					<option value="공과대학">공과대학</option>
-					<option value="SW융합대학">SW융합대학</option>
-				</select>
-			</div>
-			<div class="col-sm">
-				<label >dept:</label>
-			</div>
-			<div class="col-sm">
-				<select name="dept" id="dept">
-				</select>
+			<div class="row col-sm-12">
+				<div class="col-sm-3">
+					<label >address:</label>
+				</div>
+				<div class="col-sm-3">
+					<input class="inputLabel" name="address" id="address" value="${student.address}">
+				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-sm">
-				<label >sns:</label>
-			</div>
-			<div class="col-sm">
-				<select name="snsType" id="snsType">
-			        <option value="kakotalk">kakotalk</option>
-			        <option value="Line">Line</option>
-				</select>
-			</div>
-			<div class="col-sm">
-				<label >id:</label>
-			</div>
-			<div class="col-sm">
-				<input class="inputLabel" name="sns_id" id="sns_id" value="${student.sns_id}">
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm">
-				<label >address:</label>
-			</div>
-			<div class="col-sm">
-				<input class="inputLabel" name="address" id="address" value="${student.address}">
-			</div>
-		</div>
-			
+		
+		</br>
+				
 		<div>
 			<div class="row">
 	        	<h3 class="page-header">1. 학적 및 성적 이력</h3>
