@@ -206,6 +206,8 @@
         		//대륙, 국적
         		document.getElementById("continent").disabled = true
         		document.getElementById("nationality").disabled = true
+        		
+        		document.getElementById("awardStatus").disabled = true
         	}
         	
         	
@@ -792,6 +794,7 @@
 						<option value="유지">유지</option>
 						<option value="중지">중지</option>
 						<option value="박탈">박탈</option>
+						<option value="수료">수료</option>
 					</select>
 				</div>
 			</div>
