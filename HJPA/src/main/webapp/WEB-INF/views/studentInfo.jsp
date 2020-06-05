@@ -9,14 +9,14 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap core CSS -->
   <link href="${pageContext.request.contextPath}/resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- Custom fonts for this template -->
   <link href="${pageContext.request.contextPath}/resources/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/resources/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"  ></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.flash.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
@@ -24,8 +24,12 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>	
-
+	<script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="//cdn.datatables.net/rowreorder/1.2.0/css/rowReorder.dataTables.min.css" />
+	<script src="${pageContext.request.contextPath}/resources/vendor/dataTables.rowReorder.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
+		
   <!-- Custom styles for this template -->
   <link href="${pageContext.request.contextPath}/resources/css/landing-page.min.css" rel="stylesheet">
   
@@ -77,8 +81,60 @@
 			}
 		});
 		
-    	
         $(document).ready( function () {
+        	$('#addRow_semesterInfo').on( 'click', function () {
+        		var table = $('#semesterInfoTable').DataTable();
+        		table.row.add( 
+        				[0,'',0,'',0,'<i class="fa fa-save" aria-hidden="true"></i> <i class="fa fa-remove" aria-hidden="true"></i>'] 
+        		).draw( false );
+        		
+        		
+        		var $tds = $('#semesterInfoTable tr').eq(1).find("td").not('first').not(':last');
+
+                $.each($tds, function(i, el) {
+                  var txt = $(this).text();
+                  $(this).html("").append("<input type='text' value=\""+txt+"\">");
+                });
+
+            } );
+        	
+        	$('#create_pdf').click(function() {
+        		html2canvas($('#pdf_container')[0]).then(function(canvas) {
+						
+                        // 캔버스를 이미지로 변환
+                        var imgData = canvas.toDataURL('image/png');
+
+                        var imgWidth = 210; // 이미지 가로 길이(mm) A4 기준
+                        var pageHeight = imgWidth * 1.414;  // 출력 페이지 세로 길이 계산 A4 기준
+                        var imgHeight = canvas.height * imgWidth / canvas.width;
+                        var heightLeft = imgHeight;
+
+                        var doc = new jsPDF('p', 'mm');
+                        var position = 0;
+
+                        // 첫 페이지 출력
+                        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                        heightLeft -= pageHeight;
+
+                        // 한 페이지 이상일 경우 루프 돌면서 출력
+                        while (heightLeft >= 20) {
+                            position = heightLeft - imgHeight;
+                            doc.addPage();
+                            doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                            heightLeft -= pageHeight;
+                        }
+
+                        // 파일 저장
+                        //doc.save('sample.pdf');
+                        doc.save("${student.name_kor}"+"_"+"${student.sno_univ}"); //pdf저장
+
+
+                        //이미지로 표현
+                        /* document.write('<img src="'+imgData+'" />'); */
+                    
+                	});
+        		});
+        	
         	$("#btnUpdate").on("click", function() {
         		var deliminator = "!@#";
 				var sendData = 
@@ -189,10 +245,10 @@
         	data = ${semesterInfo}
         	if(data != null)	{
         		$('#semesterInfo').empty()
-        		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
+        		var table = $('<table id="semesterInfoTable" class="table table-bordered table-hover"></table>')
         		var tr = $("<tr></tr>")
         		//var vars = ['학기','이수 학점','성적','경고']
-        		var vars = ['semester','credit','degree','warnings']
+        		var vars = ['tid','semester','credit','degree','warnings','action']
         		$(vars).each(function(k, v) {
         			tr.append('<th>' + v + '</th>')
         		})
@@ -207,7 +263,14 @@
         			tr = $("<tr></tr>")
     					    					
         			$(vars).each(function(k2, v) {
-        				tr.append('<td>' + b[v] + '</td>')
+        				if(v == 'action')	{
+        					/* tr.append('<td><i class="fa fa-pencil-square" aria-hidden="true"></i> <i class="fa fa-minus-square" aria-hidden="true"></i></td>') */
+        			        tr.append('<td><i class="fa fa-pencil-square" aria-hidden="true"></i></td>')
+        				}
+        				else	{
+        					tr.append('<td>' + b[v] + '</td>')
+        				}
+        				
         			})
         			tbody.append(tr)
         		})
@@ -215,20 +278,21 @@
 
         		$('#semesterInfo').append(table)
         		table.DataTable({
-        			dom: 'Bfrtip',
-                    buttons: [],
-                'paging': true,
-                'lengthChange': false,
-                'searching': false,
-                'ordering': true,
-                'info': true,
-                "bFilter": true,
-                "bSort": true,
-                "order": [[ 1, "asc" ]],
-                scrollCollapse: true,
-                "retrieve": true
-        		})
+        			select: true, 
+	                'paging': true,
+	                'lengthChange': false,
+	                'searching': false,
+	                'ordering': true,
+	                'info': true,
+	                "bFilter": true,
+	                "bSort": true,
+	                "order": [[ 1, "asc" ]],
+	                scrollCollapse: true,
+	                "retrieve": true
+        		});
         		
+        		var table = $('#semesterInfoTable').DataTable();
+        		table.column(0).visible(false);
         	}
         	else {
         		$('#semesterInfo').empty()
@@ -238,9 +302,87 @@
         		table.DataTable({
         			bPaginate : false,		    
         	        'paging': true
-        		})
+        		});
         	} 
         	
+        	
+            var table;
+
+            $("#semesterInfo").on("mousedown", "td .fa.fa-minus-square", function(e) {
+              table.row($(this).closest("tr")).remove().draw();
+            })
+
+            $("#semesterInfo").on('mousedown.edit', "i.fa.fa-pencil-square", function(e) {
+
+              $(this).removeClass().addClass("fa fa-save");
+              var $row = $(this).closest("tr").off("mousedown");
+              var $tds = $row.find("td").not('first').not(':last');
+
+              $.each($tds, function(i, el) {
+                var txt = $(this).text();
+                $(this).html("").append("<input type='text' value=\""+txt+"\">");
+              });
+
+            });
+            
+            $("#semesterInfo").on('mousedown',"i.fa.fa-remove", function(e) {
+            	/* $('#semesterInfoTable').DataTable().eq(1).remove().draw(); */
+            	var table = $('#semesterInfoTable').DataTable();
+            	table
+                .row( $(this).parents('tr') )
+                .remove()
+                .draw();
+            });
+
+            $("#semesterInfo").on('mousedown', "input", function(e) {
+              e.stopPropagation();
+            });
+
+            $("#semesterInfo").on('mousedown.save', "i.fa.fa-save", function(e) {
+              $(this).removeClass().addClass("fa fa-pencil-square");
+              var $row = $(this).closest("tr");
+              
+			  var table = $('#semesterInfoTable').DataTable();
+			  table.column(0).visible(true);
+			  var tid = $row.find("td:first").text();
+			  table.column(0).visible(false);
+			  
+			  var $tds = $row.find("td").not('first').not(':last');
+			  var pid = '${student.pid}';
+			  
+			  var delimiter = "!@#";
+			  var editData = tid + delimiter
+			  
+              $.each($tds, function(i, el) {
+                var txt = $(this).find("input").val()
+                $(this).html(txt);
+                editData = editData + txt + delimiter
+              });
+			  
+			  editData = editData + pid
+			  
+			  console.log(editData);
+			  
+			  $.ajax({ 
+					data :  editData,
+					type : "POST", 
+					contentType:"application/json;charset=UTF-8",
+					url : "/gradeHistoryInfo", 
+					success : function(data) { 
+						if(data == 1)	{
+							alert("수정 사항이 올바르게 변경되었습니다.");
+						}
+						else	{
+							alert("변경 사항이 올바르지 않습니다.");
+						}
+					}, 
+					error : function(data) { 
+						alert("데이터 변경을 실패하였습니다."); 
+					} 
+				});
+			  table.columns.adjust().draw();
+            });
+            
         	
         	//신앙 정보 테이블
 			data = ${holyInfo}
@@ -248,7 +390,7 @@
         	//TODO: 데이터 controller에서 받아와야 함
         	if(data != null)	{
         		$('#holyInfo').empty()
-        		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
+        		var table = $('<table id="holyInfoTable" class="table table-bordered table-hover"></table>')
         		var tr = $("<tr></tr>")
         		var vars = ['semester', 'reading_session','worship','warnings']
         		$(vars).each(function(k, v) {
@@ -554,7 +696,7 @@
     </div>
   </nav>
   
-<div class="container" >
+<div id="pdf_container" class="container" >
 		<div class="row" >
 			<div class="col-sm-12" style="text-align: center;">
 	        	<h3 class="page-header">학생 정보 조회</h3>
@@ -565,7 +707,8 @@
 	        	<h3 class="page-header">기본 정보</h3>
 	        </div>
 	        <div class="col-sm-6" style="text-align: right;">
-	        		<button id="btnUpdate" name="register">정보 수정</button> 
+		        <button id="create_pdf" disabled="disabled">학생 정보 내보내기</button>
+	        	<button id="btnUpdate" name="register">정보 수정</button> 
 	        </div>
 		</div>
 		<div class="row">
@@ -765,6 +908,7 @@
 	        	<h3 class="page-header">1. 학적 및 성적 이력</h3>
 	        </div>
 	        <div class="row">
+	        	<button id="addRow_semesterInfo">Add new row</button>
 	        	<div class="table table-bordered table-hover dataTable" id="semesterInfo"></div>
 	        </div>
 	    </div>    

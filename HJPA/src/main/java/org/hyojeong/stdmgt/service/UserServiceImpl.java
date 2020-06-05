@@ -221,4 +221,16 @@ public class UserServiceImpl implements UserService {
 	public List<ConsultHistory> getConsultHistory(int pid) {
 		return userDao.getConsultHistory(pid);
 	}
+
+	@Override
+	public int updateGradeHistory(GradeHistory gHis) {
+		if(gHis.getTid() == 0)	{	//new history
+			System.out.println("insert new grade history");
+			return userDao.insertNewGradeHistory(gHis);
+		}
+		else	{
+			System.out.println("update grade history");
+			return userDao.updateGradeHistory(gHis);
+		}
+	}
 }

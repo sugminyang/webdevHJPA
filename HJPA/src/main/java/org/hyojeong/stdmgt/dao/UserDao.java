@@ -39,4 +39,8 @@ public interface UserDao {
 	public List<AwardsHistory> getAwardsHistory(int pid);
 
 	public List<ConsultHistory> getConsultHistory(int pid);
+
+	public int updateGradeHistory(GradeHistory gHis);
+
+	public int insertNewGradeHistory(GradeHistory gHis);
 }

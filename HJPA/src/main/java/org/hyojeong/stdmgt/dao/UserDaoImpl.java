@@ -98,4 +98,14 @@ public class UserDaoImpl implements UserDao {
 		return sqlSession.selectList(Namespace+".getConsultHistory",pid);
 	}
 
+	@Override
+	public int updateGradeHistory(GradeHistory gHis) {
+		return sqlSession.update(Namespace+".updateGradeHistory",gHis);
+	}
+
+	@Override
+	public int insertNewGradeHistory(GradeHistory gHis) {
+		return sqlSession.update(Namespace+".insertNewGradeHistory",gHis);
+	}
+
 }

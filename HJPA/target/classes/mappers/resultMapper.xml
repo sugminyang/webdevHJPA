@@ -70,4 +70,19 @@
 	 	select * from consultHistory where pid = #{pid};
 	 </select>	 	 	 
 	
+	<update id="updateGradeHistory" parameterType="GradeHistoryVO">
+		update gradeHistory
+		set
+			semester=#{semester}, credit=#{credit}, degree=#{degree},
+			warnings=#{warnings}, modifiedBy=#{modifiedBy}
+		where
+			tid = #{tid};
+	</update>
+	
+	<insert id="insertNewGradeHistory" parameterType="GradeHistoryVO" >
+		insert 
+		into gradeHistory(pid,semester,credit,degree,warnings,modifiedBy)
+		values(#{pid},#{semester},#{credit},#{degree},#{warnings},#{modifiedBy});
+	</insert>
+	
 </mapper>

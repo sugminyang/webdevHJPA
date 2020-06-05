@@ -129,7 +129,7 @@ public class HomeController {
 			List<GradeHistory> gradeHistoryList = userService.getGradeHistory(student.getPid());
 			if(gradeHistoryList != null)	{
 				jsonArray = JSONArray.fromObject(gradeHistoryList);
-				System.out.println("학적 이력: "+jsonArray);
+//				System.out.println("학적 이력: "+jsonArray);
 				
 				model.addAttribute("semesterInfo", jsonArray);
 			}
@@ -138,7 +138,7 @@ public class HomeController {
 			List<HolyHistory> holyHistoryList = userService.getHolyHistory(student.getPid());
 			if(holyHistoryList != null)	{
 				jsonArray = JSONArray.fromObject(holyHistoryList);
-				System.out.println("신앙 이력: "+jsonArray);
+//				System.out.println("신앙 이력: "+jsonArray);
 				
 				model.addAttribute("holyInfo", jsonArray);
 			}
@@ -147,7 +147,7 @@ public class HomeController {
 			List<ActiveHistory> activeHistoryList = userService.getActiveHistory(student.getPid());
 			if(activeHistoryList != null)	{
 				jsonArray = JSONArray.fromObject(activeHistoryList);
-				System.out.println("프로그램 활동 이력: "+jsonArray);
+//				System.out.println("프로그램 활동 이력: "+jsonArray);
 				
 				model.addAttribute("activeInfo", jsonArray);
 			}
@@ -156,7 +156,7 @@ public class HomeController {
 			List<AwardsHistory> awardsHistoryList = userService.getAwardsHistory(student.getPid());
 			if(awardsHistoryList != null)	{
 				jsonArray = JSONArray.fromObject(awardsHistoryList);
-				System.out.println("수상 이력: "+jsonArray);
+//				System.out.println("수상 이력: "+jsonArray);
 				
 				model.addAttribute("awardsInfo", jsonArray);
 			}
@@ -166,7 +166,7 @@ public class HomeController {
 			List<ConsultHistory> consultHistoryList = userService.getConsultHistory(student.getPid());
 			if(consultHistoryList != null)	{
 				jsonArray = JSONArray.fromObject(consultHistoryList);
-				System.out.println("상담 이력: "+jsonArray);
+//				System.out.println("상담 이력: "+jsonArray);
 				
 				model.addAttribute("consultInfo", jsonArray);
 			}
@@ -259,4 +259,54 @@ public class HomeController {
 		return mav;
 	}
 	
+	
+	
+	@RequestMapping(value = "/gradeHistoryInfo", method = RequestMethod.POST)
+	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
+	public String gradeHistoryInfo(@RequestBody String filterJSON, HttpSession session) {
+		System.out.println("gradeHistoryInfo... 학적 정보 수정: ");
+//		System.out.println(filterJSON);
+		
+		String[] items = filterJSON.split("!@#");
+//		System.out.println("학생 정보 변경사항: " + items.length);
+
+		GradeHistory gHis = new GradeHistory(Integer.parseInt(items[0]),Integer.parseInt(items[5]), items[1], Integer.parseInt(items[2]), items[3], Integer.parseInt(items[4]));
+		
+		//학생의 pid 설정
+		String auth = (String) session.getAttribute("auth");
+		int studentPid = -1;
+		int result = -1;
+		
+		if(auth.equalsIgnoreCase("0"))	{	//student
+			studentPid = (Integer) session.getAttribute("pid");
+			
+			//TODO: table에 데이터 수정!!!
+//			result = userService.updateStudentInfo(updateStdInfo);
+			gHis.setModifiedBy(studentPid);
+			result = userService.updateGradeHistory(gHis);
+		}
+		else	{
+			studentPid = (Integer) session.getAttribute("sid");
+			
+			//TODO: table에 데이터 수정!!!
+//			result = userService.updateAllItemsStudentInfo(updateStdInfo);
+			gHis.setModifiedBy((Integer) session.getAttribute("pid"));
+			result = userService.updateGradeHistory(gHis);
+		}
+		
+		System.out.println(gHis);
+		System.out.println("update result: "+result);
+		
+		String test = "";
+		if(result == 1)	{
+			System.out.println("수정 사항이 올바르게 변경되었습니다.");
+			test = "1";
+		}
+		else	{
+			System.out.println("변경 사항이 올바르지 않습니다.");
+			test = "0";
+		}
+		
+	    return test;
+	}
 }
