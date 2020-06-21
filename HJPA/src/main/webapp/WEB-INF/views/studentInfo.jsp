@@ -69,6 +69,8 @@
     </style>
     
 <script type="text/javascript">
+
+
 		$(document).on('click', 'input[name="registerGroup"]', function() {
 			if (document.getElementById("btnKorEdu").checked == true) {
 				/* alert('한교원') */
@@ -81,7 +83,7 @@
 			}
 		});
 		
-        $(document).ready( function () {
+        $(document).ready( function () {        	
         	$('#addRow_semesterInfo').on( 'click', function () {
         		var table = $('#semesterInfoTable').DataTable();
         		table.row.add( 
@@ -137,6 +139,7 @@
         	
         	$("#btnUpdate").on("click", function() {
         		var deliminator = "!@#";
+        		
 				var sendData = 
 					$('#sno_univ').val()+deliminator+$('#sno_acad').val()+deliminator
 					+ $('#grade').val()+deliminator+$('#status').val()+deliminator
@@ -144,7 +147,11 @@
 					+ $('#phone').val()+deliminator+$('#college').val()+deliminator
 					+ $('#dept').val()+deliminator+$('#snsType').val()+deliminator
 					+ $('#sns_id').val()+deliminator+$('#address').val()+deliminator
-					+ $('#profile').prop("src");
+					+ $('#profile').prop("src") + deliminator + document.querySelector('input[name="sex"]:checked').value + deliminator
+					+ $('#birth').val()+deliminator+$('#nationality').val()+deliminator
+					+ $('#name_kor').val()+deliminator+$('#name_eng').val()+deliminator
+					+ $('#continent').val()+deliminator+$('#yearOfscholarship').val();
+				
 					
 				//console.log(sendData)
 				$.ajax({ 
@@ -170,78 +177,19 @@
         	
         	file = "${student.profile}"
         	if(file == "")	{
-        		file = "/resources/img/image.jpeg"	
+        		file = "/resources/img/default.png"	
+				$('#profile').prop("src",file);
+        	}
+        	else	{
+            	$('#profile').prop("src", "/locImg/"+file);        		
         	}
         	
-        	$('#profile').prop("src", file);
-        	
-        	//권한 값에 따라서 tag를 설정
-        	//일단 학생 : 0
-        	//console.log(${sessionScope.auth})
-        	if(${sessionScope.auth} == 2) 	{	// 관리자 
-        		
-        	}
-        	else if(${sessionScope.auth} == 1)	{	//선생님
-        		
-        	}
-        	else {	//학생 & 그 이외..
-        		
-        		//이름
-        		document.getElementById("name_kor").disabled = true
-        		document.getElementById("name_eng").disabled = true
 
-        		//성별
-        		if(${student.getSex()} == 1)	{ //male : 1
-        			document.getElementById("male").checked = true
-        		}
-        		else	{ //female : 0
-        			document.getElementById("female").checked = true
-        		}
-        		document.getElementById("male").disabled = true
-        		document.getElementById("female").disabled = true
-        		
-        		//생년월일
-        		document.getElementById("birth").disabled = true
-        		
-        		//대륙, 국적
-        		document.getElementById("continent").disabled = true
-        		document.getElementById("nationality").disabled = true
-        		
-        		document.getElementById("awardStatus").disabled = true
-        	}
         	
         	
-        	//공통적으로 모두 열람 및 수정할 수 있는 사항들
-        	/****************************************************************************/
-        	//단과대, 학과
-    		$("#college").val("${student.college}").prop("selected", true);
-    		itemChange()
-    		$("#dept").val("${student.dept}").prop("selected", true);
+        	
     		
-    		//SNS 정보 
-    		$("#snsType").val("${student.snsType}").prop("selected", true);
-    		
-    		$("#grade").val("${student.grade}").prop("selected", true);
-    		
-    		$("#status").val("${student.status}").prop("selected", true);
-    		$("#awardStatus").val("${student.awardStatus}").prop("selected", true);
-    		
-    		
-    		type = "${student.sno_univ}"
-    		if(type.length == 0 || type == "null")	{ // 한교원 
-    			document.getElementById("sno_acad").disabled = false
-				document.getElementById("sno_univ").disabled = true
-				document.getElementById("btnKorEdu").checked = true
-    		}
-    		else	{ //대학교
-    			document.getElementById("sno_acad").disabled = true
-				document.getElementById("sno_univ").disabled = false
-				document.getElementById("btnFstudent").checked = true
-    		}        	
-    		/****************************************************************************/
-    		
-    		
-        	//TODO: 데이터 controller에서 받아와야 함
+        	
         	
 			// 학적 정보 테이블        	
         	data = ${semesterInfo}
@@ -389,7 +337,6 @@
         	//신앙 정보 테이블
 			data = ${holyInfo}
         	
-        	//TODO: 데이터 controller에서 받아와야 함
         	if(data != null)	{
         		$('#holyInfo').empty()
         		var table = $('<table id="holyInfoTable" class="table table-bordered table-hover"></table>')
@@ -614,6 +561,191 @@
         	        'paging': true
         		})
         	} 
+			
+			
+        	//휴학 정보 테이블
+			data = ${absenceInfo};
+        	
+        	if(data != null)	{
+        		$('#absenceInfo').empty()
+        		var table = $('<table id="absenceInfoTable" class="table table-bordered table-hover"></table>')
+        		var tr = $("<tr></tr>")
+        		var vars = ['date', 'content','term','consultant']
+        		$(vars).each(function(k, v) {
+        			tr.append('<th>' + v + '</th>')
+        		})
+        		var thead = $("<thead></thead>")
+        		thead.append(tr)
+        		$(table).append(thead)
+        		
+        		var tbody = $("<tbody></tbody>")
+        		//var bindings = ${data}
+        		var bindings = data
+        		$(bindings).each(function(k, b) {
+        			tr = $("<tr></tr>")
+    					    					
+        			$(vars).each(function(k2, v) {
+        				tr.append('<td>' + b[v] + '</td>')
+        			})
+        			tbody.append(tr)
+        		})
+        		$(table).append(tbody)
+
+        		$('#absenceInfo').append(table)
+        		table.DataTable({
+        			dom: 'Bfrtip',
+                    buttons: [],
+                'paging': true,
+                'lengthChange': false,
+                'ordering': true,
+                'info': true,
+                'searching': false,
+                "bFilter": true,
+                "bSort": true,
+                "order": [[ 1, "asc" ]],
+                scrollCollapse: true,
+                "retrieve": true
+        		})
+        		
+        	}
+        	else {
+        		$('#absenceInfo').empty()
+        		error = JSON.stringify(${data})
+        		var table = $('<table class="table table-bordered table-hover"><tbody><tr><td>error: ' + error + '</td></tr></tbody></table>')
+        		$('#absenceInfo').append(table)
+        		table.DataTable({
+        			bPaginate : false,		    
+        	        'paging': true
+        		})
+        	} 
+			
+        	//장학 정보 테이블
+			data = ${grantInfo};
+        	
+        	if(data != null)	{
+        		$('#grantInfo').empty()
+        		var table = $('<table id="grantInfoTable" class="table table-bordered table-hover"></table>')
+        		var tr = $("<tr></tr>")
+        		var vars = ['semester', 'grant_hyojung','grant_sunmoon','grant_other', 'tuitionfee']
+        		$(vars).each(function(k, v) {
+        			tr.append('<th>' + v + '</th>')
+        		})
+        		var thead = $("<thead></thead>")
+        		thead.append(tr)
+        		$(table).append(thead)
+        		
+        		var tbody = $("<tbody></tbody>")
+        		//var bindings = ${data}
+        		var bindings = data
+        		$(bindings).each(function(k, b) {
+        			tr = $("<tr></tr>")
+    					    					
+        			$(vars).each(function(k2, v) {
+        				tr.append('<td>' + b[v] + '</td>')
+        			})
+        			tbody.append(tr)
+        		})
+        		$(table).append(tbody)
+
+        		$('#grantInfo').append(table)
+        		table.DataTable({
+        			dom: 'Bfrtip',
+                    buttons: [],
+                'paging': true,
+                'lengthChange': false,
+                'ordering': true,
+                'info': true,
+                'searching': false,
+                "bFilter": true,
+                "bSort": true,
+                "order": [[ 1, "asc" ]],
+                scrollCollapse: true,
+                "retrieve": true
+        		})
+        		
+        	}
+        	else {
+        		$('#grantInfo').empty()
+        		error = JSON.stringify(${data})
+        		var table = $('<table class="table table-bordered table-hover"><tbody><tr><td>error: ' + error + '</td></tr></tbody></table>')
+        		$('#grantInfo').append(table)
+        		table.DataTable({
+        			bPaginate : false,		    
+        	        'paging': true
+        		})
+        	} 
+        	
+        	//권한 값에 따라서 tag를 설정
+        	//일단 학생 : 0
+        	//console.log(${sessionScope.auth})
+        	
+        	//공통적으로 모두 열람 및 수정할 수 있는 사항들
+        	/****************************************************************************/
+			//성별
+			if(${student.getSex()} == "female")	{ 
+        		document.getElementById("female").checked = true;
+			}
+        	else { 
+       			document.getElementById("male").checked = true;
+       		}        	
+        	
+        	//단과대, 학과
+    		$("#college").val("${student.college}").prop("selected", true);
+    		itemChange()
+    		$("#dept").val("${student.dept}").prop("selected", true);
+    		
+    		
+    		//SNS 정보 
+    		$("#snsType").val("${student.snsType}").prop("selected", true);
+    		
+    		$("#grade").val("${student.grade}").prop("selected", true);
+
+    		$("#status").val("${student.status}").prop("selected", true);
+    		$("#awardStatus").val("${student.awardStatus}").prop("selected", true);
+    		
+    		
+    		type = "${student.sno_univ}"
+    		if(type.length == 0 || type == "null")	{ // 한교원 
+    			document.getElementById("sno_acad").disabled = false
+				document.getElementById("sno_univ").disabled = true
+				document.getElementById("btnKorEdu").checked = true
+    		}
+    		else	{ //대학교
+    			document.getElementById("sno_acad").disabled = true
+				document.getElementById("sno_univ").disabled = false
+				document.getElementById("btnFstudent").checked = true
+    		}        	
+    		/****************************************************************************/
+    		
+    		
+        	if(${sessionScope.auth} == 2) 	{	// 관리자 
+        		
+        	}
+        	else if(${sessionScope.auth} == 1)	{	//선생님
+        		
+        	}
+        	else {	//학생 & 그 이외..
+        		
+        		//이름
+        		document.getElementById("name_kor").disabled = true
+        		document.getElementById("name_eng").disabled = true
+
+        		
+        		document.getElementById("male").disabled = true
+        		document.getElementById("female").disabled = true
+        		
+        		//생년월일
+        		document.getElementById("birth").disabled = true
+        		
+        		//대륙, 국적
+        		document.getElementById("continent").disabled = true
+        		document.getElementById("nationality").disabled = true
+        		
+        		document.getElementById("awardStatus").disabled = true
+
+        		//학생은 상담 테이블 안보이게 처리 
+        		document.getElementById("consultDiv").style.display = "none";
+        	}
         	
         });
         
@@ -709,16 +841,18 @@
 	        	<h3 class="page-header">기본 정보</h3>
 	        </div>
 	        <div class="col-sm-6" style="text-align: right;">
-		        <button id="create_pdf" disabled="disabled">학생 정보 내보내기</button>
+		        <button id="create_pdf">학생 정보 내보내기</button>
 	        	<button id="btnUpdate" name="register">정보 수정</button> 
 	        </div>
 		</div>
 		<div class="row">
 			<div class="col-sm-3">
-				<img id="profile" src="" width="200px" height="200px" alt="profile" title="${student.profile}">
+				<div align="center">
+					<img id="profile" width="200px" height="200px" alt="profile" title="${student.profile}">
+				</div>
 				<form action="/uploadform" enctype="multipart/form-data" method="POST">
-					<input type="file" name="file" style="width:76%;">
-					<input type="submit" value="업로드"> 
+					<input id="prof_img" var="${student.profile}" type="file" name="file" style="width:76%;" accept=".jpg, .png, .jpeg, .bmp">
+					<input type="submit" value="저장"> 
 				</form>
 			</div>
 			
@@ -778,25 +912,34 @@
 			
 			<div class="col-sm-3 sinfo" style="text-align: left;">
 				<div>
-					<label>[현재상태]</label>
-				</div>
-				<div>
 					<label class="inputLabel">학적:</label>
 					<select name="status" id="status">
 						<option value="재학">재학</option>
 						<option value="휴학">휴학</option>
 						<option value="인턴십">인턴십</option>
+						<option value="졸업">졸업</option>
+						<option value="해당 없음">해당 없음</option>
 					</select>
 				</div>
 				<div>
 					<label class="inputLabel">장학:</label>
 					<select name="awardStatus" id="awardStatus">
 						<option value="유지">유지</option>
+						<option value="삭감 10%">삭감 10%</option>
+						<option value="삭감 30%">삭감 30%</option>
 						<option value="중지">중지</option>
 						<option value="박탈">박탈</option>
 						<option value="수료">수료</option>
 					</select>
 				</div>
+				<div>
+					<div>
+			        	<label class="inputLabel">장학-선발년도</label> 
+			        </div>
+			        <div>
+			        	<input class="inputLabel" name="yearOfscholarship" id="yearOfscholarship" value="${student.yearOfscholarship}">
+			        </div>
+		        </div>
 			</div>
 		</div>
 		
@@ -812,7 +955,7 @@
 					<label>sex:</label>
 				</div>
 				<div class="col-sm-3">
-					<input type="radio" id="male" name="sex" value="male" checked="checked" >
+					<input type="radio" id="male" name="sex" value="male">
 					<label for="male">Male</label></td>
 					<input type="radio" id="female" name="sex" value="female">
 					<label for="female">Female</label><br>
@@ -908,7 +1051,7 @@
 				
 		<div>
 			<div class="row">
-	        	<h3 class="page-header">1. 학적 및 성적 이력</h3>
+	        	<h3 class="page-header">학적 및 성적 이력</h3>
 	        </div>
 	        <div class="row">
 	        	<button id="addRow_semesterInfo">Add new row</button>
@@ -918,7 +1061,7 @@
 	    
 	    <div>
 			<div class="row">
-	        	<h3 class="page-header">2. 신앙출석률 이력</h3>
+	        	<h3 class="page-header">신앙출석률 이력</h3>
 	        </div>
 	        <div class="row">
 	        	<div class="table table-bordered table-hover dataTable" id="holyInfo"></div>
@@ -927,7 +1070,7 @@
 	    
 	    <div>
 			<div class="row">
-	        	<h3 class="page-header">3. 방중 프로그램 참석 이력</h3>
+	        	<h3 class="page-header">방중 프로그램 참석 이력</h3>
 	        </div>
 	        <div class="row">
 	        	<div class="table table-bordered table-hover dataTable" id="activeInfo"></div>
@@ -935,20 +1078,37 @@
 	    </div>  
 	    <div>
 			<div class="row">
-	        	<h3 class="page-header">4. 수상 이력</h3>
+	        	<h3 class="page-header">수상 이력</h3>
 	        </div>
 	        <div class="row">
 	        	<div class="table table-bordered table-hover dataTable" id="awardsInfo"></div>
 	        </div>
 	    </div>  
-	    <div>
+	    <div id="consultDiv">
 			<div class="row">
-	        	<h3 class="page-header">5. 상담 이력</h3>
+	        	<h3 class="page-header">상담 이력</h3>
 	        </div>
 	        <div class="row">
 	        	<div class="table table-bordered table-hover dataTable" id="consultInfo"></div>
 	        </div>
 	    </div>  
+	    <div>
+			<div class="row">
+	        	<h3 class="page-header">휴학 이력</h3>
+	        </div>
+	        <div class="row">
+	        	<div class="table table-bordered table-hover dataTable" id="absenceInfo"></div>
+	        </div>
+	    </div>
+	    <div>
+			<div class="row">
+	        	<h3 class="page-header">장학 이력</h3>
+	        </div>
+	        <div class="row">
+	        	<div class="table table-bordered table-hover dataTable" id="grantInfo"></div>
+	        </div>
+	    </div>	    	    
+	    
 </div>
 </body>
 </html>

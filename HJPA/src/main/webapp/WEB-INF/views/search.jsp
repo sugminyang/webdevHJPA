@@ -224,6 +224,10 @@
     				'type': "POST", 
     				'url': 'getStudentInfo',
     				'data':{pid:pid},
+    				success : function(data) { 
+					}, 
+					error : function(data) { 
+					} 
     			   });
     			
     			window.location.href = "/studentInfo";

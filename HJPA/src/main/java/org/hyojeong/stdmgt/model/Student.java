@@ -18,12 +18,18 @@ public class Student {
 	String snsType= "";
 	String continent= "";
 	int grade;
-	String status = "재학";
+	String status = "해당 없음";
 	String awardStatus = "유지";
 	String profile = "/resources/img/image.jpeg";
+	String yearOfscholarship = "";
 	
 	
-	
+	public String getYearOfscholarship() {
+		return yearOfscholarship;
+	}
+	public void setYearOfscholarship(String yearOfscholarship) {
+		this.yearOfscholarship = yearOfscholarship;
+	}
 	public String getAddress() {
 		return address;
 	}
@@ -155,11 +161,11 @@ public class Student {
 	public Student() {
 		super();
 	}
-	
 	public Student(String sno_univ, String sno_acad, int grade, String status, 
 			String awardStatus, String email, String phone, String college, 
 			String dept, String snsType, String sns_id, String address,
-			String profile) {
+			String profile, String sex, String birth, String nationality, 
+			String name_kor, String name_eng, String continent, String yearOfscholarship) {
 		super();
 		this.email = email;
 		this.phone = phone;
@@ -174,10 +180,13 @@ public class Student {
 		this.status = status;
 		this.awardStatus = awardStatus;
 		this.profile = profile;
+		this.sex = sex;
+		this.birth = birth;
+		this.nationality = nationality;
+		this.name_kor = name_kor;
+		this.name_eng = name_eng;
+		this.continent = continent;
+		this.yearOfscholarship = yearOfscholarship;
 	}
-	
-	
-	
-
 	
 }

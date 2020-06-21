@@ -1,17 +1,22 @@
 package org.hyojeong.stdmgt.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.hyojeong.stdmgt.model.AbsenceHistory;
 import org.hyojeong.stdmgt.model.ActiveHistory;
 import org.hyojeong.stdmgt.model.AwardsHistory;
 import org.hyojeong.stdmgt.model.ConsultHistory;
 import org.hyojeong.stdmgt.model.GradeHistory;
+import org.hyojeong.stdmgt.model.GrantHistory;
 import org.hyojeong.stdmgt.model.HolyHistory;
 import org.hyojeong.stdmgt.model.Student;
 import org.hyojeong.stdmgt.model.StudentDomestic;
@@ -20,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -117,13 +123,12 @@ public class HomeController {
 		Student student = userService.getStudent(studentPid);
 		
 		ModelAndView mav = new ModelAndView("studentInfo");
+		JSONArray jsonArray = null;
 		
 		if(student != null)	{
 			System.out.println(student);
 			
 			mav.addObject("student", student);
-			
-			JSONArray jsonArray = null;
 			
 //			학적 이력 load
 			List<GradeHistory> gradeHistoryList = userService.getGradeHistory(student.getPid());
@@ -170,11 +175,35 @@ public class HomeController {
 				
 				model.addAttribute("consultInfo", jsonArray);
 			}
+			
+//			휴학 이력 load
+			List<AbsenceHistory> absenceHistoryList = userService.getAbsenceHistory(student.getPid());
+			if(absenceHistoryList != null)	{
+				jsonArray = JSONArray.fromObject(absenceHistoryList);
+				
+				model.addAttribute("absenceInfo", jsonArray);
+			}	
+			
+//			장학 이력 load
+			List<GrantHistory> grantHistoryList = userService.getGrantHistory(student.getPid());
+			if(grantHistoryList != null)	{
+				jsonArray = JSONArray.fromObject(grantHistoryList);
+				
+				model.addAttribute("grantInfo", jsonArray);
+			}				
 		}
 		else	{
 			mav = new ModelAndView("home");
 		}
 		 
+//		AbsenceHistory test = new AbsenceHistory();
+//		jsonArray = JSONArray.fromObject(test);
+//		model.addAttribute("absenceInfo", jsonArray);
+
+//		GrantHistory temp = new GrantHistory();
+//		jsonArray = JSONArray.fromObject(temp);
+//		model.addAttribute("grantInfo", jsonArray);		
+		
 		return mav;
 	}
 	
@@ -189,13 +218,13 @@ public class HomeController {
 	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
 	public String updateStudentInfo(@RequestBody String filterJSON, HttpSession session) {
 		System.out.println("updateStudentInfo... 학생 정보 수정..request: ");
-//		System.out.println(filterJSON);
+		System.out.println(filterJSON);
 		
 		String[] items = filterJSON.split("!@#");
 //		System.out.println("학생 정보 변경사항: " + items.length);
 		Student updateStdInfo = new Student(items[0], items[1], Integer.parseInt(items[2]),items[3], 
 				items[4], items[5], items[6], items[7], items[8], items[9], items[10],
-				items[11], items[12]);
+				items[11], items[12],items[13], items[14],items[15], items[16],items[17],items[18],items[19]);
 		
 //		System.out.println(updateStdInfo);
 		//학생의 pid 설정
@@ -206,11 +235,13 @@ public class HomeController {
 		if(auth.equalsIgnoreCase("0"))	{	//student
 			studentPid = (Integer) session.getAttribute("pid");
 			updateStdInfo.setPid(studentPid);
+			System.out.println(updateStdInfo);
 			result = userService.updateStudentInfo(updateStdInfo);
 		}
 		else	{
 			studentPid = (Integer) session.getAttribute("sid");
 			updateStdInfo.setPid(studentPid);
+			System.out.println(updateStdInfo);
 			result = userService.updateAllItemsStudentInfo(updateStdInfo);
 		}
 		
@@ -227,39 +258,6 @@ public class HomeController {
 		
 	    return test;
 	}
-	
-	
-//	@Resource(name="uploadPath")
-//	String uploadPath;
-//	private static final String UPLOAD_DIRECTORY ="/resources/img/";  
-	
-	@RequestMapping(value = "/uploadform", method = RequestMethod.POST)
-	public ModelAndView uploadForm( HttpServletRequest request, MultipartFile file) throws IOException {
-		System.out.println("Enter....uploadForm");
-//		System.out.println("파일 이름: " + file.getOriginalFilename());
-//		System.out.println("파일 크기: " + file.getSize());
-//		System.out.println("컨텐츠 타입: " + file.getContentType());
-//		
-//		ServletContext context = request.getSession().getServletContext();  
-//	    String uploadPath = context.getRealPath(UPLOAD_DIRECTORY);  
-////		uploadPath = request.getSession().getServletContext().getRealPath("/resources/uploadImg/");
-//		System.out.println("경로: " + uploadPath);
-//		
-//		String savedName = file.getOriginalFilename();
-//		
-//		File target = new File(uploadPath,savedName);
-//		System.out.println("File...: "+target.getAbsolutePath());
-//		
-//		//임시디렉토리에 저장된 업로드된 파일을 지정된 디렉토리로 복사 
-//		FileCopyUtils.copy(file.getBytes(),target);
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("home");
-//		mav.addObject("fileName",target.getAbsolutePath());
-		
-		return mav;
-	}
-	
-	
 	
 	@RequestMapping(value = "/gradeHistoryInfo", method = RequestMethod.POST)
 	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
@@ -309,4 +307,52 @@ public class HomeController {
 		
 	    return test;
 	}
+	
+	
+	
+	
+	@Resource(name="uploadPath")
+	String uploadPath;
+	private static final String UPLOAD_DIRECTORY ="/resources/img/";  
+	
+	@RequestMapping(value = "/uploadform", method = RequestMethod.POST)
+	public String uploadForm(HttpSession session, HttpServletRequest request, MultipartFile file) throws IOException {
+		System.out.println("Enter....uploadForm");
+		System.out.println("파일 이름: " + file.getOriginalFilename());
+		System.out.println("파일 크기: " + file.getSize());
+		System.out.println("컨텐츠 타입: " + file.getContentType());
+		
+		String uploadPath = "/Users/dean/Documents/etc/project/HJPA/develop/uploadImg/";
+		System.out.println("경로: " + uploadPath);
+		
+		String auth = (String) session.getAttribute("auth");
+		int studentPid = -1;
+		
+		if(auth.equalsIgnoreCase("0"))	{	//student
+			studentPid = (Integer) session.getAttribute("pid");
+		}
+		else	{
+			studentPid = (Integer) session.getAttribute("sid");
+		}
+		
+		UUID uuid = UUID.randomUUID();
+		String savedName = "pid"+studentPid + "_"+uuid+"_"+file.getOriginalFilename();
+		
+		File target = new File(uploadPath,savedName);
+		System.out.println("File...: "+target.getAbsolutePath());
+		
+		//임시디렉토리에 저장된 업로드된 파일을 지정된 디렉토리로 복사 
+//		FileCopyUtils.copy(file.getBytes(),target);
+		file.transferTo(target);
+		
+		//change profile imge
+		
+		
+		userService.updateProfileImg(studentPid,savedName);
+		
+		
+		return "redirect:/studentInfo";
+	}
+	
+
 }

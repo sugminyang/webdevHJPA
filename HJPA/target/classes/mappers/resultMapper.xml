@@ -40,9 +40,11 @@
 		update StudentInfo
 		set 
 		sno_univ = #{sno_univ}, sno_acad = #{sno_acad}, grade = #{grade}, 
-		status = #{status}, awardStatus = #{awardStatus}, profile = #{profile},
+		status = #{status}, awardStatus = #{awardStatus},
 		email = #{email}, phone = #{phone}, college = #{college}, dept = #{dept},
-	 	snsType = #{snsType}, sns_id = #{sns_id}, address = #{address}
+	 	snsType = #{snsType}, sns_id = #{sns_id}, address = #{address}, birth = #{birth},
+	 	sex = #{sex}, nationality = #{nationality}, name_eng = #{name_eng}, 
+	 	name_kor = #{name_kor}, continent = #{continent}, yearOfscholarship = #{yearOfscholarship}
 		where pid = #{pid};
 	</update>
 
@@ -85,4 +87,19 @@
 		values(#{pid},#{semester},#{credit},#{degree},#{warnings},#{modifiedBy});
 	</insert>
 	
+	<select id="getAbsenceHistory" resultType="AbsenceHistoryVO" parameterType="int">
+	 	select * from absenceHistory where pid = #{pid};
+	 </select>	 
+	 	 	 
+	<select id="getGrantHistory" resultType="GrantHistoryVO" parameterType="int">
+	 	select * from grantHistory where pid = #{pid};
+	 </select>	 	
+	 
+	 <update id="updateProfileImg" parameterType="StudentVO">
+		update StudentInfo
+		set
+			profile = #{profile}
+		where
+			pid = #{pid};
+	</update>
 </mapper>

@@ -7,10 +7,12 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
+import org.hyojeong.stdmgt.model.AbsenceHistory;
 import org.hyojeong.stdmgt.model.ActiveHistory;
 import org.hyojeong.stdmgt.model.AwardsHistory;
 import org.hyojeong.stdmgt.model.ConsultHistory;
 import org.hyojeong.stdmgt.model.GradeHistory;
+import org.hyojeong.stdmgt.model.GrantHistory;
 import org.hyojeong.stdmgt.model.HolyHistory;
 import org.hyojeong.stdmgt.model.Login;
 import org.hyojeong.stdmgt.model.Student;
@@ -106,6 +108,25 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public int insertNewGradeHistory(GradeHistory gHis) {
 		return sqlSession.update(Namespace+".insertNewGradeHistory",gHis);
+	}
+
+	@Override
+	public List<AbsenceHistory> getAbsenceHistory(int pid) {
+		return sqlSession.selectList(Namespace+".getAbsenceHistory",pid);
+	}
+
+	@Override
+	public List<GrantHistory> getGrantHistory(int pid) {
+		return sqlSession.selectList(Namespace+".getGrantHistory",pid);
+	}
+
+	@Override
+	public int updateProfileImg(int studentPid, String profilePath) {
+		Student temp = new Student();
+		temp.setProfile(profilePath);
+		temp.setPid(studentPid);
+		
+		return sqlSession.update(Namespace+".updateProfileImg",temp);
 	}
 
 }

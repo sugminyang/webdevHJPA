@@ -9,10 +9,12 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.hyojeong.stdmgt.dao.UserDao;
+import org.hyojeong.stdmgt.model.AbsenceHistory;
 import org.hyojeong.stdmgt.model.ActiveHistory;
 import org.hyojeong.stdmgt.model.AwardsHistory;
 import org.hyojeong.stdmgt.model.ConsultHistory;
 import org.hyojeong.stdmgt.model.GradeHistory;
+import org.hyojeong.stdmgt.model.GrantHistory;
 import org.hyojeong.stdmgt.model.HolyHistory;
 import org.hyojeong.stdmgt.model.Login;
 import org.hyojeong.stdmgt.model.Student;
@@ -161,6 +163,11 @@ public class UserServiceImpl implements UserService {
 			updatedList += "사진,";
 			originStudent.setProfile(updateStudentInfo.getProfile());
 		}
+//		장학 선발 연도가 변경된 경우 
+		if(!updateStudentInfo.getYearOfscholarship().equalsIgnoreCase(originStudent.getYearOfscholarship()))	{
+			updatedList += "장학선발 연도,";
+			originStudent.setYearOfscholarship(updateStudentInfo.getYearOfscholarship());
+		}		
 //		System.out.println("변경 사항: " + updatedList);
 		
 		//마지막 ','제거
@@ -170,6 +177,8 @@ public class UserServiceImpl implements UserService {
 		else {
 			return 0; //수정된 사항이 없음
 		}
+		
+		System.out.println("수정사항: "+ updatedList);
 		
 		//수정된 정보 내역 저장
 		String nowDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
@@ -232,5 +241,20 @@ public class UserServiceImpl implements UserService {
 			System.out.println("update grade history");
 			return userDao.updateGradeHistory(gHis);
 		}
+	}
+
+	@Override
+	public List<AbsenceHistory> getAbsenceHistory(int pid) {
+		return userDao.getAbsenceHistory(pid);
+	}
+
+	@Override
+	public List<GrantHistory> getGrantHistory(int pid) {
+		return userDao.getGrantHistory(pid);
+	}
+
+	@Override
+	public int updateProfileImg(int studentPid, String profilePath) {
+		return userDao.updateProfileImg(studentPid,profilePath);
 	}
 }
