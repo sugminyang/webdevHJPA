@@ -9,6 +9,14 @@ public class AwardsHistory {
 	String organization="";
 	String memo="";
 	int modifiedBy;
+	int tid;
+	
+	public int getTid() {
+		return tid;
+	}
+	public void setTid(int tid) {
+		this.tid = tid;
+	}
 	public int getPid() {
 		return pid;
 	}
@@ -49,6 +57,18 @@ public class AwardsHistory {
 	public String toString() {
 		return "AwardsHistory [pid=" + pid + ", year=" + year + ", content=" + content + ", organization="
 				+ organization + ", memo=" + memo + ", modifiedBy=" + modifiedBy + "]";
+	}
+	public AwardsHistory(int pid, int tid, int year, String content, String organization, String memo) {
+		super();
+		this.pid = pid;
+		this.year = year;
+		this.content = content;
+		this.organization = organization;
+		this.memo = memo;
+		this.tid = tid;
+	}
+	public AwardsHistory() {
+		super();
 	}
 	
 	

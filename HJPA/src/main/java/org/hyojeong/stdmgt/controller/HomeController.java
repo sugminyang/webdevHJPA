@@ -308,6 +308,99 @@ public class HomeController {
 	    return test;
 	}
 	
+	@RequestMapping(value = "/activeHistoryInfo", method = RequestMethod.POST)
+	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
+	public String activeHistoryInfo(@RequestBody String filterJSON, HttpSession session) {
+		System.out.println("activeHistoryInfo... 학적 정보 수정: ");
+		System.out.println(filterJSON);
+		
+		String[] items = filterJSON.split("!@#");
+		System.out.println("학생 정보 변경사항: " + items.length);
+		ActiveHistory aHis = new ActiveHistory(Integer.parseInt(items[4]),Integer.parseInt(items[0]),
+				Integer.parseInt(items[1]), items[2], items[3]);
+		
+		//학생의 pid 설정
+		String auth = (String) session.getAttribute("auth");
+		int studentPid = -1;
+		int result = -1;
+		
+		if(auth.equalsIgnoreCase("0"))	{	//student
+			studentPid = (Integer) session.getAttribute("pid");
+			
+			//TODO: table에 데이터 수정!!!
+			aHis.setModifiedBy(studentPid);
+			result = userService.updateActiveHistory(aHis);
+		}
+		else	{
+			studentPid = (Integer) session.getAttribute("sid");
+			
+			//TODO: table에 데이터 수정!!!
+			aHis.setModifiedBy((Integer) session.getAttribute("pid"));
+			result = userService.updateActiveHistory(aHis);
+		}
+		
+		System.out.println(aHis);
+		System.out.println("update result: "+result);
+		
+		String test = "";
+		if(result == 1)	{
+			System.out.println("수정 사항이 올바르게 변경되었습니다.");
+			test = "1";
+		}
+		else	{
+			System.out.println("변경 사항이 올바르지 않습니다.");
+			test = "0";
+		}
+		
+	    return test;
+	}
+	
+	@RequestMapping(value = "/awardsHistoryInfo", method = RequestMethod.POST)
+	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
+	public String awardsHistoryInfo(@RequestBody String filterJSON, HttpSession session) {
+		System.out.println("awardsHistoryInfo... 학적 정보 수정: ");
+		System.out.println(filterJSON);
+		
+		String[] items = filterJSON.split("!@#");
+		System.out.println("학생 정보 변경사항: " + items.length);
+		AwardsHistory awHis = new AwardsHistory(Integer.parseInt(items[5]), Integer.parseInt(items[0]), Integer.parseInt(items[1]),
+				items[2],items[3],items[4]);
+		
+		//학생의 pid 설정
+		String auth = (String) session.getAttribute("auth");
+		int studentPid = -1;
+		int result = -1;
+		
+		if(auth.equalsIgnoreCase("0"))	{	//student
+			studentPid = (Integer) session.getAttribute("pid");
+			
+			//TODO: table에 데이터 수정!!!
+			awHis.setModifiedBy(studentPid);
+			result = userService.updateAwardsHistory(awHis);
+		}
+		else	{
+			studentPid = (Integer) session.getAttribute("sid");
+			
+			//TODO: table에 데이터 수정!!!
+			awHis.setModifiedBy((Integer) session.getAttribute("pid"));
+			result = userService.updateAwardsHistory(awHis);
+		}
+		
+		System.out.println(awHis);
+		System.out.println("update result: "+result);
+		
+		String test = "";
+		if(result == 1)	{
+			System.out.println("수정 사항이 올바르게 변경되었습니다.");
+			test = "1";
+		}
+		else	{
+			System.out.println("변경 사항이 올바르지 않습니다.");
+			test = "0";
+		}
+		
+	    return test;
+	}	
 	
 	
 	

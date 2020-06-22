@@ -84,21 +84,7 @@
 		});
 		
         $(document).ready( function () {        	
-        	$('#addRow_semesterInfo').on( 'click', function () {
-        		var table = $('#semesterInfoTable').DataTable();
-        		table.row.add( 
-        				[0,'',0,'',0,'<i class="fa fa-save" aria-hidden="true"></i> <i class="fa fa-remove" aria-hidden="true"></i>'] 
-        		).draw( false );
-        		
-        		
-        		var $tds = $('#semesterInfoTable tr').eq(1).find("td").not('first').not(':last');
-
-                $.each($tds, function(i, el) {
-                  var txt = $(this).text();
-                  $(this).html("").append("<input type='text' value=\""+txt+"\">");
-                });
-
-            } );
+        	
         	
         	$('#create_pdf').click(function() {
         		html2canvas($('#pdf_container')[0]).then(function(canvas) {
@@ -214,8 +200,9 @@
     					    					
         			$(vars).each(function(k2, v) {
         				if(v == 'action')	{
-        					/* tr.append('<td><i class="fa fa-pencil-square" aria-hidden="true"></i> <i class="fa fa-minus-square" aria-hidden="true"></i></td>') */
-        			        tr.append('<td><i class="fa fa-pencil-square" aria-hidden="true"></i></td>')
+        					/* tr.append('<td><i class="fa fa-pencil-square" aria-hidden="true"></i> <i class="fa fa-remove" aria-hidden="true"></i></td>') */
+        					
+        			        tr.append('<td><i class="fa fa-pencil-square" aria-hidden="true"></i><i class="fa fa-remove" aria-hidden="true"></i></td>')
         				}
         				else	{
         					tr.append('<td>' + b[v] + '</td>')
@@ -255,13 +242,30 @@
         		});
         	} 
         	
+        	if(${sessionScope.auth} == 0)	{ // student
+        		$("#addRow_semesterInfo").css("display","none");
+        		$("#semesterInfoTable .fa").css("display","none")
+        	}
+        	
         	
             var table;
 
-            $("#semesterInfo").on("mousedown", "td .fa.fa-minus-square", function(e) {
-              table.row($(this).closest("tr")).remove().draw();
-            })
+            $('#addRow_semesterInfo').on( 'click', function () {
+        		var table = $('#semesterInfoTable').DataTable();
+        		table.row.add( 
+        				[0,'',0,'',0,'<i class="fa fa-save" aria-hidden="true"></i> <i class="fa fa-remove" aria-hidden="true"></i>'] 
+        		).draw( false );
+        		
+        		
+        		var $tds = $('#semesterInfoTable tr').eq(1).find("td").not('first').not(':last');
 
+                $.each($tds, function(i, el) {
+                  var txt = $(this).text();
+                  $(this).html("").append("<input type='text' value=\""+txt+"\">");
+                });
+
+            } );
+            
             $("#semesterInfo").on('mousedown.edit', "i.fa.fa-pencil-square", function(e) {
 
               $(this).removeClass().addClass("fa fa-save");
@@ -311,7 +315,7 @@
 			  
 			  editData = editData + pid
 			  
-			  console.log(editData);
+			  //console.log(editData);
 			  
 			  $.ajax({ 
 					data :  editData,
@@ -341,7 +345,7 @@
         		$('#holyInfo').empty()
         		var table = $('<table id="holyInfoTable" class="table table-bordered table-hover"></table>')
         		var tr = $("<tr></tr>")
-        		var vars = ['semester', 'reading_session','worship','warnings']
+        		var vars = ['semester', 'reading_session','worship','warnings','action']
         		$(vars).each(function(k, v) {
         			tr.append('<th>' + v + '</th>')
         		})
@@ -356,7 +360,15 @@
         			tr = $("<tr></tr>")
     					    					
         			$(vars).each(function(k2, v) {
-        				tr.append('<td>' + b[v] + '</td>')
+        				if(v == 'action')	{
+        					/* tr.append('<td><i class="fa fa-pencil-square" aria-hidden="true"></i> <i class="fa fa-remove" aria-hidden="true"></i></td>') */
+        					
+        			        tr.append('<td><i class="fa fa-pencil-square" aria-hidden="true"></i><i class="fa fa-remove" aria-hidden="true"></i></td>')
+        				}
+        				else	{
+        					tr.append('<td>' + b[v] + '</td>')
+        				}
+        				
         			})
         			tbody.append(tr)
         		})
@@ -390,15 +402,22 @@
         		})
         	} 
         	
+	        	if(${sessionScope.auth} == 0)	{ // student
+	        		$("#addRow_holyInfo").css("display","none");
+	        		$("#holyInfoTable .fa").css("display","none");
+	        	}
+        	
+        	
+        	
         	//프로그램 참여 정보 테이블
 			data = ${activeInfo}
         	
         	//TODO: 데이터 controller에서 받아와야 함
         	if(data != null)	{
         		$('#activeInfo').empty()
-        		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
+        		var table = $('<table id="activeInfoTable" class="table table-bordered table-hover"></table>')
         		var tr = $("<tr></tr>")
-        		var vars = ['year',	'content', 'memo']
+        		var vars = ['tid','year','content', 'memo','action']
         		$(vars).each(function(k, v) {
         			tr.append('<th>' + v + '</th>')
         		})
@@ -413,7 +432,15 @@
         			tr = $("<tr></tr>")
     					    					
         			$(vars).each(function(k2, v) {
-        				tr.append('<td>' + b[v] + '</td>')
+        				if(v == 'action')	{
+        					/* tr.append('<td><i class="fa fa-pencil-square" aria-hidden="true"></i> <i class="fa fa-remove" aria-hidden="true"></i></td>') */
+        					
+        			        tr.append('<td><i class="fa fa-pencil-square" aria-hidden="true"></i><i class="fa fa-remove" aria-hidden="true"></i></td>')
+        				}
+        				else	{
+        					tr.append('<td>' + b[v] + '</td>')
+        				}
+        				
         			})
         			tbody.append(tr)
         		})
@@ -435,6 +462,8 @@
                 "retrieve": true
         		})
         		
+        		var table = $('#activeInfoTable').DataTable();
+        		table.column(0).visible(false);
         	}
         	else {
         		$('#activeInfo').empty()
@@ -446,6 +475,97 @@
         	        'paging': true
         		})
         	} 
+        	
+            var table;
+
+            $('#addRow_activeInfo').on( 'click', function () {
+        		var table = $('#activeInfoTable').DataTable();
+        		table.row.add( 
+        				[0,'','','','<i class="fa fa-save" aria-hidden="true"></i> <i class="fa fa-remove" aria-hidden="true"></i>'] 
+        		).draw( false );
+        		
+        		var $tds = $('#activeInfoTable tr').eq(1).find("td").not('first').not(':last');
+
+                $.each($tds, function(i, el) {
+                  var txt = $(this).text();
+                  $(this).html("").append("<input type='text' value=\""+txt+"\">");
+                });
+
+            } );
+            
+
+            $("#activeInfo").on('mousedown.edit', "i.fa.fa-pencil-square", function(e) {
+
+              $(this).removeClass().addClass("fa fa-save");
+              var $row = $(this).closest("tr").off("mousedown");
+              var $tds = $row.find("td").not('first').not(':last');
+
+              $.each($tds, function(i, el) {
+                var txt = $(this).text();
+                $(this).html("").append("<input type='text' value=\""+txt+"\">");
+              });
+
+            });
+            
+            $("#activeInfo").on('mousedown',"i.fa.fa-remove", function(e) {
+            	/* $('#semesterInfoTable').DataTable().eq(1).remove().draw(); */
+            	var table = $('#activeInfoTable').DataTable();
+            	table
+                .row( $(this).parents('tr') )
+                .remove()
+                .draw();
+            });
+
+            $("#activeInfo").on('mousedown', "input", function(e) {
+              e.stopPropagation();
+            });
+
+            $("#activeInfo").on('mousedown.save', "i.fa.fa-save", function(e) {
+              $(this).removeClass().addClass("fa fa-pencil-square");
+              var $row = $(this).closest("tr");
+              
+			  var table = $('#activeInfoTable').DataTable();
+			  table.column(0).visible(true);
+			  var tid = $row.find("td:first").text();
+			  table.column(0).visible(false);
+			  
+			  var $tds = $row.find("td").not('first').not(':last');
+			  var pid = '${student.pid}';
+			  
+			  var delimiter = "!@#";
+			  var editData = tid + delimiter
+			  
+              $.each($tds, function(i, el) {
+                var txt = $(this).find("input").val()
+                $(this).html(txt);
+                editData = editData + txt + delimiter
+              });
+			  
+			  editData = editData + pid
+			  
+			  //console.log(editData);
+			  
+			  $.ajax({ 
+					data :  editData,
+					type : "POST", 
+					contentType:"application/json;charset=UTF-8",
+					url : "/activeHistoryInfo", 
+					success : function(data) { 
+						if(data == 1)	{
+							alert("수정 사항이 올바르게 변경되었습니다.");
+						}
+						else	{
+							alert("변경 사항이 올바르지 않습니다.");
+						}
+					}, 
+					error : function(data) { 
+						alert("데이터 변경을 실패하였습니다."); 
+					} 
+				});
+			  table.columns.adjust().draw();
+            });
+            
+			
 			
         	//수상 이력 정보 테이블
 			data = ${awardsInfo}
@@ -453,9 +573,9 @@
         	//TODO: 데이터 controller에서 받아와야 함
         	if(data != null)	{
         		$('#awardsInfo').empty()
-        		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
+        		var table = $('<table id="awardsInfoTable" class="table table-bordered table-hover"></table>')
         		var tr = $("<tr></tr>")
-        		var vars = ['year','content','organization','memo']
+        		var vars = ['tid','year','content','organization','memo','action']
         		$(vars).each(function(k, v) {
         			tr.append('<th>' + v + '</th>')
         		})
@@ -470,7 +590,15 @@
         			tr = $("<tr></tr>")
     					    					
         			$(vars).each(function(k2, v) {
-        				tr.append('<td>' + b[v] + '</td>')
+        				if(v == 'action')	{
+        					/* tr.append('<td><i class="fa fa-pencil-square" aria-hidden="true"></i> <i class="fa fa-remove" aria-hidden="true"></i></td>') */
+        					
+        			        tr.append('<td><i class="fa fa-pencil-square" aria-hidden="true"></i><i class="fa fa-remove" aria-hidden="true"></i></td>')
+        				}
+        				else	{
+        					tr.append('<td>' + b[v] + '</td>')
+        				}
+        				
         			})
         			tbody.append(tr)
         		})
@@ -492,6 +620,8 @@
                 "retrieve": true
         		})
         		
+        		var table = $('#awardsInfoTable').DataTable();
+        		table.column(0).visible(false);
         	}
         	else {
         		$('#awardsInfo').empty()
@@ -503,6 +633,95 @@
         	        'paging': true
         		})
         	} 
+			
+        	var table;
+
+            $('#addRow_awardsInfo').on( 'click', function () {
+        		var table = $('#awardsInfoTable').DataTable();
+        		table.row.add( 
+        				[0,'','','','','<i class="fa fa-save" aria-hidden="true"></i> <i class="fa fa-remove" aria-hidden="true"></i>'] 
+        		).draw( false );
+        		
+        		var $tds = $('#awardsInfoTable tr').eq(1).find("td").not('first').not(':last');
+
+                $.each($tds, function(i, el) {
+                  var txt = $(this).text();
+                  $(this).html("").append("<input type='text' value=\""+txt+"\">");
+                });
+
+            } );
+            
+
+            $("#awardsInfo").on('mousedown.edit', "i.fa.fa-pencil-square", function(e) {
+
+              $(this).removeClass().addClass("fa fa-save");
+              var $row = $(this).closest("tr").off("mousedown");
+              var $tds = $row.find("td").not('first').not(':last');
+
+              $.each($tds, function(i, el) {
+                var txt = $(this).text();
+                $(this).html("").append("<input type='text' value=\""+txt+"\">");
+              });
+
+            });
+            
+            $("#awardsInfo").on('mousedown',"i.fa.fa-remove", function(e) {
+            	/* $('#semesterInfoTable').DataTable().eq(1).remove().draw(); */
+            	var table = $('#awardsInfoTable').DataTable();
+            	table
+                .row( $(this).parents('tr') )
+                .remove()
+                .draw();
+            });
+
+            $("#awardsInfo").on('mousedown', "input", function(e) {
+              e.stopPropagation();
+            });
+
+            $("#awardsInfo").on('mousedown.save', "i.fa.fa-save", function(e) {
+              $(this).removeClass().addClass("fa fa-pencil-square");
+              var $row = $(this).closest("tr");
+              
+			  var table = $('#awardsInfoTable').DataTable();
+			  table.column(0).visible(true);
+			  var tid = $row.find("td:first").text();
+			  table.column(0).visible(false);
+			  
+			  var $tds = $row.find("td").not('first').not(':last');
+			  var pid = '${student.pid}';
+			  
+			  var delimiter = "!@#";
+			  var editData = tid + delimiter
+			  
+              $.each($tds, function(i, el) {
+                var txt = $(this).find("input").val()
+                $(this).html(txt);
+                editData = editData + txt + delimiter
+              });
+			  
+			  editData = editData + pid
+			  
+			  //console.log(editData);
+			  
+			  $.ajax({ 
+					data :  editData,
+					type : "POST", 
+					contentType:"application/json;charset=UTF-8",
+					url : "/awardsHistoryInfo", 
+					success : function(data) { 
+						if(data == 1)	{
+							alert("수정 사항이 올바르게 변경되었습니다.");
+						}
+						else	{
+							alert("변경 사항이 올바르지 않습니다.");
+						}
+					}, 
+					error : function(data) { 
+						alert("데이터 변경을 실패하였습니다."); 
+					} 
+				});
+			  table.columns.adjust().draw();
+            });
 			
 			
         	//상담 이력 정보 테이블
@@ -511,9 +730,9 @@
         	//TODO: 데이터 controller에서 받아와야 함
         	if(data != null)	{
         		$('#consultInfo').empty()
-        		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
+        		var table = $('<table id="consultInfoTable" class="table table-bordered table-hover"></table>')
         		var tr = $("<tr></tr>")
-        		var vars = ['date','topic','memo','consultant']
+        		var vars = ['date','topic','memo','consultant','action']
         		$(vars).each(function(k, v) {
         			tr.append('<th>' + v + '</th>')
         		})
@@ -528,7 +747,15 @@
         			tr = $("<tr></tr>")
     					    					
         			$(vars).each(function(k2, v) {
-        				tr.append('<td>' + b[v] + '</td>')
+        				if(v == 'action')	{
+        					/* tr.append('<td><i class="fa fa-pencil-square" aria-hidden="true"></i> <i class="fa fa-remove" aria-hidden="true"></i></td>') */
+        					
+        			        tr.append('<td><i class="fa fa-pencil-square" aria-hidden="true"></i><i class="fa fa-remove" aria-hidden="true"></i></td>')
+        				}
+        				else	{
+        					tr.append('<td>' + b[v] + '</td>')
+        				}
+        				
         			})
         			tbody.append(tr)
         		})
@@ -561,6 +788,11 @@
         	        'paging': true
         		})
         	} 
+			
+        	if(${sessionScope.auth} == 0)	{ // student
+        		$("#addRow_consultInfo").css("display","none");
+        		$("#consultInfoTable .fa").css("display","none");
+        	}
 			
 			
         	//휴학 정보 테이블
@@ -570,7 +802,7 @@
         		$('#absenceInfo').empty()
         		var table = $('<table id="absenceInfoTable" class="table table-bordered table-hover"></table>')
         		var tr = $("<tr></tr>")
-        		var vars = ['date', 'content','term','consultant']
+        		var vars = ['date', 'content','term','consultant','action']
         		$(vars).each(function(k, v) {
         			tr.append('<th>' + v + '</th>')
         		})
@@ -585,7 +817,15 @@
         			tr = $("<tr></tr>")
     					    					
         			$(vars).each(function(k2, v) {
-        				tr.append('<td>' + b[v] + '</td>')
+        				if(v == 'action')	{
+        					/* tr.append('<td><i class="fa fa-pencil-square" aria-hidden="true"></i> <i class="fa fa-remove" aria-hidden="true"></i></td>') */
+        					
+        			        tr.append('<td><i class="fa fa-pencil-square" aria-hidden="true"></i><i class="fa fa-remove" aria-hidden="true"></i></td>')
+        				}
+        				else	{
+        					tr.append('<td>' + b[v] + '</td>')
+        				}
+        				
         			})
         			tbody.append(tr)
         		})
@@ -619,6 +859,12 @@
         		})
         	} 
 			
+        	if(${sessionScope.auth} == 0)	{ // student
+        		$("#addRow_absenceInfo").css("display","none");
+        		$("#absenceInfoTable .fa").css("display","none");
+        	}
+        	
+        	
         	//장학 정보 테이블
 			data = ${grantInfo};
         	
@@ -626,7 +872,7 @@
         		$('#grantInfo').empty()
         		var table = $('<table id="grantInfoTable" class="table table-bordered table-hover"></table>')
         		var tr = $("<tr></tr>")
-        		var vars = ['semester', 'grant_hyojung','grant_sunmoon','grant_other', 'tuitionfee']
+        		var vars = ['semester', 'grant_hyojung','grant_sunmoon','grant_other', 'tuitionfee','action']
         		$(vars).each(function(k, v) {
         			tr.append('<th>' + v + '</th>')
         		})
@@ -641,7 +887,15 @@
         			tr = $("<tr></tr>")
     					    					
         			$(vars).each(function(k2, v) {
-        				tr.append('<td>' + b[v] + '</td>')
+        				if(v == 'action')	{
+        					/* tr.append('<td><i class="fa fa-pencil-square" aria-hidden="true"></i> <i class="fa fa-remove" aria-hidden="true"></i></td>') */
+        					
+        			        tr.append('<td><i class="fa fa-pencil-square" aria-hidden="true"></i><i class="fa fa-remove" aria-hidden="true"></i></td>')
+        				}
+        				else	{
+        					tr.append('<td>' + b[v] + '</td>')
+        				}
+        				
         			})
         			tbody.append(tr)
         		})
@@ -674,6 +928,11 @@
         	        'paging': true
         		})
         	} 
+        	
+        	if(${sessionScope.auth} == 0)	{ // student
+        		$("#addRow_grantInfo").css("display","none");
+        		$("#grantInfoTable .fa").css("display","none");
+        	}
         	
         	//권한 값에 따라서 tag를 설정
         	//일단 학생 : 0
@@ -1064,6 +1323,7 @@
 	        	<h3 class="page-header">신앙출석률 이력</h3>
 	        </div>
 	        <div class="row">
+	        	<button id="addRow_holyInfo">Add new row</button>
 	        	<div class="table table-bordered table-hover dataTable" id="holyInfo"></div>
 	        </div>
 	    </div>  
@@ -1073,6 +1333,7 @@
 	        	<h3 class="page-header">방중 프로그램 참석 이력</h3>
 	        </div>
 	        <div class="row">
+	        <button id="addRow_activeInfo">Add new row</button>
 	        	<div class="table table-bordered table-hover dataTable" id="activeInfo"></div>
 	        </div>
 	    </div>  
@@ -1081,6 +1342,7 @@
 	        	<h3 class="page-header">수상 이력</h3>
 	        </div>
 	        <div class="row">
+	        	<button id="addRow_awardsInfo">Add new row</button>
 	        	<div class="table table-bordered table-hover dataTable" id="awardsInfo"></div>
 	        </div>
 	    </div>  
@@ -1089,6 +1351,7 @@
 	        	<h3 class="page-header">상담 이력</h3>
 	        </div>
 	        <div class="row">
+	        	<button id="addRow_consultInfo">Add new row</button>	
 	        	<div class="table table-bordered table-hover dataTable" id="consultInfo"></div>
 	        </div>
 	    </div>  
@@ -1097,6 +1360,7 @@
 	        	<h3 class="page-header">휴학 이력</h3>
 	        </div>
 	        <div class="row">
+	        	<button id="addRow_absenceInfo">Add new row</button>
 	        	<div class="table table-bordered table-hover dataTable" id="absenceInfo"></div>
 	        </div>
 	    </div>
@@ -1105,6 +1369,7 @@
 	        	<h3 class="page-header">장학 이력</h3>
 	        </div>
 	        <div class="row">
+	        	<button id="addRow_grantInfo">Add new row</button>
 	        	<div class="table table-bordered table-hover dataTable" id="grantInfo"></div>
 	        </div>
 	    </div>	    	    

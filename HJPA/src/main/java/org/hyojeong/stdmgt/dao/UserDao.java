@@ -51,4 +51,12 @@ public interface UserDao {
 	public List<GrantHistory> getGrantHistory(int pid);
 
 	public int updateProfileImg(int studentPid, String profilePath);
+
+	public int insertNewActiveHistory(ActiveHistory aHis);
+
+	public int updateActiveHistory(ActiveHistory aHis);
+
+	public int insertNewAwardsHistory(AwardsHistory awHis);
+
+	public int updateAwardsHistory(AwardsHistory awHis);
 }

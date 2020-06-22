@@ -54,4 +54,8 @@ public interface UserService {
 	public List<GrantHistory> getGrantHistory(int pid);
 
 	public int updateProfileImg(int studentPid, String absolutePath);
+
+	public int updateActiveHistory(ActiveHistory aHis);
+
+	public int updateAwardsHistory(AwardsHistory awHis);
 }

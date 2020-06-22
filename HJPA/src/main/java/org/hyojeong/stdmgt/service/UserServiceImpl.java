@@ -257,4 +257,28 @@ public class UserServiceImpl implements UserService {
 	public int updateProfileImg(int studentPid, String profilePath) {
 		return userDao.updateProfileImg(studentPid,profilePath);
 	}
+
+	@Override
+	public int updateActiveHistory(ActiveHistory aHis) {
+		if(aHis.getTid() == 0)	{	//new history
+			System.out.println("insert new active history");
+			return userDao.insertNewActiveHistory(aHis);
+		}
+		else	{
+			System.out.println("update active history");
+			return userDao.updateActiveHistory(aHis);
+		}
+	}
+
+	@Override
+	public int updateAwardsHistory(AwardsHistory awHis) {
+		if(awHis.getTid() == 0)	{	//new history
+			System.out.println("insert new Awards history");
+			return userDao.insertNewAwardsHistory(awHis);
+		}
+		else	{
+			System.out.println("update Awards history");
+			return userDao.updateAwardsHistory(awHis);
+		}
+	}
 }

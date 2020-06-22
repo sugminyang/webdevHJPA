@@ -129,4 +129,24 @@ public class UserDaoImpl implements UserDao {
 		return sqlSession.update(Namespace+".updateProfileImg",temp);
 	}
 
+	@Override
+	public int insertNewActiveHistory(ActiveHistory aHis) {
+		return sqlSession.update(Namespace+".insertNewActiveHistory",aHis);
+	}
+
+	@Override
+	public int updateActiveHistory(ActiveHistory aHis) {
+		return sqlSession.update(Namespace+".updateActiveHistory",aHis);
+	}
+
+	@Override
+	public int insertNewAwardsHistory(AwardsHistory awHis) {
+		return sqlSession.update(Namespace+".insertNewAwardsHistory",awHis);
+	}
+
+	@Override
+	public int updateAwardsHistory(AwardsHistory awHis) {
+		return sqlSession.update(Namespace+".updateAwardsHistory",awHis);
+	}
+
 }

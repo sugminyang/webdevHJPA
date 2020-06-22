@@ -4,10 +4,20 @@ public class ActiveHistory {
 //	pid	year	content	memo	modifiedBy
 //	1	2019	교내 영어캠프	장학금 지원받음	1
 	int pid;
+	int tid;
+	
 	int year;
 	String content="";
 	String memo="";
 	int modifiedBy;
+	
+	
+	public int getTid() {
+		return tid;
+	}
+	public void setTid(int tid) {
+		this.tid = tid;
+	}
 	public int getPid() {
 		return pid;
 	}
@@ -42,6 +52,17 @@ public class ActiveHistory {
 	public String toString() {
 		return "ActiveHistory [pid=" + pid + ", year=" + year + ", content=" + content + ", memo=" + memo
 				+ ", modifiedBy=" + modifiedBy + "]";
+	}
+	public ActiveHistory() {
+		super();
+	}
+	public ActiveHistory(int pid, int tid, int year, String content, String memo) {
+		super();
+		this.pid = pid;
+		this.tid = tid;
+		this.year = year;
+		this.content = content;
+		this.memo = memo;
 	}
 	
 	

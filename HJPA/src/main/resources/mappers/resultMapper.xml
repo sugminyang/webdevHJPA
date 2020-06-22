@@ -102,4 +102,35 @@
 		where
 			pid = #{pid};
 	</update>
+	
+	<insert id="insertNewActiveHistory" parameterType="ActiveHistoryVO" >
+		insert 
+		activeHistory(pid,year,content,memo,modifiedBy)
+		values(#{pid},#{year},#{content},#{memo},#{modifiedBy});
+	</insert>
+	<update id="updateActiveHistory" parameterType="ActiveHistoryVO">
+		update activeHistory
+		set
+			pid = #{pid},year = #{year},
+			content = #{content},memo = #{memo}, modifiedBy = #{modifiedBy}
+		where
+			tid = #{tid};
+	</update>
+	
+	
+	<insert id="insertNewAwardsHistory" parameterType="AwardsHistoryVO" >
+		insert 
+		awardsHistory(pid,year,content,organization,memo,modifiedBy)
+		values(#{pid},#{year},#{content},#{organization},#{memo},#{modifiedBy});
+	</insert>
+	<update id="updateAwardsHistory" parameterType="AwardsHistoryVO">
+		update awardsHistory
+		set
+			pid = #{pid},year = #{year},
+			content = #{content},organization = #{organization},
+			memo = #{memo}, modifiedBy = #{modifiedBy}
+		where
+			tid = #{tid};
+	</update>
+	
 </mapper>
