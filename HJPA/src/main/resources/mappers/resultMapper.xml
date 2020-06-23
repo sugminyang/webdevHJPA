@@ -103,7 +103,7 @@
 			pid = #{pid};
 	</update>
 	
-	<insert id="insertNewActiveHistory" parameterType="ActiveHistoryVO" >
+	<insert id="insertNewActiveHistory" useGeneratedKeys="true" keyProperty="tid" parameterType="ActiveHistoryVO" >
 		insert 
 		activeHistory(pid,year,content,memo,modifiedBy)
 		values(#{pid},#{year},#{content},#{memo},#{modifiedBy});
@@ -118,7 +118,7 @@
 	</update>
 	
 	
-	<insert id="insertNewAwardsHistory" parameterType="AwardsHistoryVO" >
+	<insert id="insertNewAwardsHistory" useGeneratedKeys="true" keyProperty="tid" parameterType="AwardsHistoryVO" >
 		insert 
 		awardsHistory(pid,year,content,organization,memo,modifiedBy)
 		values(#{pid},#{year},#{content},#{organization},#{memo},#{modifiedBy});
@@ -132,5 +132,17 @@
 		where
 			tid = #{tid};
 	</update>
+	<delete id="removeAwardsHistory" parameterType="AwardsHistoryVO">
+		delete
+		from awardsHistory
+		where pid = #{pid} and tid = #{tid};
+	</delete>
+	
+	<delete id="removeActiveHistory" parameterType="ActiveHistoryVO">
+		delete
+		from activeHistory
+		where pid = #{pid} and tid = #{tid};
+	</delete>
+	
 	
 </mapper>

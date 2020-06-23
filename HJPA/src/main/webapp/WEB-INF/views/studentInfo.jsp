@@ -480,17 +480,13 @@
 
             $('#addRow_activeInfo').on( 'click', function () {
         		var table = $('#activeInfoTable').DataTable();
-        		table.row.add( 
-        				[0,'','','','<i class="fa fa-save" aria-hidden="true"></i> <i class="fa fa-remove" aria-hidden="true"></i>'] 
-        		).draw( false );
+        		var row = [0,"<input type='text' value=''\>",
+        			"<input type='text' value=''\>",
+        			"<input type='text' value=''\>",
+        			'<i class="fa fa-save" aria-hidden="true"></i><i class="fa fa-remove" aria-hidden="true"></i>']
         		
-        		var $tds = $('#activeInfoTable tr').eq(1).find("td").not('first').not(':last');
-
-                $.each($tds, function(i, el) {
-                  var txt = $(this).text();
-                  $(this).html("").append("<input type='text' value=\""+txt+"\">");
-                });
-
+                table.row.add(row).draw( false );
+                table.order([1, 'asc']).draw();
             } );
             
 
@@ -508,12 +504,54 @@
             });
             
             $("#activeInfo").on('mousedown',"i.fa.fa-remove", function(e) {
-            	/* $('#semesterInfoTable').DataTable().eq(1).remove().draw(); */
-            	var table = $('#activeInfoTable').DataTable();
-            	table
-                .row( $(this).parents('tr') )
-                .remove()
-                .draw();
+            	if(confirm("삭제 하시겠습니까?"))
+				 {
+            		$(this).removeClass().addClass("fa fa-pencil-square");
+                    var $row = $(this).closest("tr");
+                    
+      			  var table = $('#activeInfoTable').DataTable();
+      			  table.column(0).visible(true);
+      			  var tid = $row.find("td:first").text();
+      			  table.column(0).visible(false);
+      			  
+      			  var $tds = $row.find("td").not('first').not(':last');
+      			  var pid = '${student.pid}';
+      			  
+      			  var delimiter = "!@#";
+      			  var editData = tid + delimiter
+      			  
+      			  editData = editData + pid
+      			  
+      			  //console.log(editData);
+      			  
+      			  $.ajax({ 
+      					data :  editData,
+      					type : "POST", 
+      					contentType:"application/json;charset=UTF-8",
+      					url : "/activeHistoryRemoveInfo", 
+      					success : function(data) { 
+      						if(data == 1)	{
+      							alert("수정 사항이 올바르게 변경되었습니다.");
+      						}
+      						else	{
+      							alert("변경 사항이 올바르지 않습니다.");
+      						}
+      					}, 
+      					error : function(data) { 
+      						alert("데이터 변경을 실패하였습니다."); 
+      					} 
+      				});
+      			  table.columns.adjust().draw();
+                	var table = $('#activeInfoTable').DataTable();
+                	table
+                    .row( $(this).parents('tr') )
+                    .remove()
+                    .draw();
+				 }
+				 else
+				 {
+				 }
+            	
             });
 
             $("#activeInfo").on('mousedown', "input", function(e) {
@@ -551,8 +589,11 @@
 					contentType:"application/json;charset=UTF-8",
 					url : "/activeHistoryInfo", 
 					success : function(data) { 
-						if(data == 1)	{
+						if(data != 0)	{
 							alert("수정 사항이 올바르게 변경되었습니다.");
+							table.column(0).visible(true);
+							$row.find("td:first").text(data);
+							table.column(0).visible(false);
 						}
 						else	{
 							alert("변경 사항이 올바르지 않습니다.");
@@ -638,17 +679,13 @@
 
             $('#addRow_awardsInfo').on( 'click', function () {
         		var table = $('#awardsInfoTable').DataTable();
-        		table.row.add( 
-        				[0,'','','','','<i class="fa fa-save" aria-hidden="true"></i> <i class="fa fa-remove" aria-hidden="true"></i>'] 
-        		).draw( false );
+        		//table.order( [[ 1, 'asc' ]] ).draw( true );
+        		var row = [0,"<input type='text' value=''\>","<input type='text' value=''\>",
+        			"<input type='text' value=''\>","<input type='text' value=''\>",
+        			'<i class="fa fa-save" aria-hidden="true"></i><i class="fa fa-remove" aria-hidden="true"></i>']
         		
-        		var $tds = $('#awardsInfoTable tr').eq(1).find("td").not('first').not(':last');
-
-                $.each($tds, function(i, el) {
-                  var txt = $(this).text();
-                  $(this).html("").append("<input type='text' value=\""+txt+"\">");
-                });
-
+                table.row.add(row).draw( false );
+                table.order([1, 'asc']).draw();
             } );
             
 
@@ -666,12 +703,53 @@
             });
             
             $("#awardsInfo").on('mousedown',"i.fa.fa-remove", function(e) {
-            	/* $('#semesterInfoTable').DataTable().eq(1).remove().draw(); */
-            	var table = $('#awardsInfoTable').DataTable();
-            	table
-                .row( $(this).parents('tr') )
-                .remove()
-                .draw();
+            	if(confirm("삭제 하시겠습니까?"))
+				 {
+           		$(this).removeClass().addClass("fa fa-pencil-square");
+                   var $row = $(this).closest("tr");
+                   
+     			  var table = $('#awardsInfoTable').DataTable();
+     			  table.column(0).visible(true);
+     			  var tid = $row.find("td:first").text();
+     			  table.column(0).visible(false);
+     			  
+     			  var $tds = $row.find("td").not('first').not(':last');
+     			  var pid = '${student.pid}';
+     			  
+     			  var delimiter = "!@#";
+     			  var editData = tid + delimiter
+     			  
+     			  editData = editData + pid
+     			  
+     			  //console.log(editData);
+     			  
+     			  $.ajax({ 
+     					data :  editData,
+     					type : "POST", 
+     					contentType:"application/json;charset=UTF-8",
+     					url : "/awardsHistoryRemoveInfo", 
+     					success : function(data) { 
+     						if(data == 1)	{
+     							alert("수정 사항이 올바르게 변경되었습니다.");
+     						}
+     						else	{
+     							alert("변경 사항이 올바르지 않습니다.");
+     						}
+     					}, 
+     					error : function(data) { 
+     						alert("데이터 변경을 실패하였습니다."); 
+     					} 
+     				});
+     			  table.columns.adjust().draw();
+               	var table = $('#awardsInfoTable').DataTable();
+               	table
+                   .row( $(this).parents('tr') )
+                   .remove()
+                   .draw();
+				 }
+				 else
+				 {
+				 }
             });
 
             $("#awardsInfo").on('mousedown', "input", function(e) {
@@ -709,8 +787,13 @@
 					contentType:"application/json;charset=UTF-8",
 					url : "/awardsHistoryInfo", 
 					success : function(data) { 
-						if(data == 1)	{
+						if(data != 0)	{
 							alert("수정 사항이 올바르게 변경되었습니다.");
+							table.column(0).visible(true);
+							$row.find("td:first").text(data);
+							table.column(0).visible(false);
+ 							
+ 							
 						}
 						else	{
 							alert("변경 사항이 올바르지 않습니다.");
@@ -720,6 +803,7 @@
 						alert("데이터 변경을 실패하였습니다."); 
 					} 
 				});
+			  
 			  table.columns.adjust().draw();
             });
 			

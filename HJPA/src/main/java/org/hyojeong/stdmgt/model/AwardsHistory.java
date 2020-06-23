@@ -53,10 +53,11 @@ public class AwardsHistory {
 	public void setModifiedBy(int modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
+
 	@Override
 	public String toString() {
 		return "AwardsHistory [pid=" + pid + ", year=" + year + ", content=" + content + ", organization="
-				+ organization + ", memo=" + memo + ", modifiedBy=" + modifiedBy + "]";
+				+ organization + ", memo=" + memo + ", modifiedBy=" + modifiedBy + ", tid=" + tid + "]";
 	}
 	public AwardsHistory(int pid, int tid, int year, String content, String organization, String memo) {
 		super();
@@ -69,6 +70,11 @@ public class AwardsHistory {
 	}
 	public AwardsHistory() {
 		super();
+	}
+	public AwardsHistory(int pid, int tid) {
+		super();
+		this.pid = pid;
+		this.tid = tid;
 	}
 	
 	

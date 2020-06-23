@@ -281,4 +281,14 @@ public class UserServiceImpl implements UserService {
 			return userDao.updateAwardsHistory(awHis);
 		}
 	}
+
+	@Override
+	public int removeAwardsHistory(AwardsHistory awHis) {
+		return userDao.removeAwardsHistory(awHis);
+	}
+
+	@Override
+	public int removeActiveHistory(ActiveHistory aHis) {
+		return userDao.removeActiveHistory(aHis);
+	}
 }

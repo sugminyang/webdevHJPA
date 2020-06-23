@@ -48,10 +48,12 @@ public class ActiveHistory {
 	public void setModifiedBy(int modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
+
+	
 	@Override
 	public String toString() {
-		return "ActiveHistory [pid=" + pid + ", year=" + year + ", content=" + content + ", memo=" + memo
-				+ ", modifiedBy=" + modifiedBy + "]";
+		return "ActiveHistory [pid=" + pid + ", tid=" + tid + ", year=" + year + ", content=" + content + ", memo="
+				+ memo + ", modifiedBy=" + modifiedBy + "]";
 	}
 	public ActiveHistory() {
 		super();
@@ -63,6 +65,11 @@ public class ActiveHistory {
 		this.year = year;
 		this.content = content;
 		this.memo = memo;
+	}
+	public ActiveHistory(int pid, int tid) {
+		super();
+		this.pid = pid;
+		this.tid = tid;
 	}
 	
 	

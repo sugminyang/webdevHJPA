@@ -59,4 +59,8 @@ public interface UserDao {
 	public int insertNewAwardsHistory(AwardsHistory awHis);
 
 	public int updateAwardsHistory(AwardsHistory awHis);
+
+	public int removeAwardsHistory(AwardsHistory awHis);
+
+	public int removeActiveHistory(ActiveHistory aHis);
 }

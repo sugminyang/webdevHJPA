@@ -58,4 +58,8 @@ public interface UserService {
 	public int updateActiveHistory(ActiveHistory aHis);
 
 	public int updateAwardsHistory(AwardsHistory awHis);
+
+	public int removeAwardsHistory(AwardsHistory awHis);
+
+	public int removeActiveHistory(ActiveHistory awHis);
 }
