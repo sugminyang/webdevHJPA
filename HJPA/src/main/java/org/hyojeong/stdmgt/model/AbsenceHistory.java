@@ -9,12 +9,19 @@ public class AbsenceHistory {
 	String content="";
 	String term="";
 	int modifiedBy;
+	int tid;
 	
+
 	public AbsenceHistory() {
 		super();
 	}
 	
-	
+	public int getTid() {
+		return tid;
+	}
+	public void setTid(int tid) {
+		this.tid = tid;
+	}
 	public int getPid() {
 		return pid;
 	}
@@ -51,10 +58,27 @@ public class AbsenceHistory {
 	public void setModifiedBy(int modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
+
 	@Override
 	public String toString() {
 		return "AbsenceHistory [pid=" + pid + ", date=" + date + ", consultant=" + consultant + ", content=" + content
-				+ ", term=" + term + ", modifiedBy=" + modifiedBy + "]";
+				+ ", term=" + term + ", modifiedBy=" + modifiedBy + ", tid=" + tid + "]";
+	}
+
+	public AbsenceHistory(int pid, int tid) {
+		super();
+		this.pid = pid;
+		this.tid = tid;
+	}
+
+	public AbsenceHistory(int pid, String date, String content, String term,String consultant, int tid) {
+		super();
+		this.pid = pid;
+		this.date = date;
+		this.consultant = consultant;
+		this.content = content;
+		this.term = term;
+		this.tid = tid;
 	}
 
 	

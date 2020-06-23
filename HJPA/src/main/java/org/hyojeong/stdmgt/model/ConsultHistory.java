@@ -9,6 +9,16 @@ public class ConsultHistory {
 	String topic="";
 	String memo="";
 	int modifiedBy;
+	int tid;
+	
+	
+	
+	public int getTid() {
+		return tid;
+	}
+	public void setTid(int tid) {
+		this.tid = tid;
+	}
 	public int getPid() {
 		return pid;
 	}
@@ -48,7 +58,24 @@ public class ConsultHistory {
 	@Override
 	public String toString() {
 		return "ConsultHistory [pid=" + pid + ", date=" + date + ", consultant=" + consultant + ", topic=" + topic
-				+ ", memo=" + memo + ", modifiedBy=" + modifiedBy + "]";
+				+ ", memo=" + memo + ", modifiedBy=" + modifiedBy + ", tid=" + tid + "]";
+	}
+	public ConsultHistory(int pid, String date,String topic,  String memo,  String consultant, int tid) {
+		super();
+		this.pid = pid;
+		this.date = date;
+		this.consultant = consultant;
+		this.topic = topic;
+		this.memo = memo;
+		this.tid = tid;
+	}
+	public ConsultHistory(int pid, int tid) {
+		super();
+		this.pid = pid;
+		this.tid = tid;
+	}
+	public ConsultHistory() {
+		super();
 	}
 	
 	

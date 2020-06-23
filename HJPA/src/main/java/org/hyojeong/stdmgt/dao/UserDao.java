@@ -63,4 +63,30 @@ public interface UserDao {
 	public int removeAwardsHistory(AwardsHistory awHis);
 
 	public int removeActiveHistory(ActiveHistory aHis);
+
+	public int removeGradeHistory(GradeHistory gHis);
+
+	public int removeHolyHistory(HolyHistory hHis);
+
+	public int insertHolyHistory(HolyHistory hHis);
+
+	public int updateHolyHistory(HolyHistory hHis);
+
+	public int removeConsultHistory(ConsultHistory cHis);
+
+	public int insertConsultHistory(ConsultHistory cHis);
+
+	public int updateConsultHistory(ConsultHistory cHis);
+
+	public int removeAbsenceHistory(AbsenceHistory aHis);
+
+	public int insertAbsenceHistory(AbsenceHistory aHis);
+
+	public int updateAbsenceHistory(AbsenceHistory aHis);
+
+	public int removeGrantHistory(GrantHistory gHis);
+
+	public int insertGrantHistory(GrantHistory gHis);
+
+	public int updateGrantHistory(GrantHistory gHis);
 }

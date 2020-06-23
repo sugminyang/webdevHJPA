@@ -54,6 +54,7 @@ public class GradeHistory {
 	public void setModifiedBy(int modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
+
 	@Override
 	public String toString() {
 		return "GradeHistory [pid=" + pid + ", tid=" + tid + ", semester=" + semester + ", degree=" + degree
@@ -72,6 +73,11 @@ public class GradeHistory {
 	
 	public GradeHistory() {
 		super();
+	}
+	public GradeHistory(int pid, int tid) {
+		super();
+		this.pid = pid;
+		this.tid = tid;
 	}
 
 	

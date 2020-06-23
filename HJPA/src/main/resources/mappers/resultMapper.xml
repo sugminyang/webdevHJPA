@@ -81,7 +81,7 @@
 			tid = #{tid};
 	</update>
 	
-	<insert id="insertNewGradeHistory" parameterType="GradeHistoryVO" >
+	<insert id="insertNewGradeHistory" useGeneratedKeys="true" keyProperty="tid" parameterType="GradeHistoryVO" >
 		insert 
 		into gradeHistory(pid,semester,credit,degree,warnings,modifiedBy)
 		values(#{pid},#{semester},#{credit},#{degree},#{warnings},#{modifiedBy});
@@ -143,6 +143,102 @@
 		from activeHistory
 		where pid = #{pid} and tid = #{tid};
 	</delete>
+	<delete id="removeGradeHistory" parameterType="GradeHistoryVO">
+		delete
+		from gradeHistory
+		where pid = #{pid} and tid = #{tid};
+	</delete>
+	
+	<delete id="removeHolyHistory" parameterType="HolyHistoryVO">
+		delete
+		from holyHistory
+		where pid = #{pid} and tid = #{tid};
+	</delete>
+	
+	
+	<insert id="insertHolyHistory" useGeneratedKeys="true" keyProperty="tid" parameterType="HolyHistoryVO" >
+		insert 
+		holyHistory(pid,semester,reading_session,Worship,warnings,modifiedBy)
+		values(#{pid},#{semester},#{reading_session},#{Worship},#{warnings},#{modifiedBy});
+	</insert>
+	<update id="updateHolyHistory" parameterType="HolyHistoryVO">
+		update holyHistory
+		set
+			semester = #{semester},
+			reading_session = #{reading_session}, Worship = #{Worship},
+			warnings = #{warnings}, modifiedBy = #{modifiedBy}
+		where
+			tid = #{tid};
+	</update>
+	
+	
+	<delete id="removeConsultHistory" parameterType="ConsultHistoryVO">
+		delete
+		from consultHistory
+		where pid = #{pid} and tid = #{tid};
+	</delete>
+	
+	
+	<insert id="insertConsultHistory" useGeneratedKeys="true" keyProperty="tid" parameterType="ConsultHistoryVO" >
+		insert 
+		consultHistory(pid,date,consultant,topic,memo,modifiedBy)
+		values(#{pid},#{date},#{consultant},#{topic},#{memo},#{modifiedBy});
+	</insert>
+	<update id="updateConsultHistory" parameterType="ConsultHistoryVO">
+		update consultHistory
+		set
+			date = #{date},
+			consultant = #{consultant}, topic = #{topic},
+			memo = #{memo}, modifiedBy = #{modifiedBy}
+		where
+			tid = #{tid};
+	</update>
+	
+	<delete id="removeAbsenceHistory" parameterType="AbsenceHistoryVO">
+		delete
+		from absenceHistory
+		where pid = #{pid} and tid = #{tid};
+	</delete>
+	
+	
+	
+	<insert id="insertAbsenceHistory" useGeneratedKeys="true" keyProperty="tid" parameterType="AbsenceHistoryVO" >
+		insert 
+		absenceHistory(pid,date,consultant,content,term,modifiedBy)
+		values(#{pid},#{date},#{consultant},#{content},#{term},#{modifiedBy});
+	</insert>
+	<update id="updateAbsenceHistory" parameterType="AbsenceHistoryVO">
+		update absenceHistory
+		set
+			date = #{date},
+			consultant = #{consultant}, content = #{content},
+			term = #{term}, modifiedBy = #{modifiedBy}
+		where
+			tid = #{tid};
+	</update>
+	
+	
+	<delete id="removeGrantHistory" parameterType="GrantHistoryVO">
+		delete
+		from grantHistory
+		where pid = #{pid} and tid = #{tid};
+	</delete>
+	<insert id="insertGrantHistory" useGeneratedKeys="true" keyProperty="tid" parameterType="GrantHistoryVO" >
+		insert 
+		grantHistory(pid,semester,grant_hyojung,grant_sunmoon,grant_other,tuitionfee,modifiedBy)
+		values(#{pid},#{semester},#{grant_hyojung},#{grant_sunmoon},#{grant_other},#{tuitionfee},#{modifiedBy});
+	</insert>
+	<update id="updateGrantHistory" parameterType="GrantHistoryVO">
+		update grantHistory
+		set
+			semester = #{semester},
+			grant_hyojung = #{grant_hyojung}, grant_sunmoon = #{grant_sunmoon},
+			grant_other = #{grant_other},tuitionfee=#{tuitionfee}, modifiedBy = #{modifiedBy}
+		where
+			tid = #{tid};
+	</update>	
+	
+	
 	
 	
 </mapper>

@@ -291,4 +291,77 @@ public class UserServiceImpl implements UserService {
 	public int removeActiveHistory(ActiveHistory aHis) {
 		return userDao.removeActiveHistory(aHis);
 	}
+
+	@Override
+	public int removeGradeHistory(GradeHistory gHis) {
+		return userDao.removeGradeHistory(gHis);
+	}
+
+	@Override
+	public int removeHolyHistory(HolyHistory hHis) {
+		return userDao.removeHolyHistory(hHis);
+	}
+
+	@Override
+	public int updateHolyHistory(HolyHistory hHis) {
+		if(hHis.getTid() == 0)	{	//new history
+			System.out.println("insert new Awards history");
+			return userDao.insertHolyHistory(hHis);
+		}
+		else	{
+			System.out.println("update Awards history");
+			return userDao.updateHolyHistory(hHis);
+		}
+	}
+
+	@Override
+	public int removeConsultHistory(ConsultHistory cHis) {
+		return userDao.removeConsultHistory(cHis);
+	}
+
+	@Override
+	public int updateConsultHistory(ConsultHistory cHis) {
+		if(cHis.getTid() == 0)	{	//new history
+			System.out.println("insert new Consult history");
+			return userDao.insertConsultHistory(cHis);
+		}
+		else	{
+			System.out.println("update Consult history");
+			return userDao.updateConsultHistory(cHis);
+		}
+	}
+
+	@Override
+	public int removeAbsenceHistory(AbsenceHistory aHis) {
+		return userDao.removeAbsenceHistory(aHis);
+	}
+
+	@Override
+	public int updateAbsenceHistory(AbsenceHistory aHis) {
+		if(aHis.getTid() == 0)	{	//new history
+			System.out.println("insert new Absence history");
+			return userDao.insertAbsenceHistory(aHis);
+		}
+		else	{
+			System.out.println("update Absence history");
+			return userDao.updateAbsenceHistory(aHis);
+		}
+	}
+
+	@Override
+	public int removeGrantHistory(GrantHistory gHis) {
+		return userDao.removeGrantHistory(gHis);
+	}
+
+	@Override
+	public int updateGrantHistory(GrantHistory gHis) {
+		if(gHis.getTid() == 0)	{	//new history
+			System.out.println("insert new Grant history");
+			return userDao.insertGrantHistory(gHis);
+		}
+		else	{
+			System.out.println("update Grant history");
+			return userDao.updateGrantHistory(gHis);
+		}
+	}
 }

@@ -159,6 +159,72 @@ public class UserDaoImpl implements UserDao {
 		return sqlSession.delete(Namespace+".removeActiveHistory",aHis);
 	}
 
+	@Override
+	public int removeGradeHistory(GradeHistory gHis) {
+		return sqlSession.delete(Namespace+".removeGradeHistory",gHis);
+	}
+
+	@Override
+	public int removeHolyHistory(HolyHistory hHis) {
+		return sqlSession.delete(Namespace+".removeHolyHistory",hHis);
+	}
+
+	@Override
+	public int insertHolyHistory(HolyHistory hHis) {
+		return sqlSession.update(Namespace+".insertHolyHistory",hHis);
+	}
+
+	@Override
+	public int updateHolyHistory(HolyHistory hHis) {
+		return sqlSession.update(Namespace+".updateHolyHistory",hHis);
+	}
+
+	@Override
+	public int removeConsultHistory(ConsultHistory cHis) {
+		return sqlSession.delete(Namespace+".removeConsultHistory",cHis);
+	}
+
+	@Override
+	public int insertConsultHistory(ConsultHistory cHis) {
+		return sqlSession.update(Namespace+".insertConsultHistory",cHis);
+	}
+
+	@Override
+	public int updateConsultHistory(ConsultHistory cHis) {
+		return sqlSession.update(Namespace+".updateConsultHistory",cHis);
+	}
+
+	@Override
+	public int removeAbsenceHistory(AbsenceHistory aHis) {
+		return sqlSession.delete(Namespace+".removeAbsenceHistory",aHis);
+	}
+
+	@Override
+	public int insertAbsenceHistory(AbsenceHistory aHis) {
+		return sqlSession.update(Namespace+".insertAbsenceHistory",aHis);
+	}
+
+	@Override
+	public int updateAbsenceHistory(AbsenceHistory aHis) {
+		return sqlSession.update(Namespace+".updateAbsenceHistory",aHis);
+	}
+
+	@Override
+	public int removeGrantHistory(GrantHistory gHis) {
+		return sqlSession.delete(Namespace+".removeGrantHistory",gHis);
+	}
+
+	@Override
+	public int insertGrantHistory(GrantHistory gHis) {
+		return sqlSession.update(Namespace+".insertGrantHistory",gHis);
+	}
+
+	@Override
+	public int updateGrantHistory(GrantHistory gHis) {
+		return sqlSession.update(Namespace+".updateGrantHistory",gHis);
+	}
+
+
 
 
 }

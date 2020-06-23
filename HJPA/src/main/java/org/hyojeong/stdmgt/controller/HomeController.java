@@ -295,17 +295,14 @@ public class HomeController {
 		System.out.println(gHis);
 		System.out.println("update result: "+result);
 		
-		String test = "";
 		if(result == 1)	{
 			System.out.println("수정 사항이 올바르게 변경되었습니다.");
-			test = "1";
 		}
 		else	{
 			System.out.println("변경 사항이 올바르지 않습니다.");
-			test = "0";
 		}
 		
-	    return test;
+		return gHis.getTid()+"";
 	}
 	
 	@RequestMapping(value = "/activeHistoryInfo", method = RequestMethod.POST)
@@ -486,6 +483,400 @@ public class HomeController {
 		}
 		
 	    return test;
+	}	
+	
+	
+	@RequestMapping(value = "/gradeHistoryRemoveInfo", method = RequestMethod.POST)
+	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
+	public String gradeHistoryRemoveInfo(@RequestBody String filterJSON, HttpSession session) {
+		System.out.println("gradeHistoryRemoveInfo... 학적 정보 삭제: ");
+		System.out.println(filterJSON);
+		
+		String[] items = filterJSON.split("!@#");
+		System.out.println("학생 정보 변경사항: " + items.length);
+		GradeHistory gHis = new GradeHistory(Integer.parseInt(items[1]), Integer.parseInt(items[0]));
+		
+		//학생의 pid 설정
+		String auth = (String) session.getAttribute("auth");
+		int studentPid = -1;
+		int result = -1;
+		
+		if(auth.equalsIgnoreCase("0"))	{	//student
+			studentPid = (Integer) session.getAttribute("pid");
+			
+			result = userService.removeGradeHistory(gHis);
+		}
+		else	{
+			studentPid = (Integer) session.getAttribute("sid");
+			
+			result = userService.removeGradeHistory(gHis);
+		}
+		
+		System.out.println(gHis);
+		System.out.println("update result: "+result);
+		
+		String test = "";
+		if(result == 1)	{
+			System.out.println("수정 사항이 올바르게 변경되었습니다.");
+			test = "1";
+		}
+		else	{
+			System.out.println("변경 사항이 올바르지 않습니다.");
+			test = "0";
+		}
+		
+	    return test;
+	}	
+	
+	
+	@RequestMapping(value = "/holyHistoryRemoveInfo", method = RequestMethod.POST)
+	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
+	public String holyHistoryRemoveInfo(@RequestBody String filterJSON, HttpSession session) {
+		System.out.println("holyHistoryRemoveInfo... 학적 정보 삭제: ");
+		System.out.println(filterJSON);
+		
+		String[] items = filterJSON.split("!@#");
+		System.out.println("학생 정보 변경사항: " + items.length);
+		HolyHistory hHis = new HolyHistory(Integer.parseInt(items[1]), Integer.parseInt(items[0]));
+		
+		//학생의 pid 설정
+		String auth = (String) session.getAttribute("auth");
+		int studentPid = -1;
+		int result = -1;
+		
+		if(auth.equalsIgnoreCase("0"))	{	//student
+			studentPid = (Integer) session.getAttribute("pid");
+			
+			result = userService.removeHolyHistory(hHis);
+		}
+		else	{
+			studentPid = (Integer) session.getAttribute("sid");
+			
+			result = userService.removeHolyHistory(hHis);
+		}
+		
+		System.out.println(hHis);
+		System.out.println("update result: "+result);
+		
+		String test = "";
+		if(result == 1)	{
+			System.out.println("수정 사항이 올바르게 변경되었습니다.");
+			test = "1";
+		}
+		else	{
+			System.out.println("변경 사항이 올바르지 않습니다.");
+			test = "0";
+		}
+		
+	    return test;
+	}		
+	
+	
+	@RequestMapping(value = "/holyHistoryInfo", method = RequestMethod.POST)
+	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
+	public String holyHistoryInfo(@RequestBody String filterJSON, HttpSession session) {
+		System.out.println("holyHistoryInfo... 학적 정보 수정: ");
+		System.out.println(filterJSON);
+		
+		String[] items = filterJSON.split("!@#");
+		System.out.println("학생 정보 변경사항: " + items.length);
+		HolyHistory hHis = new HolyHistory(Integer.parseInt(items[5]), items[1], items[2],
+				items[3],Integer.parseInt(items[4]),Integer.parseInt(items[0]));
+
+		//학생의 pid 설정
+		String auth = (String) session.getAttribute("auth");
+		int studentPid = -1;
+		int result = -1;
+		
+		if(auth.equalsIgnoreCase("0"))	{	//student
+			studentPid = (Integer) session.getAttribute("pid");
+			
+			hHis.setModifiedBy(studentPid);
+			result = userService.updateHolyHistory(hHis);
+		}
+		else	{
+			studentPid = (Integer) session.getAttribute("sid");
+			
+			hHis.setModifiedBy((Integer) session.getAttribute("pid"));
+			result = userService.updateHolyHistory(hHis);
+		}
+
+		System.out.println(hHis);
+		
+		if(result == 1)	{
+			System.out.println("수정 사항이 올바르게 변경되었습니다.");
+		}
+		else	{
+			System.out.println("변경 사항이 올바르지 않습니다.");
+		}
+		
+	    return hHis.getTid()+"";
+	}	
+	
+	
+	
+	@RequestMapping(value = "/consultHistoryRemoveInfo", method = RequestMethod.POST)
+	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
+	public String consultHistoryRemoveInfo(@RequestBody String filterJSON, HttpSession session) {
+		System.out.println("consultHistoryRemoveInfo... 학적 정보 삭제: ");
+		System.out.println(filterJSON);
+		
+		String[] items = filterJSON.split("!@#");
+		System.out.println("학생 정보 변경사항: " + items.length);
+		ConsultHistory cHis = new ConsultHistory(Integer.parseInt(items[1]), Integer.parseInt(items[0]));
+		
+		//학생의 pid 설정
+		String auth = (String) session.getAttribute("auth");
+		int studentPid = -1;
+		int result = -1;
+		
+		if(auth.equalsIgnoreCase("0"))	{	//student
+			studentPid = (Integer) session.getAttribute("pid");
+			
+			result = userService.removeConsultHistory(cHis);
+		}
+		else	{
+			studentPid = (Integer) session.getAttribute("sid");
+			
+			result = userService.removeConsultHistory(cHis);
+		}
+		
+		System.out.println(cHis);
+		System.out.println("update result: "+result);
+		
+		String test = "";
+		if(result == 1)	{
+			System.out.println("수정 사항이 올바르게 변경되었습니다.");
+			test = "1";
+		}
+		else	{
+			System.out.println("변경 사항이 올바르지 않습니다.");
+			test = "0";
+		}
+		
+	    return test;
+	}	
+	
+	
+	@RequestMapping(value = "/consultHistoryInfo", method = RequestMethod.POST)
+	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
+	public String consultHistoryInfo(@RequestBody String filterJSON, HttpSession session) {
+		System.out.println("consultHistoryInfo... 학적 정보 수정: ");
+		System.out.println(filterJSON);
+		
+		String[] items = filterJSON.split("!@#");
+		System.out.println("학생 정보 변경사항: " + items.length);
+		
+		ConsultHistory cHis = new ConsultHistory(Integer.parseInt(items[5]), items[1], items[2],
+				items[3],items[4],Integer.parseInt(items[0]));
+
+		//학생의 pid 설정
+		String auth = (String) session.getAttribute("auth");
+		int studentPid = -1;
+		int result = -1;
+		
+		if(auth.equalsIgnoreCase("0"))	{	//student
+			studentPid = (Integer) session.getAttribute("pid");
+			
+			cHis.setModifiedBy(studentPid);
+			result = userService.updateConsultHistory(cHis);
+		}
+		else	{
+			studentPid = (Integer) session.getAttribute("sid");
+			
+			cHis.setModifiedBy((Integer) session.getAttribute("pid"));
+			result = userService.updateConsultHistory(cHis);
+		}
+
+		System.out.println(cHis);
+		
+		if(result == 1)	{
+			System.out.println("수정 사항이 올바르게 변경되었습니다.");
+		}
+		else	{
+			System.out.println("변경 사항이 올바르지 않습니다.");
+		}
+		
+	    return cHis.getTid()+"";
+	}	
+	
+	
+	
+	@RequestMapping(value = "/absenceHistoryRemoveInfo", method = RequestMethod.POST)
+	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
+	public String absenceHistoryRemoveInfo(@RequestBody String filterJSON, HttpSession session) {
+		System.out.println("absenceHistoryRemoveInfo... 학적 정보 삭제: ");
+		System.out.println(filterJSON);
+		
+		String[] items = filterJSON.split("!@#");
+		System.out.println("학생 정보 변경사항: " + items.length);
+		
+		AbsenceHistory aHis = new AbsenceHistory(Integer.parseInt(items[1]), Integer.parseInt(items[0]));
+		
+		//학생의 pid 설정
+		String auth = (String) session.getAttribute("auth");
+		int studentPid = -1;
+		int result = -1;
+		
+		if(auth.equalsIgnoreCase("0"))	{	//student
+			studentPid = (Integer) session.getAttribute("pid");
+			
+			result = userService.removeAbsenceHistory(aHis);
+		}
+		else	{
+			studentPid = (Integer) session.getAttribute("sid");
+			
+			result = userService.removeAbsenceHistory(aHis);
+		}
+		
+		System.out.println(aHis);
+		System.out.println("update result: "+result);
+		
+		String test = "";
+		if(result == 1)	{
+			System.out.println("수정 사항이 올바르게 변경되었습니다.");
+			test = "1";
+		}
+		else	{
+			System.out.println("변경 사항이 올바르지 않습니다.");
+			test = "0";
+		}
+		
+	    return test;
+	}	
+	
+	
+	
+	@RequestMapping(value = "/absenceHistoryInfo", method = RequestMethod.POST)
+	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
+	public String absenceHistoryInfo(@RequestBody String filterJSON, HttpSession session) {
+		System.out.println("absenceHistoryInfo... 학적 정보 수정: ");
+		System.out.println(filterJSON);
+		
+		String[] items = filterJSON.split("!@#");
+		System.out.println("학생 정보 변경사항: " + items.length);
+		
+		AbsenceHistory aHis = new AbsenceHistory(Integer.parseInt(items[5]), items[1], items[2],
+				items[3],items[4],Integer.parseInt(items[0]));
+
+		//학생의 pid 설정
+		String auth = (String) session.getAttribute("auth");
+		int studentPid = -1;
+		int result = -1;
+		
+		if(auth.equalsIgnoreCase("0"))	{	//student
+			studentPid = (Integer) session.getAttribute("pid");
+			
+			aHis.setModifiedBy(studentPid);
+			result = userService.updateAbsenceHistory(aHis);
+		}
+		else	{
+			studentPid = (Integer) session.getAttribute("sid");
+			
+			aHis.setModifiedBy((Integer) session.getAttribute("pid"));
+			result = userService.updateAbsenceHistory(aHis);
+		}
+
+		System.out.println(aHis);
+		
+		if(result == 1)	{
+			System.out.println("수정 사항이 올바르게 변경되었습니다.");
+		}
+		else	{
+			System.out.println("변경 사항이 올바르지 않습니다.");
+		}
+		
+	    return aHis.getTid()+"";
+	}	
+	
+	
+	
+	
+	@RequestMapping(value = "/grantHistoryRemoveInfo", method = RequestMethod.POST)
+	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
+	public String grantHistoryRemoveInfo(@RequestBody String filterJSON, HttpSession session) {
+		System.out.println("grantHistoryRemoveInfo... 학적 정보 삭제: ");
+		System.out.println(filterJSON);
+		
+		String[] items = filterJSON.split("!@#");
+		System.out.println("학생 정보 변경사항: " + items.length);
+		
+		GrantHistory gHis = new GrantHistory(Integer.parseInt(items[1]), Integer.parseInt(items[0]));
+		
+		//학생의 pid 설정
+		String auth = (String) session.getAttribute("auth");
+		int studentPid = -1;
+		int result = -1;
+		
+		if(auth.equalsIgnoreCase("0"))	{	//student
+			studentPid = (Integer) session.getAttribute("pid");
+			
+			result = userService.removeGrantHistory(gHis);
+		}
+		else	{
+			studentPid = (Integer) session.getAttribute("sid");
+			
+			result = userService.removeGrantHistory(gHis);
+		}
+		
+		System.out.println(gHis);
+		System.out.println("update result: "+result);
+		
+		String test = "";
+		if(result == 1)	{
+			System.out.println("수정 사항이 올바르게 변경되었습니다.");
+			test = "1";
+		}
+		else	{
+			System.out.println("변경 사항이 올바르지 않습니다.");
+			test = "0";
+		}
+		
+	    return test;
+	}	
+	
+	
+	
+	@RequestMapping(value = "/grantHistoryInfo", method = RequestMethod.POST)
+	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
+	public String grantHistoryInfo(@RequestBody String filterJSON, HttpSession session) {
+		System.out.println("grantHistoryInfo... 학적 정보 수정: ");
+		System.out.println(filterJSON);
+		
+		String[] items = filterJSON.split("!@#");
+		System.out.println("학생 정보 변경사항: " + items.length);
+		
+		GrantHistory gHis = new GrantHistory(Integer.parseInt(items[6]), items[1], items[2],
+				items[3],items[4],items[5],Integer.parseInt(items[0]));
+
+		//학생의 pid 설정
+		String auth = (String) session.getAttribute("auth");
+		int studentPid = -1;
+		int result = -1;
+		
+		if(auth.equalsIgnoreCase("0"))	{	//student
+			studentPid = (Integer) session.getAttribute("pid");
+			
+			gHis.setModifiedBy(studentPid);
+			result = userService.updateGrantHistory(gHis);
+		}
+		else	{
+			studentPid = (Integer) session.getAttribute("sid");
+			
+			gHis.setModifiedBy((Integer) session.getAttribute("pid"));
+			result = userService.updateGrantHistory(gHis);
+		}
+
+		System.out.println(gHis);
+		
+		if(result == 1)	{
+			System.out.println("수정 사항이 올바르게 변경되었습니다.");
+		}
+		else	{
+			System.out.println("변경 사항이 올바르지 않습니다.");
+		}
+		
+	    return gHis.getTid()+"";
 	}	
 	
 	

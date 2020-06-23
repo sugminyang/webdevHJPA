@@ -10,12 +10,23 @@ public class GrantHistory {
 	String grant_other="";
 	String tuitionfee="";
 	int modifiedBy;
+	int tid;
 	
 	public GrantHistory() {
 		super();
 	}
 	
 	
+	public int getTid() {
+		return tid;
+	}
+
+
+	public void setTid(int tid) {
+		this.tid = tid;
+	}
+
+
 	public int getPid() {
 		return pid;
 	}
@@ -58,11 +69,34 @@ public class GrantHistory {
 	public void setModifiedBy(int modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
+
+
 	@Override
 	public String toString() {
 		return "GrantHistory [pid=" + pid + ", semester=" + semester + ", grant_hyojung=" + grant_hyojung
 				+ ", grant_sunmoon=" + grant_sunmoon + ", grant_other=" + grant_other + ", tuitionfee=" + tuitionfee
-				+ ", modifiedBy=" + modifiedBy + "]";
+				+ ", modifiedBy=" + modifiedBy + ", tid=" + tid + "]";
+	}
+
+
+
+	public GrantHistory(int pid, int tid) {
+		super();
+		this.pid = pid;
+		this.tid = tid;
+	}
+
+
+	public GrantHistory(int pid, String semester, String grant_hyojung, String grant_sunmoon, String grant_other,
+			String tuitionfee, int tid) {
+		super();
+		this.pid = pid;
+		this.semester = semester;
+		this.grant_hyojung = grant_hyojung;
+		this.grant_sunmoon = grant_sunmoon;
+		this.grant_other = grant_other;
+		this.tuitionfee = tuitionfee;
+		this.tid = tid;
 	}
 	
 

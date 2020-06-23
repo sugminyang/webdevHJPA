@@ -10,6 +10,15 @@ public class HolyHistory {
 	String Worship="";
 	int warnings;
 	int modifiedBy;
+	int tid;
+	
+	
+	public int getTid() {
+		return tid;
+	}
+	public void setTid(int tid) {
+		this.tid = tid;
+	}
 	public int getPid() {
 		return pid;
 	}
@@ -50,6 +59,23 @@ public class HolyHistory {
 	public String toString() {
 		return "HolyHistory [pid=" + pid + ", semester=" + semester + ", reading_session=" + reading_session
 				+ ", Worship=" + Worship + ", warnings=" + warnings + ", modifiedBy=" + modifiedBy + "]";
+	}
+	public HolyHistory() {
+		super();
+	}
+	public HolyHistory(int pid, int tid) {
+		super();
+		this.pid = pid;
+		this.tid = tid;
+	}
+	public HolyHistory(int pid, String semester, String reading_session, String Worship, int warnings, int tid) {
+		super();
+		this.pid = pid;
+		this.semester = semester;
+		this.reading_session = reading_session;
+		this.Worship = Worship;
+		this.warnings = warnings;
+		this.tid = tid;
 	}
 	
 	

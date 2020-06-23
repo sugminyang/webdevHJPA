@@ -62,4 +62,23 @@ public interface UserService {
 	public int removeAwardsHistory(AwardsHistory awHis);
 
 	public int removeActiveHistory(ActiveHistory awHis);
+
+	public int removeGradeHistory(GradeHistory gHis);
+
+	public int removeHolyHistory(HolyHistory hHis);
+
+	public int updateHolyHistory(HolyHistory hHis);
+
+	public int removeConsultHistory(ConsultHistory cHis);
+
+	public int updateConsultHistory(ConsultHistory cHis);
+
+	public int removeAbsenceHistory(AbsenceHistory aHis);
+
+	public int updateAbsenceHistory(AbsenceHistory aHis);
+
+	public int removeGrantHistory(GrantHistory gHis);
+
+	public int updateGrantHistory(GrantHistory gHis);
+
 }
