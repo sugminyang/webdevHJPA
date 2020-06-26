@@ -370,4 +370,20 @@ public class UserServiceImpl implements UserService {
 		
 		return userDao.searchStudents(category,value);
 	}
+
+	@Override
+	public void saveTotalCredit(Student student) {
+		userDao.saveTotalCredit(student);
+	}
+
+	@Override
+	public void saveTotalGradeWarning(Student student) {
+		userDao.saveTotalGradeWarning(student);
+	}
+
+	@Override
+	public void saveTotalHolyWarning(Student student) {
+		userDao.saveTotalHolyWarning(student);		
+	}
+
 }

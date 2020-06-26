@@ -197,7 +197,7 @@
         		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
         		var tr = $("<tr></tr>")
         		//var vars = ['disease','gene','interaction_types','drug_name','drug_summary','interaction_claim_source']	//old
-        		var vars = ['pid','birth','nationality','name_kor','name_eng','email','phone','sns_id','sex','college','dept','sno_univ','sno_acad','snsType','continent','grade','status','awardStatus']
+        		var vars = ['pid','birth','nationality','name_kor','name_eng','email','phone','sns_id','sex','college','dept','sno_univ','sno_acad','snsType','continent','grade','status','awardStatus','totalCredit','totalGradeWarning', 'totalHolyWarning']
         		$(vars).each(function(k, v) {
         			tr.append('<th>' + v + '</th>')
         		})
@@ -211,7 +211,18 @@
         			tr = $("<tr></tr>")
     					    					
         			$(vars).each(function(k2, v) {
-        				tr.append('<td>' + b[v] + '</td>')
+        				if(v == 'totalWarnings')	{
+        					//tr.append('<td> 성적:' + b['totalGradeWarning'] + ', 신앙: ' + b['totalHolyWarning']+ '</td>')
+        				}
+        				else if(v == 'totalGradeWarning')	{
+        					tr.append('<td>성적경고:' + b['totalGradeWarning'] + '</td>')
+        				}
+        				else if(v == 'totalHolyWarning')	{
+        					tr.append('<td>신앙경고:' + b['totalHolyWarning'] + '</td>')
+        				}
+        				else	{
+        					tr.append('<td>' + b[v] + '</td>')
+        				}
         			})
         			tbody.append(tr)
         		})
@@ -289,7 +300,7 @@
 	        		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
 	        		var tr = $("<tr></tr>")
 	        		//var vars = ['disease','gene','interaction_types','drug_name','drug_summary','interaction_claim_source']	//old
-	        		var vars = ['pid','birth','nationality','name_kor','name_eng','email','phone','sns_id','sex','college','dept','sno_univ','sno_acad','snsType','continent','grade','status','awardStatus']
+	        		var vars = ['pid','birth','nationality','name_kor','name_eng','email','phone','sns_id','sex','college','dept','sno_univ','sno_acad','snsType','continent','grade','status','awardStatus','totalCredit','totalGradeWarning', 'totalHolyWarning']
 	        		$(vars).each(function(k, v) {
 	        			tr.append('<th>' + v + '</th>')
 	        		})
@@ -303,7 +314,18 @@
 	        			tr = $("<tr></tr>")
 	    					    					
 	        			$(vars).each(function(k2, v) {
-	        				tr.append('<td>' + b[v] + '</td>')
+	        				if(v == 'totalWarnings')	{
+	        					//tr.append('<td> 성적:' + b['totalGradeWarning'] + ', 신앙: ' + b['totalHolyWarning']+ '</td>')
+	        				}
+	        				else if(v == 'totalGradeWarning')	{
+	        					tr.append('<td>성적경고:' + b['totalGradeWarning'] + '</td>')
+	        				}
+	        				else if(v == 'totalHolyWarning')	{
+	        					tr.append('<td>신앙경고:' + b['totalHolyWarning'] + '</td>')
+	        				}
+	        				else	{
+	        					tr.append('<td>' + b[v] + '</td>')
+	        				}
 	        			})
 	        			tbody.append(tr)
 	        		})

@@ -22,8 +22,29 @@ public class Student {
 	String awardStatus = "유지";
 	String profile = "";
 	String yearOfscholarship = "";
+	int totalCredit;
+	int totalGradeWarning = 0;
+	int totalHolyWarning = 0;
 	
-	
+
+	public int getTotalGradeWarning() {
+		return totalGradeWarning;
+	}
+	public void setTotalGradeWarning(int totalGradeWarning) {
+		this.totalGradeWarning = totalGradeWarning;
+	}
+	public int getTotalHolyWarning() {
+		return totalHolyWarning;
+	}
+	public void setTotalHolyWarning(int totalHolyWarning) {
+		this.totalHolyWarning = totalHolyWarning;
+	}
+	public int getTotalCredit() {
+		return totalCredit;
+	}
+	public void setTotalCredit(int totalCredit) {
+		this.totalCredit = totalCredit;
+	}
 	public String getYearOfscholarship() {
 		return yearOfscholarship;
 	}
@@ -150,14 +171,19 @@ public class Student {
 	public void setSno_acad(String sno_acad) {
 		this.sno_acad = sno_acad;
 	}
+	
+	
 	@Override
 	public String toString() {
 		return "Student [pid=" + pid + ", birth=" + birth + ", nationality=" + nationality + ", name_kor=" + name_kor
 				+ ", name_eng=" + name_eng + ", email=" + email + ", phone=" + phone + ", sns_id=" + sns_id
 				+ ", address=" + address + ", sex=" + sex + ", college=" + college + ", dept=" + dept + ", sno_univ="
 				+ sno_univ + ", sno_acad=" + sno_acad + ", snsType=" + snsType + ", continent=" + continent + ", grade="
-				+ grade + ", status=" + status + ", awardStatus=" + awardStatus + ", profile=" + profile + "]";
+				+ grade + ", status=" + status + ", awardStatus=" + awardStatus + ", profile=" + profile
+				+ ", yearOfscholarship=" + yearOfscholarship + ", totalCredit=" + totalCredit + ", totalGradeWarning="
+				+ totalGradeWarning + ", totalHolyWarning=" + totalHolyWarning + "]";
 	}
+	
 	public Student() {
 		super();
 	}

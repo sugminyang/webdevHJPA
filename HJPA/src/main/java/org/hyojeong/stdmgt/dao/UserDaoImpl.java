@@ -233,6 +233,21 @@ public class UserDaoImpl implements UserDao {
 		return sqlSession.selectList(Namespace+".searchStudents",map);
 	}
 
+	@Override
+	public void saveTotalCredit(Student student) {
+		sqlSession.update(Namespace+".saveTotalCredit",student);
+	}
+
+	@Override
+	public void saveTotalGradeWarning(Student student) {
+		sqlSession.update(Namespace+".saveTotalGradeWarning",student);		
+	}
+
+	@Override
+	public void saveTotalHolyWarning(Student student) {
+		sqlSession.update(Namespace+".saveTotalHolyWarning",student);
+	}
+
 
 
 

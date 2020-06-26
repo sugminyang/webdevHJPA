@@ -91,4 +91,10 @@ public interface UserDao {
 	public int updateGrantHistory(GrantHistory gHis);
 
 	public List<Student> searchStudents(String category, String value);
+
+	public void saveTotalCredit(Student student);
+
+	public void saveTotalGradeWarning(Student student);
+
+	public void saveTotalHolyWarning(Student student);
 }

@@ -167,12 +167,33 @@ public class HomeController {
 				model.addAttribute("semesterInfo", jsonArray);
 				
 
-				//총 이수학점 정보
-				for(GradeHistory vo : gradeHistoryList)	{
-					totalCredit += vo.getCredit();
+				if(student.getTotalCredit() == 0)	{ // 이수학점을 처음으로 계산하는 학생
+					//총 이수학점 정보
+					for(GradeHistory vo : gradeHistoryList)	{
+						totalCredit += vo.getCredit();
+					}
+					
+					//총 이수학점 데이터 저장.	 
+					student.setTotalCredit(totalCredit);
+					userService.saveTotalCredit(student);
+					
+					mav.addObject("totalCredit",totalCredit);
 				}
-
-				mav.addObject("totalCredit",totalCredit);
+				else { // 이전에 기록이 있는 학생
+					mav.addObject("totalCredit",student.getTotalCredit());
+				}
+				
+				int totalGradeWarning = 0;
+				if(student.getTotalGradeWarning() == 0)	{ // 성적 경고을 처음으로 계산하는 학생
+					//총 성적 경고 정보
+					for(GradeHistory vo : gradeHistoryList)	{
+						totalGradeWarning += vo.getWarnings();
+					}
+					
+					//총 성적 경고 데이터 저장.	 
+					student.setTotalGradeWarning(totalGradeWarning);
+					userService.saveTotalGradeWarning(student);
+				}
 			}
 			else	{
 				mav.addObject("totalCredit",totalCredit);
@@ -185,6 +206,19 @@ public class HomeController {
 //				System.out.println("신앙 이력: "+jsonArray);
 				
 				model.addAttribute("holyInfo", jsonArray);
+				
+				
+				int totalHolyWarning = 0;
+				if(student.getTotalHolyWarning() == 0)	{ // 신앙 경고를 처음으로 계산하는 학생
+					//총 신앙 경고 정보
+					for(HolyHistory vo : holyHistoryList)	{
+						totalHolyWarning += vo.getWarnings();
+					}
+					
+					//총 신앙 경고 데이터 저장.	 
+					student.setTotalHolyWarning(totalHolyWarning);
+					userService.saveTotalHolyWarning(student);
+				}
 			}
 			
 //			프로그램 활동 이력 load
@@ -324,6 +358,8 @@ public class HomeController {
 //			result = userService.updateStudentInfo(updateStdInfo);
 			gHis.setModifiedBy(studentPid);
 			result = userService.updateGradeHistory(gHis);
+			
+
 		}
 		else	{
 			studentPid = (Integer) session.getAttribute("sid");
@@ -333,6 +369,16 @@ public class HomeController {
 			gHis.setModifiedBy((Integer) session.getAttribute("pid"));
 			result = userService.updateGradeHistory(gHis);
 		}
+		
+		Student student = userService.getStudent(studentPid);
+		int credit = Integer.parseInt(items[2]);
+		student.setTotalCredit(student.getTotalCredit() + credit);
+		userService.saveTotalCredit(student);
+		
+		int warning = Integer.parseInt(items[4]);
+		student.setTotalGradeWarning(student.getTotalGradeWarning() + warning);
+		userService.saveTotalGradeWarning(student);
+		
 		
 		System.out.println(gHis);
 		System.out.println("update result: "+result);
@@ -527,7 +573,6 @@ public class HomeController {
 	    return test;
 	}	
 	
-	
 	@RequestMapping(value = "/gradeHistoryRemoveInfo", method = RequestMethod.POST)
 	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
 	public String gradeHistoryRemoveInfo(@RequestBody String filterJSON, HttpSession session) {
@@ -553,6 +598,19 @@ public class HomeController {
 			
 			result = userService.removeGradeHistory(gHis);
 		}
+		
+		int totalCredit = 0;
+		Student student = userService.getStudent(studentPid);
+		
+		List<GradeHistory> gradeHistoryList = userService.getGradeHistory(student.getPid());
+		//총 이수학점 정보
+		for(GradeHistory vo : gradeHistoryList)	{
+			totalCredit += vo.getCredit();
+		}
+		
+		//총 이수학점 데이터 저장.	 
+		student.setTotalCredit(totalCredit);
+		userService.saveTotalCredit(student);
 		
 		System.out.println(gHis);
 		System.out.println("update result: "+result);
@@ -596,6 +654,20 @@ public class HomeController {
 			
 			result = userService.removeHolyHistory(hHis);
 		}
+		
+		int totalHolyWarning = 0;
+		Student student = userService.getStudent(studentPid);
+		
+		List<HolyHistory> holyHistoryList = userService.getHolyHistory(student.getPid());
+		
+		//총 신앙 정보
+		for(HolyHistory vo : holyHistoryList)	{
+			totalHolyWarning += vo.getWarnings();
+		}
+		
+		//총 이수학점 데이터 저장.	 
+		student.setTotalHolyWarning(totalHolyWarning);
+		userService.saveTotalHolyWarning(student);
 		
 		System.out.println(hHis);
 		System.out.println("update result: "+result);
@@ -642,7 +714,12 @@ public class HomeController {
 			hHis.setModifiedBy((Integer) session.getAttribute("pid"));
 			result = userService.updateHolyHistory(hHis);
 		}
-
+		
+		Student student = userService.getStudent(studentPid);
+		int warning = Integer.parseInt(items[4]);
+		student.setTotalHolyWarning(student.getTotalHolyWarning() + warning);
+		userService.saveTotalHolyWarning(student);
+		
 		System.out.println(hHis);
 		
 		if(result == 1)	{

@@ -246,6 +246,28 @@
 			tid = #{tid};
 	</update>	
 	
+	<update id="saveTotalCredit" parameterType="StudentVO">
+		update StudentInfo
+		set
+			totalCredit = #{totalCredit}
+		where
+			pid = #{pid};
+	</update>	
+	
+	<update id="saveTotalGradeWarning" parameterType="StudentVO">
+		update StudentInfo
+		set
+			totalGradeWarning = #{totalGradeWarning}
+		where
+			pid = #{pid};
+	</update>	
+	<update id="saveTotalHolyWarning" parameterType="StudentVO">
+		update StudentInfo
+		set
+			totalHolyWarning = #{totalHolyWarning}
+		where
+			pid = #{pid};
+	</update>	
 	
 	
 	
