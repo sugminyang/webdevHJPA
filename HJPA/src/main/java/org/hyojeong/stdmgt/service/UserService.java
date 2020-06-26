@@ -81,4 +81,6 @@ public interface UserService {
 
 	public int updateGrantHistory(GrantHistory gHis);
 
+	public List<Student> searchStudents(String category, String value);
+
 }

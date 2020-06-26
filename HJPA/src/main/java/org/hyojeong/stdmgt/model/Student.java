@@ -20,7 +20,7 @@ public class Student {
 	int grade;
 	String status = "해당 없음";
 	String awardStatus = "유지";
-	String profile = "/resources/img/image.jpeg";
+	String profile = "";
 	String yearOfscholarship = "";
 	
 	

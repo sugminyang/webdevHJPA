@@ -27,6 +27,14 @@
 		where pid = #{pid}
 	</select>
 
+
+	<select id="searchStudents" resultType="StudentVO" parameterType="string">
+		select * 
+		from StudentInfo
+		where ${category} like CONCAT('%',#{value},'%');
+	</select>
+	 		
+	 		
 	<select id="getStudentAll" resultType="StudentVO">
 		select * 
 		from StudentInfo;

@@ -162,7 +162,7 @@
         	/* console.log(${data}) */
         	
         	file = "${student.profile}"
-        	if(file == "")	{
+        	if(file == "" || file == null)	{
         		file = "/resources/img/default.png"	
 				$('#profile').prop("src",file);
         	}
@@ -998,10 +998,31 @@
     					    					
         			$(vars).each(function(k2, v) {
         				if(v == 'action')	{
-        			        tr.append('<td><i class="fa fa-pencil-square" aria-hidden="true"></i><i class="fa fa-remove" aria-hidden="true"></i></td>')
+        					if(${sessionScope.auth} == 0)	{
+        						tr.append('<td></td>');
+        					}
+        					else	{
+        			        	tr.append('<td><i class="fa fa-pencil-square" aria-hidden="true"></i><i class="fa fa-remove" aria-hidden="true"></i></td>')
+        					}
         				}
-        				else	{
-        					tr.append('<td>' + b[v] + '</td>')
+        				else if(v == 'topic'){
+        					if(${sessionScope.auth} == 0)	{ //student
+        						tr.append('<td>***</td>');
+        					}
+        					else	{
+        						tr.append('<td>' + b[v] + '</td>');
+        					}
+        				}
+        				else if(v == 'memo')	{
+        					if(${sessionScope.auth} == 0)	{ //student
+        						tr.append('<td>***</td>');
+        					}
+        					else	{
+        						tr.append('<td>' + b[v] + '</td>');
+        					}
+        				}
+        				else {
+        					tr.append('<td>' + b[v] + '</td>');
         				}
         				
         			})
@@ -1639,10 +1660,13 @@
         		document.getElementById("continent").disabled = true
         		document.getElementById("nationality").disabled = true
         		
+        		
         		document.getElementById("awardStatus").disabled = true
 
+        		document.getElementById("totalCredit").disabled = true
+        		
         		//학생은 상담 테이블 안보이게 처리 
-        		document.getElementById("consultDiv").style.display = "none";
+        		//document.getElementById("consultDiv").style.display = "none";
         	}
         	
         });
@@ -1941,6 +1965,12 @@
 				</div>
 				<div class="col-sm-3">
 					<input class="inputLabel" name="address" id="address" value="${student.address}">
+				</div>
+				<div class="col-sm-3">
+					<label >total acquired credit:</label>
+				</div>
+				<div class="col-sm-3">
+					<input class="inputLabel" name="totalCredit" id="totalCredit" value="${totalCredit}">
 				</div>
 			</div>
 		</div>

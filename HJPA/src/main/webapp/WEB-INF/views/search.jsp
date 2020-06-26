@@ -19,8 +19,8 @@
   <!-- Custom styles for this template -->
   <link href="${pageContext.request.contextPath}/resources/css/landing-page.min.css" rel="stylesheet">
   
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
-  
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
+
 <link rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
@@ -81,9 +81,33 @@
 	<div class="col-lg-12">
         <h3 class="page-header">Student Search</h3>
     </div>
-    <div class="col-lg-12" id="searchContent">
-    	<!-- <p>search drug name: <b>${drugname}</b></p> -->
+    
+    </br>
+    
+    <div class="row col-lg-12" id="searchContent">
+    	<div class="col-lg-2">
+        	<select class="btn-lg" name="searchCategory" id="searchCategory">
+						<option value="nationality">국적</option>
+						<option value="grade">학년</option>
+						<option value="college">단과대</option>
+						<option value="dept">학과</option>
+						<option value="status">학적상태</option>
+						<option value="awardStatus">장학상태</option>
+						<option value="sex">성별</option>
+						<option value="name_kor">이름(한글)</option>
+			</select>
+		</div>    	 
+		<div class="col-lg-8">
+       		<input id="searchText" type="text" class="form-control-lg" placeholder="Enter a search keyword.." style="width:100%">
+		</div>
+        <div class="col-lg-2">
+        	<button id="searchBtn" type="button" class="btn btn-block btn-lg btn-primary">Search</button>
+		</div>    	 
     </div>
+    
+    </br>
+    </br>
+    
 	<div class="table table-bordered table-hover dataTable" id="result"></div>
 
     <!-- .modal -->
@@ -152,8 +176,20 @@
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
     <link href="${pageContext.request.contextPath}/resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	
-<script>
+<script type="text/javascript">
+
         $(document).ready( function () {
+        	$(document).keypress(function(e) {
+				if (e.which == 13 && $('#searchText').val().length != 0) {
+			    	e.preventDefault();
+			   	    search();
+			    }
+		    });
+		    
+        	$("#searchBtn").on("click", function() {
+        		search();
+        	});
+        	
         	/* console.log(${data}) */
         	if(${data} != null)	{
         		//alert(${data})
@@ -194,15 +230,15 @@
                 "bFilter": true,
                 "bSort": true,
                 "order": [[ 0, "asc" ]],
-                scrollCollapse: true,
+                'scrollCollapse': true,
                 "retrieve": true
-        		})
+        		});
         		
         	}
         	else {
 //        		console.log(${data})
         		$('#result').empty()
-        		error = JSON.stringify(${data})
+        		error = JSON.stringify(data)
         		var table = $('<table class="table table-bordered table-hover"><tbody><tr><td>error: ' + error + '</td></tr></tbody></table>')
         		$('#result').append(table)
         		table.DataTable({
@@ -214,7 +250,7 @@
 //                'ordering': true,
 //                'info': true,
 //                'autoWidth': true
-        		})
+        		});
         	}
         	
         	$('#MydataTable tbody').on( 'click', 'tr', function () {
@@ -233,6 +269,100 @@
     			window.location.href = "/studentInfo";
         	});
         });
+        
+        function search() {
+			var deliminator = "!@#";
+    		
+			var sendData = 
+				$('#searchCategory').val() + deliminator
+				+ $('#searchText').val();
+			
+			//console.log(sendData)
+			$.ajax({ 
+				data :  sendData,
+				type : "POST", 
+				contentType:"application/json;charset=UTF-8",
+				dataType: "json",
+				url : "/searchStudent", 
+				success : function(data) { 
+	        		$('#result').empty();
+	        		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
+	        		var tr = $("<tr></tr>")
+	        		//var vars = ['disease','gene','interaction_types','drug_name','drug_summary','interaction_claim_source']	//old
+	        		var vars = ['pid','birth','nationality','name_kor','name_eng','email','phone','sns_id','sex','college','dept','sno_univ','sno_acad','snsType','continent','grade','status','awardStatus']
+	        		$(vars).each(function(k, v) {
+	        			tr.append('<th>' + v + '</th>')
+	        		})
+	        		var thead = $("<thead></thead>")
+	        		thead.append(tr)
+	        		$(table).append(thead)
+	        		
+	        		var tbody = $("<tbody></tbody>")
+	        		var bindings = data
+	        		$(bindings).each(function(k, b) {
+	        			tr = $("<tr></tr>")
+	    					    					
+	        			$(vars).each(function(k2, v) {
+	        				tr.append('<td>' + b[v] + '</td>')
+	        			})
+	        			tbody.append(tr)
+	        		})
+	        		$(table).append(tbody)
+
+	        		$('#result').append(table)
+	        		table.DataTable({
+	        			dom: 'Bfrtip',
+	                    buttons: ['copy', 'excel', 'pdf', 'print'],
+	                'paging': true,
+	                "scrollX": true,
+	                'lengthChange': false,
+	                'searching': true,
+	                'ordering': true,
+	                'info': true,
+	                "bFilter": true,
+	                "bSort": true,
+	                "order": [[ 0, "asc" ]],
+	                'scrollCollapse': true,
+	                "retrieve": true
+	                
+	        		});						
+			        	
+	        		$('#MydataTable tbody').on( 'click', 'tr', function () {
+	            		var table = $('#MydataTable').DataTable();
+	        			var pid = table.row( this ).data()[0];
+	        			$.ajax({
+	        				'type': "POST", 
+	        				'url': 'getStudentInfo',
+	        				'data':{pid:pid},
+	        				success : function(data) { 
+	    					}, 
+	    					error : function(data) { 
+	    					} 
+	        			   });
+	        			
+	        			window.location.href = "/studentInfo";
+	            	});
+				}, 
+				error : function(data) { 
+					$('#result').empty()
+	        		error = JSON.stringify(data)
+	        		var table = $('<table class="table table-bordered table-hover"><tbody><tr><td>error: ' + error + '</td></tr></tbody></table>')
+	        		$('#result').append(table)
+	        		table.DataTable({
+	        			bPaginate : false,		    
+	        	        'paging': true
+//	                'paging': true,
+//	                'lengthChange': false,
+//	                'searching': false,
+//	                'ordering': true,
+//	                'info': true,
+//	                'autoWidth': true
+	        		});
+				} 
+			}); 				
+		};
+        
+        
 </script>        
 </body>
 </html>

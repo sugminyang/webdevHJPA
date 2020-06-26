@@ -89,4 +89,6 @@ public interface UserDao {
 	public int insertGrantHistory(GrantHistory gHis);
 
 	public int updateGrantHistory(GrantHistory gHis);
+
+	public List<Student> searchStudents(String category, String value);
 }

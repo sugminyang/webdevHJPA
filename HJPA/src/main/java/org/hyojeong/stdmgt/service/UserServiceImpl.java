@@ -364,4 +364,10 @@ public class UserServiceImpl implements UserService {
 			return userDao.updateGrantHistory(gHis);
 		}
 	}
+
+	@Override
+	public List<Student> searchStudents(String category, String value) {
+		
+		return userDao.searchStudents(category,value);
+	}
 }

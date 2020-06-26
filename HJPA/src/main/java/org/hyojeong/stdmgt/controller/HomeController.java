@@ -9,6 +9,7 @@ import java.util.UUID;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.hyojeong.stdmgt.model.AbsenceHistory;
@@ -85,6 +86,32 @@ public class HomeController {
 		return "search";
 	}
 	
+	
+	@RequestMapping(value = "/searchStudent", method = RequestMethod.POST,produces = "application/text; charset=UTF-8")
+	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
+	public String searchStudent(Model model, @RequestBody String filterJSON, HttpSession session,HttpServletResponse response) {
+		System.out.println("searchStudent...");
+		System.out.println(filterJSON);
+
+		String[] items = filterJSON.split("!@#");
+		String category = items[0];
+		String value = items[1];
+		
+		List<Student> voList = userService.searchStudents(category,value);
+		System.out.println(voList);
+		
+		JSONArray jsonArray = null;
+		
+		if(voList != null)	{
+			response.setContentType("json;charset=UTF-8"); 
+			jsonArray = JSONArray.fromObject(voList);
+			System.out.println(jsonArray);
+		}
+
+		return jsonArray.toString();
+	}
+	
+	
 	@RequestMapping(value = "/search_domestic", method = RequestMethod.GET)
 	public String search_domestic(HttpSession session, Model model) {
 		logger.info("Welcome search_domestic");
@@ -132,11 +159,23 @@ public class HomeController {
 			
 //			학적 이력 load
 			List<GradeHistory> gradeHistoryList = userService.getGradeHistory(student.getPid());
+			int totalCredit = 0;
 			if(gradeHistoryList != null)	{
 				jsonArray = JSONArray.fromObject(gradeHistoryList);
 //				System.out.println("학적 이력: "+jsonArray);
 				
 				model.addAttribute("semesterInfo", jsonArray);
+				
+
+				//총 이수학점 정보
+				for(GradeHistory vo : gradeHistoryList)	{
+					totalCredit += vo.getCredit();
+				}
+
+				mav.addObject("totalCredit",totalCredit);
+			}
+			else	{
+				mav.addObject("totalCredit",totalCredit);
 			}
 			
 //			신앙 이력 load
@@ -204,10 +243,13 @@ public class HomeController {
 //		jsonArray = JSONArray.fromObject(temp);
 //		model.addAttribute("grantInfo", jsonArray);		
 		
+		
+		
 		return mav;
 	}
 	
 	@RequestMapping(value = "/getStudentInfo", method = RequestMethod.POST)
+	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
 	public String getStudentInfo(HttpSession session, @RequestParam("pid") int pid) {
 		//관심학생 등록
 		session.setAttribute("sid",pid);

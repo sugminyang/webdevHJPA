@@ -224,6 +224,15 @@ public class UserDaoImpl implements UserDao {
 		return sqlSession.update(Namespace+".updateGrantHistory",gHis);
 	}
 
+	@Override
+	public List<Student> searchStudents(String category, String value) {
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("category",category);
+		map.put("value",value);
+		System.out.println(map);
+		return sqlSession.selectList(Namespace+".searchStudents",map);
+	}
+
 
 
 
