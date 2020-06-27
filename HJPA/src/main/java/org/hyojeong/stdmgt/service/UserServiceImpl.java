@@ -98,7 +98,25 @@ public class UserServiceImpl implements UserService {
 		Student originStudent = getStudent(pid);
 		String updatedList = "";
 		
-//		대학교 학번이 변경된 경우
+		updatedList = compareInfo(updateStudentInfo, originStudent);
+		if(updatedList == null) return 0;
+		
+		//수정된 정보 내역 저장
+		String nowDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		UpdateHisory uhistory = new UpdateHisory(updateStudentInfo.getPid(),updatedList,nowDate);
+		int result = userDao.insertUpdateStudentInfoHistory(uhistory);
+//		System.out.println("result(insertUpdateStudentInfoHistory): "+result);
+		
+		//학생 정보 수정!! update
+		result = userDao.updateStudentInfo(originStudent);
+		
+		return result;
+	}
+
+	private String compareInfo(Student updateStudentInfo, Student originStudent) {
+		String updatedList = "";
+		
+		//		대학교 학번이 변경된 경우
 		if(!updateStudentInfo.getSno_univ().equalsIgnoreCase(originStudent.getSno_univ()))	{
 			updatedList += "대학교 학번,";
 			originStudent.setSno_univ(updateStudentInfo.getSno_univ());
@@ -158,52 +176,92 @@ public class UserServiceImpl implements UserService {
 			updatedList += "주소,";
 			originStudent.setAddress(updateStudentInfo.getAddress());
 		}
-//		사진이 변경된 경우 
-		if(!updateStudentInfo.getProfile().equalsIgnoreCase(originStudent.getProfile()))	{
-			updatedList += "사진,";
-			originStudent.setProfile(updateStudentInfo.getProfile());
-		}
+////		사진이 변경된 경우 
+//		if(!updateStudentInfo.getProfile().equalsIgnoreCase(originStudent.getProfile()))	{
+//			updatedList += "사진,";
+//			originStudent.setProfile(updateStudentInfo.getProfile());
+//		}
 //		장학 선발 연도가 변경된 경우 
 		if(!updateStudentInfo.getYearOfscholarship().equalsIgnoreCase(originStudent.getYearOfscholarship()))	{
 			updatedList += "장학선발 연도,";
 			originStudent.setYearOfscholarship(updateStudentInfo.getYearOfscholarship());
 		}		
-//		System.out.println("변경 사항: " + updatedList);
+		
+//		생일
+		if(!updateStudentInfo.getBirth().equalsIgnoreCase(originStudent.getBirth()))	{
+			updatedList += "생일,";
+			originStudent.setBirth(updateStudentInfo.getBirth());
+		}	
+//		국적
+		if(!updateStudentInfo.getNationality().equalsIgnoreCase(originStudent.getNationality()))	{
+			updatedList += "국적,";
+			originStudent.setNationality(updateStudentInfo.getNationality());
+		}
+//		한글 영어 이름 변경
+		if(!updateStudentInfo.getName_eng().equalsIgnoreCase(originStudent.getName_eng()))	{
+			updatedList += "영어 이름,";
+			originStudent.setName_eng(updateStudentInfo.getName_eng());
+		}
+		if(!updateStudentInfo.getName_kor().equalsIgnoreCase(originStudent.getName_kor()))	{
+			updatedList += "한글 이름,";
+			originStudent.setName_kor(updateStudentInfo.getName_kor());
+		}
+//		장학 상태 
+		if(!updateStudentInfo.getAwardStatus().equalsIgnoreCase(originStudent.getAwardStatus()))	{
+			updatedList += "장학 상태,";
+			originStudent.setAwardStatus(updateStudentInfo.getAwardStatus());
+		}
+		
+//		성별
+		if(!updateStudentInfo.getSex().equalsIgnoreCase(originStudent.getSex()))	{
+			updatedList += "성별,";
+			originStudent.setSex(updateStudentInfo.getSex());
+		}
+		
+//		대륙
+		if(!updateStudentInfo.getContinent().equalsIgnoreCase(originStudent.getContinent()))	{
+			updatedList += "대륙,";
+			originStudent.setContinent(updateStudentInfo.getContinent());
+		}
 		
 		//마지막 ','제거
 		if(updatedList.length() != 0)	{
 			updatedList = updatedList.substring(0,updatedList.length()-1);
 		}
 		else {
-			return 0; //수정된 사항이 없음
+			return null; //수정된 사항이 없음
 		}
-		
+
 		System.out.println("수정사항: "+ updatedList);
-		
-		//수정된 정보 내역 저장
-		String nowDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-		UpdateHisory uhistory = new UpdateHisory(updateStudentInfo.getPid(),updatedList,nowDate);
-		int result = userDao.insertUpdateStudentInfoHistory(uhistory);
-//		System.out.println("result(insertUpdateStudentInfoHistory): "+result);
-		
-		
-		//학생 정보 수정!! update
-//		System.out.println("update student obj: " + originStudent);
-		result = userDao.updateStudentInfo(originStudent);
-//		System.out.println("result(updateStudentInfo): "+result);
-		
-		return result;
+
+		return updatedList;
 	}
 
-	
 	/**
 	 * 
 	 * admin or teacher는 모든 property를 수정할 수 있음 
 	 * */	
 	@Override
-	public int updateAllItemsStudentInfo(Student updateStudentInfo) {
-		System.out.println("enter.. updateAllItemsStudentInfo()");
-		return 0;
+	public int updateAllItemsStudentInfo(Student updateStudentInfo, int modifiedUser) {
+		//어떤 부분이 달라졌는지 check
+		//기존 studentInfo를 찾아야 함..
+		int pid = updateStudentInfo.getPid();
+		Student originStudent = getStudent(pid);
+		String updatedList = "";
+
+		updatedList = compareInfo(updateStudentInfo, originStudent);
+		if(updatedList == null) return 0;
+
+		//수정된 정보 내역 저장
+		String nowDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		UpdateHisory uhistory = new UpdateHisory(updateStudentInfo.getPid(),updatedList,nowDate);
+		int result = userDao.insertUpdateStudentInfoHistory(uhistory);
+		//				System.out.println("result(insertUpdateStudentInfoHistory): "+result);
+
+		//학생 정보 수정!! update
+		result = userDao.updateAllItemsStudentInfo(originStudent);
+
+		return result;
 	}
 
 	@Override

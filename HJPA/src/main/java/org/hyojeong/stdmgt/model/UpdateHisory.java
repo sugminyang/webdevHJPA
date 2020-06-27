@@ -4,6 +4,7 @@ public class UpdateHisory {
 	int pid;
 	String memo;
 	String updateDate;
+	
 	public int getPid() {
 		return pid;
 	}

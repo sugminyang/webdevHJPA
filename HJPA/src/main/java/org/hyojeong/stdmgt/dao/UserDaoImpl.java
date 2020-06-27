@@ -248,6 +248,11 @@ public class UserDaoImpl implements UserDao {
 		sqlSession.update(Namespace+".saveTotalHolyWarning",student);
 	}
 
+	@Override
+	public int updateAllItemsStudentInfo(Student originStudent) {
+		return sqlSession.update(Namespace+".updateAllItemsStudentInfo",originStudent);
+	}
+
 
 
 

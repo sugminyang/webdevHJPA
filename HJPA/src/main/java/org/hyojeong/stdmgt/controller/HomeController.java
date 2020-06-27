@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -51,22 +52,40 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
-		
-		model.addAttribute("isLogined", false );
-		
+	public String home() {
 		return "home";
 	}
 	
+	@RequestMapping(value = "/adminpage", method = RequestMethod.GET)
+	public String adminpage(HttpSession session) {
+		String auth = (String) session.getAttribute("auth");
+		if(!auth.equalsIgnoreCase("2"))	{	//system admin
+			return "redirect:/";
+		}
+		else	{
+			return "admin_page";	
+		}
+	}
+	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public String index(Locale locale, Model model) {
-		return "search";
+	public String index(HttpSession session) {
+		String auth = (String) session.getAttribute("auth");
+		
+		if(auth.equalsIgnoreCase("0"))	{	//student has no authority to searh
+			return "redirect:/";
+		}
+		else	{
+			return "search";	
+		}
 	}
 	
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public String search(HttpSession session, Model model) {
-		logger.info("Welcome search");
+		String auth = (String) session.getAttribute("auth");
+		
+		if(auth.equalsIgnoreCase("0"))	{	//student
+			return "redirect:/";
+		}
 		
 		List<Student> voList = userService.getStudentAll();
 //		List<Student> voList = new ArrayList<Student>();
@@ -90,6 +109,12 @@ public class HomeController {
 	@RequestMapping(value = "/searchStudent", method = RequestMethod.POST,produces = "application/text; charset=UTF-8")
 	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
 	public String searchStudent(Model model, @RequestBody String filterJSON, HttpSession session,HttpServletResponse response) {
+		String auth = (String) session.getAttribute("auth");
+		
+		if(auth.equalsIgnoreCase("0"))	{	//student has no authority to searh
+			return "redirect:/";
+		}
+		
 		System.out.println("searchStudent...");
 		System.out.println(filterJSON);
 
@@ -296,6 +321,7 @@ public class HomeController {
 		System.out.println("updateStudentInfo... 학생 정보 수정..request: ");
 		System.out.println(filterJSON);
 		
+		
 		String[] items = filterJSON.split("!@#");
 //		System.out.println("학생 정보 변경사항: " + items.length);
 		Student updateStdInfo = new Student(items[0], items[1], Integer.parseInt(items[2]),items[3], 
@@ -315,10 +341,11 @@ public class HomeController {
 			result = userService.updateStudentInfo(updateStdInfo);
 		}
 		else	{
+			int modifiedUser = (Integer) session.getAttribute("pid");
 			studentPid = (Integer) session.getAttribute("sid");
 			updateStdInfo.setPid(studentPid);
 			System.out.println(updateStdInfo);
-			result = userService.updateAllItemsStudentInfo(updateStdInfo);
+			result = userService.updateAllItemsStudentInfo(updateStdInfo,modifiedUser);
 		}
 		
 		

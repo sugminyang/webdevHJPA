@@ -311,7 +311,7 @@
 	        		var tbody = $("<tbody></tbody>")
 	        		var bindings = data
 	        		$(bindings).each(function(k, b) {
-	        			tr = $("<tr></tr>")
+	        			tr = $("<tr></tr>");
 	    					    					
 	        			$(vars).each(function(k2, v) {
 	        				if(v == 'totalWarnings')	{
@@ -327,7 +327,7 @@
 	        					tr.append('<td>' + b[v] + '</td>')
 	        				}
 	        			})
-	        			tbody.append(tr)
+	        			tbody.append(tr);
 	        		})
 	        		$(table).append(tbody)
 

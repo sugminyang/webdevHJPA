@@ -97,4 +97,6 @@ public interface UserDao {
 	public void saveTotalGradeWarning(Student student);
 
 	public void saveTotalHolyWarning(Student student);
+
+	public int updateAllItemsStudentInfo(Student originStudent);
 }

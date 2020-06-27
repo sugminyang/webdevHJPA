@@ -35,7 +35,7 @@ public interface UserService {
 
 	public int updateStudentInfo(Student updateStudentInfo);
 
-	public int updateAllItemsStudentInfo(Student updateStudentInfo);
+	public int updateAllItemsStudentInfo(Student updateStudentInfo, int modifiedUser);
 
 	public List<GradeHistory> getGradeHistory(int pid);
 

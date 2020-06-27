@@ -125,19 +125,17 @@
         	
         	$("#btnUpdate").on("click", function() {
         		var deliminator = "!@#";
-        		
-				var sendData = 
-					$('#sno_univ').val()+deliminator+$('#sno_acad').val()+deliminator
-					+ $('#grade').val()+deliminator+$('#status').val()+deliminator
-					+ $('#awardStatus').val()+deliminator+$('#email').val()+deliminator
-					+ $('#phone').val()+deliminator+$('#college').val()+deliminator
-					+ $('#dept').val()+deliminator+$('#snsType').val()+deliminator
-					+ $('#sns_id').val()+deliminator+$('#address').val()+deliminator
-					+ $('#profile').prop("src") + deliminator + document.querySelector('input[name="sex"]:checked').value + deliminator
-					+ $('#birth').val()+deliminator+$('#nationality').val()+deliminator
-					+ $('#name_kor').val()+deliminator+$('#name_eng').val()+deliminator
-					+ $('#continent').val()+deliminator+$('#yearOfscholarship').val();
-				
+        		var sendData =
+    					$('#sno_univ').val()+deliminator+$('#sno_acad').val()+deliminator
+    					+ $('#grade').val()+deliminator+$('#status').val()+deliminator
+    					+ $('#awardStatus').val()+deliminator+$('#email').val()+deliminator
+    					+ $('#phone').val()+deliminator+$('#college').val()+deliminator
+    					+ $('#dept').val()+deliminator+$('#snsType').val()+deliminator
+    					+ $('#sns_id').val()+deliminator+$('#address').val()+deliminator
+    					+ $('#profile').prop("src") + deliminator + document.querySelector('input[name="sex"]:checked').value + deliminator
+    					+ $('#birth').val()+deliminator+$('#nationality').val()+deliminator
+    					+ $('#name_kor').val()+deliminator+$('#name_eng').val()+deliminator
+    					+ $('#continent').val()+deliminator+$('#yearOfscholarship').val();
 					
 				//console.log(sendData)
 				$.ajax({ 
