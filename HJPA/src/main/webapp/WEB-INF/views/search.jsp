@@ -286,7 +286,7 @@
 			var txt = $('#searchText').val();
 			if(txt.length == 0)	{
 				txt = " ";
-			}
+			}	
 			
 			var sendData = 
 				$('#searchCategory').val() + deliminator

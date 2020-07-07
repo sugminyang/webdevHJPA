@@ -3,7 +3,6 @@ package org.hyojeong.stdmgt.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 import javax.annotation.Resource;
@@ -21,13 +20,12 @@ import org.hyojeong.stdmgt.model.GrantHistory;
 import org.hyojeong.stdmgt.model.HolyHistory;
 import org.hyojeong.stdmgt.model.Student;
 import org.hyojeong.stdmgt.model.StudentDomestic;
+import org.hyojeong.stdmgt.model.User;
 import org.hyojeong.stdmgt.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -57,12 +55,16 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/adminpage", method = RequestMethod.GET)
-	public String adminpage(HttpSession session) {
+	public String adminpage(HttpSession session, Model model) {
 		String auth = (String) session.getAttribute("auth");
 		if(!auth.equalsIgnoreCase("2"))	{	//system admin
 			return "redirect:/";
 		}
 		else	{
+			List<User> adminUsersList = userService.getAdminUserAll();
+			JSONArray jsonArray = JSONArray.fromObject(adminUsersList);
+			
+			model.addAttribute("adminUserInfo",jsonArray);
 			return "admin_page";	
 		}
 	}
@@ -520,6 +522,9 @@ public class HomeController {
 	    return awHis.getTid()+"";
 	}	
 
+	
+	
+	
 	
 	@RequestMapping(value = "/activeHistoryRemoveInfo", method = RequestMethod.POST)
 	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
@@ -1031,6 +1036,70 @@ public class HomeController {
 		
 	    return gHis.getTid()+"";
 	}	
+	
+	@RequestMapping(value = "/adminUserRemove", method = RequestMethod.POST)
+	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
+	public String adminUserRemove(@RequestBody String filterJSON, HttpSession session) {
+		System.out.println("adminUserRemove... Admin 계정 정보 삭제: ");
+		
+		User user = new User(Integer.parseInt(filterJSON));
+		
+		//학생의 pid 설정
+		String auth = (String) session.getAttribute("auth");
+		int studentPid = -1;
+		
+		
+		int result = userService.adminUserRemove(user);
+		
+		
+		String test = "";
+		if(result == 1)	{
+			System.out.println("수정 사항이 올바르게 변경되었습니다.");
+			test = "1";
+		}
+		else	{
+			System.out.println("변경 사항이 올바르지 않습니다.");
+			test = "0";
+		}
+		
+	    return test;
+	}	
+	
+	
+	
+	@RequestMapping(value = "/adminUserEdit", method = RequestMethod.POST)
+	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
+	public String adminUserEdit(@RequestBody String filterJSON, HttpSession session) {
+		System.out.println("adminUserEdit... 학적 정보 수정: ");
+		System.out.println(filterJSON);
+		
+		String[] items = filterJSON.split("!@#");
+//		System.out.println("학생 정보 변경사항: " + items.length);
+
+		User user = new User(items[0],items[1],Integer.parseInt(items[2])); 
+		int result = -1;
+		
+		if(user.getPid() == 0) {//새롭게 생성
+			result = userService.insertAdminUser(user);
+		}
+		else	{	//update
+			result = userService.updateAdminUser(user);
+		}
+		
+		
+		
+		if(result == 1)	{
+			System.out.println("수정 사항이 올바르게 변경되었습니다.");
+		}
+		else	{
+			System.out.println("변경 사항이 올바르지 않습니다.");
+		}
+		
+		return user.getPid()+"";
+	}
+	
+	
+	
 	
 	
 	@Resource(name="uploadPath")

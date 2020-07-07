@@ -6,6 +6,17 @@ public class User {
 	String password;
 	String authority; // 0 : student, 1 : teacher, 2 : amdin
 	
+	public User(int pid) {
+		this.pid = pid;
+	}
+	public User() {
+	}
+	public User(String id, String password, int pid) {
+		this.id = id;
+		this.password = password;
+		this.pid = pid;
+	}
+	
 	public int getPid() {
 		return pid;
 	}

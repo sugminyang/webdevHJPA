@@ -99,4 +99,12 @@ public interface UserDao {
 	public void saveTotalHolyWarning(Student student);
 
 	public int updateAllItemsStudentInfo(Student originStudent);
+
+	public List<User> getAdminUserAll();
+
+	public int adminUserRemove(User user);
+
+	public int updateAdminUser(User user);
+
+	public int insertAdminUser(User user);
 }

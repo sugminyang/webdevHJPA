@@ -444,4 +444,24 @@ public class UserServiceImpl implements UserService {
 		userDao.saveTotalHolyWarning(student);		
 	}
 
+	@Override
+	public List<User> getAdminUserAll() {
+		return userDao.getAdminUserAll();
+	}
+
+	@Override
+	public int adminUserRemove(User user) {
+		return userDao.adminUserRemove(user);
+	}
+
+	@Override
+	public int updateAdminUser(User user) {
+		return userDao.updateAdminUser(user);
+	}
+
+	@Override
+	public int insertAdminUser(User user) {
+		return userDao.insertAdminUser(user);
+	}
+
 }

@@ -89,4 +89,12 @@ public interface UserService {
 
 	public void saveTotalHolyWarning(Student student);
 
+	public List<User> getAdminUserAll();
+
+	public int adminUserRemove(User user);
+
+	public int updateAdminUser(User user);
+
+	public int insertAdminUser(User user);
+
 }

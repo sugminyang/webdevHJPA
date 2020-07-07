@@ -281,4 +281,31 @@
 		where pid = #{pid};
 	</update>
 	
+	<select id="getAdminUserAll" resultType="UserVO">
+		select * from Users where authority = 2;
+	</select>
+	
+	
+	<delete id="adminUserRemove" parameterType="UserVO">
+		delete
+		from Users
+		where pid = #{pid};
+	</delete>
+	
+	
+	<update id="updateAdminUser" parameterType="UserVO">
+		update Users
+		set
+			password = #{password},
+			id = #{id}
+		where
+			pid = #{pid};
+	</update>
+	
+	
+	<insert id="insertAdminUser" useGeneratedKeys="true" keyProperty="pid" parameterType="UserVO" >
+		insert 
+		into Users(pid,id,password,authority)
+		values(#{pid},#{id},#{password},2);
+	</insert>
 </mapper>

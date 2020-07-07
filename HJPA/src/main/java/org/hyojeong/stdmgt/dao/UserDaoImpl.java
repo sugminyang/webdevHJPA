@@ -48,7 +48,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public List<Student> getStudentAll() {
-		System.out.println("DAO - Enter a getStudentAll()");
+//		System.out.println("DAO - Enter a getStudentAll()");
 		return sqlSession.selectList(Namespace+".getStudentAll");
 	}
 
@@ -251,6 +251,26 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public int updateAllItemsStudentInfo(Student originStudent) {
 		return sqlSession.update(Namespace+".updateAllItemsStudentInfo",originStudent);
+	}
+
+	@Override
+	public List<User> getAdminUserAll() {
+		return sqlSession.selectList(Namespace+".getAdminUserAll");
+	}
+
+	@Override
+	public int adminUserRemove(User user) {
+		return sqlSession.delete(Namespace+".adminUserRemove",user);
+	}
+
+	@Override
+	public int updateAdminUser(User user) {
+		return sqlSession.delete(Namespace+".updateAdminUser",user);
+	}
+
+	@Override
+	public int insertAdminUser(User user) {
+		return sqlSession.insert(Namespace+".insertAdminUser",user);
 	}
 
 
