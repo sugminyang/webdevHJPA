@@ -115,15 +115,22 @@ public class HomeController {
 			return "redirect:/";
 		}
 		
-		System.out.println("searchStudent...");
-		System.out.println(filterJSON);
+//		System.out.println("searchStudent...");
+//		System.out.println(filterJSON);
 
 		String[] items = filterJSON.split("!@#");
 		String category = items[0];
 		String value = items[1];
 		
-		List<Student> voList = userService.searchStudents(category,value);
-		System.out.println(voList);
+		List<Student> voList = null;
+		if(value.trim().length() == 0)	{
+			voList = userService.getStudentAll();
+		}
+		else	{
+			voList = userService.searchStudents(category,value);
+		}
+		
+//		System.out.println(voList);
 		
 		JSONArray jsonArray = null;
 		

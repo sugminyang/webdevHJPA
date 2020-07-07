@@ -56,7 +56,7 @@
       				</c:when>
       				<c:when test="${sessionScope.auth == 2}">
       					<a class="btn btn-primary" href="/search">학생 정보 검색</a>
-      					<a class="btn btn-primary" href="/search_domestic">국내학생 정보 검색</a>
+      					<!-- <a class="btn btn-primary" href="/search_domestic">국내학생 정보 검색</a> -->
       					<a class="btn btn-primary" href="/">관리자 모드</a>
       				</c:when>      				
       				<c:otherwise>
@@ -283,10 +283,14 @@
         
         function search() {
 			var deliminator = "!@#";
-    		
+			var txt = $('#searchText').val();
+			if(txt.length == 0)	{
+				txt = " ";
+			}
+			
 			var sendData = 
 				$('#searchCategory').val() + deliminator
-				+ $('#searchText').val();
+				+ txt;
 			
 			//console.log(sendData)
 			$.ajax({ 
