@@ -31,6 +31,8 @@
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
 	
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
   <!-- Custom styles for this template -->
   <link href="${pageContext.request.contextPath}/resources/css/landing-page.min.css" rel="stylesheet">
 		
@@ -227,6 +229,20 @@
 					});
 				  table.columns.adjust().draw();
 	            });
+	            
+	            
+	            $("#execBtn").click(function() {
+	            	if($("#bulkFile").val() != "")	{
+				      // disable button
+				      $(this).prop("disabled", true);
+				      // add spinner to button
+				      $(this).html(
+				        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...'
+				      );
+				      
+				      $('#submitBtn').trigger("click");
+	            	}
+				});
 			}); 
 	</script>
 </head>
@@ -284,6 +300,21 @@
 			<button id="addRow_adminUserInfo">Add new row</button>
 			<div class="table table-bordered table-hover dataTable" id="adminUserInfo"></div>
 	    </div>
+	    
+	    <div class="row">
+	  		<b>학생 이력 정보 일괄 삽입</b>
+	  	</div>
+	  	<div class="row">
+	  		<form action="/uploadBulkFile" enctype="multipart/form-data" method="POST">
+				<input id="bulkFile" type="file" name="file" accept=".txt">
+				<input id="submitBtn" type="submit" hidden="true"> 
+				<button type="button" id="execBtn" class="btn btn-primary mb-2">입력 실행</button>
+			</form>
+	  	</div>
+	  	
+	  	
+
+     	  	
   </div>
 
   <!-- Footer -->

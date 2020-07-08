@@ -15,6 +15,5 @@
             <typeAlias type="org.hyojeong.stdmgt.model.ConsultHistory" alias="ConsultHistoryVO"/>
             <typeAlias type="org.hyojeong.stdmgt.model.AbsenceHistory" alias="AbsenceHistoryVO"/>
             <typeAlias type="org.hyojeong.stdmgt.model.GrantHistory" alias="GrantHistoryVO"/>
-            
         </typeAliases>
     </configuration>

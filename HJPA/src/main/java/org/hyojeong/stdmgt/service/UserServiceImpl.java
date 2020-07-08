@@ -1,5 +1,9 @@
 package org.hyojeong.stdmgt.service;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -363,11 +367,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int updateHolyHistory(HolyHistory hHis) {
 		if(hHis.getTid() == 0)	{	//new history
-			System.out.println("insert new Awards history");
+			System.out.println("insert new Holy history");
 			return userDao.insertHolyHistory(hHis);
 		}
 		else	{
-			System.out.println("update Awards history");
+			System.out.println("update Holy history");
 			return userDao.updateHolyHistory(hHis);
 		}
 	}
@@ -462,6 +466,108 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int insertAdminUser(User user) {
 		return userDao.insertAdminUser(user);
+	}
+
+	@Override
+	public void bulkInsertStudentHistory(String absolutePath) {
+		System.out.println("bulkInsertStudentHistory>> " + absolutePath);
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(absolutePath));
+			
+			String line = "";
+			boolean header = true;
+			//tab 기준으로 split
+//			0: 학번, 1: 학기	
+//			2: 이수학점, 3: 성적	
+//			4: 경고_성적, 5: 경고_신앙
+//			6: 신앙_훈독회, 7: 신앙_예배
+//			8: 장학금_효정, 9: 장학금_교내
+//			10: 기타장학금, 11: 등록금
+			String prevSnoUniv = "";
+			while((line = reader.readLine()) != null)	{
+				if(header)	{
+					header = false;
+					continue;
+				}
+				
+				
+				String[] items = line.split("\t");
+				if(items.length != 12)	
+					continue;
+
+				System.out.println(line);
+				//StudentInfo table에서 pid를 찾기. sno_univ(대학 학번)이 없으면 회원가입이 안됨.
+				String sno_univ = items[0];
+				
+				//회원가입 안된 학생인지 체크해서불필요한 query실행을 막
+				if(prevSnoUniv.equalsIgnoreCase(sno_univ))	{
+					continue;
+				}
+					
+				List<Student> student = userDao.getPidWithSnoUniv(sno_univ);
+				
+				if(student.size() == 0 || student == null)	{
+					System.out.println("[skip]회원가입이 안된 학생: " + sno_univ);
+					prevSnoUniv = sno_univ;
+				}
+				else	{ //회원 가입이 완료된 학생
+//					System.out.println(student.get(0).getPid());
+//					0: 학번, 1: 학기	
+//					2: 이수학점, 3: 성적	
+//					4: 경고_성적,
+					int pid = student.get(0).getPid();
+					String semester = items[1];
+					int credit = 0;
+					if(items[2].trim().length() != 0)	{//비어 있음
+						credit = Integer.parseInt(items[2]);	
+					}
+					String degree = items[3];
+					int warnings = 0;
+					if(items[4].trim().length() != 0)	{//비어 있음
+						warnings = Integer.parseInt(items[4]);	
+					}
+					  
+					//학적 이력 정보 추가					
+					GradeHistory gHis = new GradeHistory(0,pid,semester,credit,degree,warnings);
+					updateGradeHistory(gHis);
+					
+					//신앙 이력 정보 추가
+//					1: 학기, 5: 경고_신앙
+//					6: 신앙_훈독회, 7: 신앙_예배
+					String reading_session = items[6];
+					String Worship = items[7];
+					int warnings_holy = 0;
+					if(items[5].trim().length() != 0)	{//비어 있음
+						warnings_holy = Integer.parseInt(items[5]);	
+					}
+					
+					HolyHistory hHis = new HolyHistory(pid, semester, reading_session, Worship, warnings_holy, 0);
+					updateHolyHistory(hHis);
+					
+					//장학 이력 정보 추가 
+//					1: 학기,
+//					8: 장학금_효정, 9: 장학금_교내
+//					10: 기타장학금, 11: 등록금
+					
+					String grant_hyojung = items[8];
+					String grant_sunmoon = items[9];
+					String grant_other = items[10];
+					String tuitionfee = items[11];
+					
+					GrantHistory grantHis = new GrantHistory(pid, semester, grant_hyojung, grant_sunmoon, grant_other, tuitionfee, 0);
+					updateGrantHistory(grantHis);
+					
+				}
+			}
+			
+			reader.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 }

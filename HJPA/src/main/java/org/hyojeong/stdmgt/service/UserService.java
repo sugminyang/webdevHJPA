@@ -97,4 +97,6 @@ public interface UserService {
 
 	public int insertAdminUser(User user);
 
+	public void bulkInsertStudentHistory(String absolutePath);
+
 }

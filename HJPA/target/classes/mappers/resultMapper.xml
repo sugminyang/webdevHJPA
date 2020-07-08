@@ -90,7 +90,7 @@
 	</update>
 	
 	<insert id="insertNewGradeHistory" useGeneratedKeys="true" keyProperty="tid" parameterType="GradeHistoryVO" >
-		insert 
+		insert ignore
 		into gradeHistory(pid,semester,credit,degree,warnings,modifiedBy)
 		values(#{pid},#{semester},#{credit},#{degree},#{warnings},#{modifiedBy});
 	</insert>
@@ -165,7 +165,7 @@
 	
 	
 	<insert id="insertHolyHistory" useGeneratedKeys="true" keyProperty="tid" parameterType="HolyHistoryVO" >
-		insert 
+		insert ignore
 		holyHistory(pid,semester,reading_session,Worship,warnings,modifiedBy)
 		values(#{pid},#{semester},#{reading_session},#{Worship},#{warnings},#{modifiedBy});
 	</insert>
@@ -232,7 +232,7 @@
 		where pid = #{pid} and tid = #{tid};
 	</delete>
 	<insert id="insertGrantHistory" useGeneratedKeys="true" keyProperty="tid" parameterType="GrantHistoryVO" >
-		insert 
+		insert ignore
 		grantHistory(pid,semester,grant_hyojung,grant_sunmoon,grant_other,tuitionfee,modifiedBy)
 		values(#{pid},#{semester},#{grant_hyojung},#{grant_sunmoon},#{grant_other},#{tuitionfee},#{modifiedBy});
 	</insert>
@@ -308,4 +308,13 @@
 		into Users(pid,id,password,authority)
 		values(#{pid},#{id},#{password},2);
 	</insert>
+	
+	
+	<!-- bulk student data insert -->
+	
+	<select id="getPidWithSnoUniv" resultType="StudentVO" parameterType="string">
+		select *
+		from StudentInfo 
+		where sno_univ = #{sno_univ}
+	</select>
 </mapper>

@@ -107,4 +107,6 @@ public interface UserDao {
 	public int updateAdminUser(User user);
 
 	public int insertAdminUser(User user);
+
+	public List<Student> getPidWithSnoUniv(String sno_univ);
 }

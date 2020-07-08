@@ -273,6 +273,11 @@ public class UserDaoImpl implements UserDao {
 		return sqlSession.insert(Namespace+".insertAdminUser",user);
 	}
 
+	@Override
+	public List<Student> getPidWithSnoUniv(String sno_univ) {
+		return sqlSession.selectList(Namespace+".getPidWithSnoUniv",sno_univ);
+	}
+
 
 
 

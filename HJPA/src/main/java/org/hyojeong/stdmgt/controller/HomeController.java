@@ -201,24 +201,24 @@ public class HomeController {
 				model.addAttribute("semesterInfo", jsonArray);
 				
 
-				if(student.getTotalCredit() == 0)	{ // 이수학점을 처음으로 계산하는 학생
+//				if(student.getTotalCredit() == 0)	{ // 이수학점을 처음으로 계산하는 학생
 					//총 이수학점 정보
 					for(GradeHistory vo : gradeHistoryList)	{
 						totalCredit += vo.getCredit();
 					}
-					
+	
 					//총 이수학점 데이터 저장.	 
 					student.setTotalCredit(totalCredit);
 					userService.saveTotalCredit(student);
-					
+	
 					mav.addObject("totalCredit",totalCredit);
-				}
-				else { // 이전에 기록이 있는 학생
-					mav.addObject("totalCredit",student.getTotalCredit());
-				}
+//				}
+//				else { // 이전에 기록이 있는 학생
+//					mav.addObject("totalCredit",student.getTotalCredit());
+//				}
 				
 				int totalGradeWarning = 0;
-				if(student.getTotalGradeWarning() == 0)	{ // 성적 경고을 처음으로 계산하는 학생
+//				if(student.getTotalGradeWarning() == 0)	{ // 성적 경고을 처음으로 계산하는 학생
 					//총 성적 경고 정보
 					for(GradeHistory vo : gradeHistoryList)	{
 						totalGradeWarning += vo.getWarnings();
@@ -227,7 +227,7 @@ public class HomeController {
 					//총 성적 경고 데이터 저장.	 
 					student.setTotalGradeWarning(totalGradeWarning);
 					userService.saveTotalGradeWarning(student);
-				}
+//				}
 			}
 			else	{
 				mav.addObject("totalCredit",totalCredit);
@@ -243,7 +243,7 @@ public class HomeController {
 				
 				
 				int totalHolyWarning = 0;
-				if(student.getTotalHolyWarning() == 0)	{ // 신앙 경고를 처음으로 계산하는 학생
+//				if(student.getTotalHolyWarning() == 0)	{ // 신앙 경고를 처음으로 계산하는 학생
 					//총 신앙 경고 정보
 					for(HolyHistory vo : holyHistoryList)	{
 						totalHolyWarning += vo.getWarnings();
@@ -252,7 +252,7 @@ public class HomeController {
 					//총 신앙 경고 데이터 저장.	 
 					student.setTotalHolyWarning(totalHolyWarning);
 					userService.saveTotalHolyWarning(student);
-				}
+//				}
 			}
 			
 //			프로그램 활동 이력 load
@@ -1099,7 +1099,29 @@ public class HomeController {
 	}
 	
 	
-	
+	@RequestMapping(value = "/uploadBulkFile", method = RequestMethod.POST)
+	public String uploadBulkFile(HttpSession session, HttpServletRequest request, MultipartFile file) throws IOException {
+		System.out.println("Enter....uploadBulkFile");
+		System.out.println("컨텐츠 타입: " + file.getContentType());
+		
+		String uploadPath = "/Users/dean/Documents/etc/project/HJPA/develop/uploadImg/";
+		System.out.println("경로: " + uploadPath);
+
+		UUID uuid = UUID.randomUUID();
+		String savedName = uuid + "_" + file.getOriginalFilename();
+		
+		File target = new File(uploadPath,savedName);
+		System.out.println("File...: "+target.getAbsolutePath());
+		
+		//임시디렉토리에 저장된 업로드된 파일을 지정된 디렉토리로 복사 
+//		FileCopyUtils.copy(file.getBytes(),target);
+		file.transferTo(target);
+		
+		//회원 가입되어 있는 학번에 대한 학생 이력 정보 추가 
+		userService.bulkInsertStudentHistory(target.getAbsolutePath());
+		
+		return "redirect:/adminpage";
+	}
 	
 	
 	@Resource(name="uploadPath")
