@@ -63,9 +63,13 @@
            		width:100%;
            		margin-bottom: 9px;
            	}
-           	.inputLabel{
+           	.inputLabel {
            		width:100%;
            	}
+           	#hjIcon {
+        		border: none;
+    			background: none;
+			}
     </style>
     
 <script type="text/javascript">
@@ -82,9 +86,12 @@
 				document.getElementById("sno_univ").disabled = false
 			}
 		});
-		
+
+		function numberWithCommas(x) {
+		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+
         $(document).ready( function () {        	
-        	
         	
         	$('#create_pdf').click(function() {
         		html2canvas($('#pdf_container')[0]).then(function(canvas) {
@@ -135,7 +142,7 @@
     					+ $('#profile').prop("src") + deliminator + document.querySelector('input[name="sex"]:checked').value + deliminator
     					+ $('#birth').val()+deliminator+$('#nationality').val()+deliminator
     					+ $('#name_kor').val()+deliminator+$('#name_eng').val()+deliminator
-    					+ $('#continent').val()+deliminator+$('#yearOfscholarship').val();
+    					/* + $('#continent').val()+deliminator */+$('#yearOfscholarship').val();
 					
 				//console.log(sendData)
 				$.ajax({ 
@@ -1418,6 +1425,18 @@
         				if(v == 'action')	{
         			        tr.append('<td><i class="fa fa-pencil-square" aria-hidden="true"></i><i class="fa fa-remove" aria-hidden="true"></i></td>')
         				}
+        				else if(v == 'grant_hyojung')	{
+        					tr.append('<td>' + numberWithCommas(b[v]) + '</td>');
+        				}
+        				else if(v == 'grant_sunmoon')	{
+        					tr.append('<td>' + numberWithCommas(b[v]) + '</td>');
+        				}
+        				else if(v == 'grant_other')	{
+        					tr.append('<td>' + numberWithCommas(b[v]) + '</td>');
+        				}
+        				else if(v == 'tuitionfee')	{
+        					tr.append('<td>' + numberWithCommas(b[v]) + '</td>');
+        				}
         				else	{
         					tr.append('<td>' + b[v] + '</td>')
         				}
@@ -1634,11 +1653,12 @@
     		}        	
     		/****************************************************************************/
     		
-    		
-        	if(${sessionScope.auth} == 2) 	{	// 관리자 
+    		//모든 유저에게 uid변경 권한은 없음
+    		document.getElementById("uid").disabled = true
+        	if(${sessionScope.auth} == 2) 	{	// 시스템관리자 
         		
         	}
-        	else if(${sessionScope.auth} == 1)	{	//선생님
+        	else if(${sessionScope.auth} == 1)	{	//관리자
         		
         	}
         	else {	//학생 & 그 이외..
@@ -1655,12 +1675,10 @@
         		document.getElementById("birth").disabled = true
         		
         		//대륙, 국적
-        		document.getElementById("continent").disabled = true
+        		//document.getElementById("continent").disabled = true
         		document.getElementById("nationality").disabled = true
         		
-        		
         		document.getElementById("awardStatus").disabled = true
-
         		document.getElementById("totalCredit").disabled = true
         		
         		//학생은 상담 테이블 안보이게 처리 
@@ -1714,7 +1732,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-light bg-light static-top">
     <div class="container">
-      <a class="navbar-brand" href="/">HyoJeong</a>
+      <a class="navbar-brand" href="/"><button id="hjIcon" type="button" ><img src="${pageContext.request.contextPath}/resources/img/hj_top_logo.png" alt=""></button></a>
       <div class= "float-right">
 	      	<c:choose>
       				<c:when test="${sessionScope.auth == null}">
@@ -1728,7 +1746,7 @@
       				<c:when test="${sessionScope.auth == 2}">
       					<a class="btn btn-primary" href="/search">학생 정보 검색</a>
       					 <!-- <a class="btn btn-primary" href="/search_domestic">국내학생 정보 검색</a> -->
-      					<a class="btn btn-primary" href="/">관리자 모드</a>
+      					<a class="btn btn-primary" href="/adminpage">관리자 모드</a>
       				</c:when>      				
       				<c:otherwise>
       					alert('authority is unknown..')
@@ -1761,6 +1779,7 @@
 	        	<h3 class="page-header">기본 정보</h3>
 	        </div>
 	        <div class="col-sm-6" style="text-align: right;">
+	        	<button><a href="/updatepassword">비밀번호 변경</a></button>
 		        <button id="create_pdf">학생 정보 내보내기</button>
 	        	<button id="btnUpdate" name="register">정보 수정</button> 
 	        </div>
@@ -1866,11 +1885,19 @@
 		<div class="row sinfo">
 			<div class="row col-sm-12">
 				<div class="col-sm-3">
+					<label>id:</label>
+				</div>
+				<div class="col-sm-3">
+					<input class="inputLabel" name="uid" id="uid" value="${uid}">
+				</div>
+				<div class="col-sm-3">
 					<label>birth:</label>
 				</div>
 				<div class="col-sm-3">
 					<input class="inputLabel" name="birth" id="birth" value="${student.birth}">
 				</div>
+			</div>
+			<div class="row col-sm-12">
 				<div class="col-sm-3">
 					<label>sex:</label>
 				</div>
@@ -1880,23 +1907,7 @@
 					<input type="radio" id="female" name="sex" value="female">
 					<label for="female">Female</label><br>
 				</div>
-			</div>
-			<div class="row col-sm-12">
-				<div class="col-sm-3">
-					<label >continent:</label>
-				</div>
 				
-				<div class="col-sm-3">
-						<select name="continent" id="continent">
-							<option value="Asia">Asia</option>
-							<option value="Africa">Africa</option>
-							<option value="North America">North America</option>
-							<option value="South America">South America</option>
-							<option value="Antarctica">Antarctica</option>
-							<option value="Europe">Europe</option>
-							<option value="Australia">Australia</option>
-						</select>
-				</div>
 				<div class="col-sm-3">
 					<label >nationality:</label>
 				</div>
@@ -1951,7 +1962,7 @@
 					</select>
 				</div>
 				<div class="col-sm-3">
-					<label >id:</label>
+					<label >sns id:</label>
 				</div>
 				<div class="col-sm-3">
 					<input class="inputLabel" name="sns_id" id="sns_id" value="${student.sns_id}">

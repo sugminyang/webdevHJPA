@@ -40,13 +40,7 @@ public class LoginController {
 			mav = new ModelAndView("home");
 			mav.addObject("authority",user.getAuthority());
 			
-			Student student = userService.getStudent(user.getPid());
-			if(student != null)	{
-				mav.addObject("student", student);
-			}
-			else	{
-				mav.addObject("student", new Student());
-			}
+			mav.addObject("student", new Student());
 			
 		} else {
 			mav = new ModelAndView("login");

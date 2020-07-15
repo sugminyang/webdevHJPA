@@ -35,7 +35,13 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
   <!-- Custom styles for this template -->
   <link href="${pageContext.request.contextPath}/resources/css/landing-page.min.css" rel="stylesheet">
-		
+		<style>
+		#hjIcon {
+        	border: none;
+    		background: none;
+		}
+	</style>
+	
 	<script type="text/javascript">
 			$(document).ready(function() { 
 				data = ${adminUserInfo}
@@ -243,6 +249,32 @@
 				      $('#submitBtn').trigger("click");
 	            	}
 				});
+	            
+	            
+	            $("#pwClear").click(function() {
+	            	var editData = "@!id:"+$("#id").val();
+					  
+					  //console.log(editData);
+					  
+					  $.ajax({ 
+							data :  editData,
+							type : "POST", 
+							contentType:"application/json;charset=UTF-8",
+							url : "/changepassword", 
+							success : function(data) { 
+								if(data != 0)	{
+									alert("비밀번호가 초기화되었습니다.");
+								}
+								else	{
+									alert("비밀번호가 초기화를 실패하였습니다.");
+								}
+							}, 
+							error : function(data) { 
+								alert("error: 비밀번호가 초기화를 실패하였습니다."); 
+							} 
+						});
+				});
+	            
 			}); 
 	</script>
 </head>
@@ -252,7 +284,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-light bg-light static-top">
     <div class="container">
-      <a class="navbar-brand" href="/">HyoJeong</a>
+      <a class="navbar-brand" href="/"><button id="hjIcon" type="button" ><img src="${pageContext.request.contextPath}/resources/img/hj_top_logo.png" alt=""></button></a>
       <div class= "float-right">
 	      	<c:choose>
       				<c:when test="${sessionScope.auth == null}">
@@ -292,6 +324,7 @@
 		<div class="col-lg-12" align="center">
 	        <h3 class="page-header">system admin page</h3>
 	    </div>
+	  	</br>
 	  	
 	  	<div class="row">
 	  		<b>관리자 계정 생성</b>
@@ -300,6 +333,7 @@
 			<button id="addRow_adminUserInfo">Add new row</button>
 			<div class="table table-bordered table-hover dataTable" id="adminUserInfo"></div>
 	    </div>
+	    </br>
 	    
 	    <div class="row">
 	  		<b>학생 이력 정보 일괄 삽입</b>
@@ -311,9 +345,17 @@
 				<button type="button" id="execBtn" class="btn btn-primary mb-2">입력 실행</button>
 			</form>
 	  	</div>
+	  	</br>
 	  	
-	  	
-
+     	<div class="row">
+	  		<b>학생 계정 비밀번호 변경</b>
+	  	</div>
+		<div class="row">
+			<label>아이디: </label> 
+			<input class="col-sd-3" id="id" name="id" name="file">
+			<button type="button" id="pwClear" class="btn btn-primary mb-2">비밀번호 초기화</button>
+		</div>
+		</br>
      	  	
   </div>
 

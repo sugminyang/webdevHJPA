@@ -191,7 +191,7 @@ public class Student {
 			String awardStatus, String email, String phone, String college, 
 			String dept, String snsType, String sns_id, String address,
 			String profile, String sex, String birth, String nationality, 
-			String name_kor, String name_eng, String continent, String yearOfscholarship) {
+			String name_kor, String name_eng, String yearOfscholarship) {
 		super();
 		this.email = email;
 		this.phone = phone;
@@ -211,7 +211,6 @@ public class Student {
 		this.nationality = nationality;
 		this.name_kor = name_kor;
 		this.name_eng = name_eng;
-		this.continent = continent;
 		this.yearOfscholarship = yearOfscholarship;
 	}
 	

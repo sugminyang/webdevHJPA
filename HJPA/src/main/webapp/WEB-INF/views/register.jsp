@@ -1,22 +1,34 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head> 
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Login</title>
-  <!-- Bootstrap core CSS -->
-  <link href="${pageContext.request.contextPath}/resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap core CSS -->
+<link
+	href="${pageContext.request.contextPath}/resources/vendor/bootstrap/css/bootstrap.min.css"
+	rel="stylesheet">
 
-  <!-- Custom fonts for this template -->
-  <link href="${pageContext.request.contextPath}/resources/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
-  <link href="${pageContext.request.contextPath}/resources/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+<!-- Custom fonts for this template -->
+<link
+	href="${pageContext.request.contextPath}/resources/vendor/fontawesome-free/css/all.min.css"
+	rel="stylesheet">
+<link
+	href="${pageContext.request.contextPath}/resources/vendor/simple-line-icons/css/simple-line-icons.css"
+	rel="stylesheet" type="text/css">
+<link
+	href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic"
+	rel="stylesheet" type="text/css">
 
-  <!-- Custom styles for this template -->
-  <link href="${pageContext.request.contextPath}/resources/css/landing-page.min.css" rel="stylesheet">
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
+<!-- Custom styles for this template -->
+<link
+	href="${pageContext.request.contextPath}/resources/css/landing-page.min.css"
+	rel="stylesheet">
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 <script type="text/javascript">
 	$(document).on('click', 'input[name="registerGroup"]', function() {
 		if (document.getElementById("btnKorEdu").checked == true) {
@@ -48,7 +60,7 @@
 
 		//초기 dept는 인문사회대학교
 		itemChange()
-		
+
 		$("#register").on("click", function() {
 			if ($("#id").val() == "") {
 				alert("아이디를 입력해주세요.");
@@ -202,161 +214,155 @@
 		}
 	}
 </script>
+<style>
+#hjIcon {
+	border: none;
+	background: none;
+}
+</style>
 </head>
-<body> 
+<body>
 
 	<!-- Navigation -->
 	<nav class="navbar navbar-light bg-light static-top">
 	<div class="container">
-		<a class="navbar-brand" href="/">HyoJeong</a>
+		<a class="navbar-brand" href="/"><button id="hjIcon" type="button">
+				<img
+					src="${pageContext.request.contextPath}/resources/img/hj_top_logo.png"
+					alt="">
+			</button></a>
 		<div class="float-right">
-			<a class="btn btn-primary" href="register">Register</a> 
-			<a class="btn btn-primary" id="loginBtn" href="login">Sign In</a>
+			<a class="btn btn-primary" href="register">Register</a> <a
+				class="btn btn-primary" id="loginBtn" href="login">Sign In</a>
 		</div>
 	</div>
 	</nav>
-	<form id="regForm" action="/registerProcess" method="post"> 
-		<table align="center">
-			<tr>
-				<td align="center"><label >Register classification</label></td>
-				<td align="center">
-					<input type="radio" name="registerGroup" id="btnFstudent" value="대학교학생" checked="checked"/>
-					<label for="btnFstudent">대학교학생</label>
-				<td align="center">
-					<input type="radio" name="registerGroup" id="btnKorEdu" value="한교원학생"/>
-					<label for="btnKorEdu">한교원학생</label>
-				</td>
-			</tr>
-			<tr>
-				<td><label>id</label></td>
-				<td><input name="id" id="id" /></td>
-				<td><input type="button" value="중복 확인" id="idChk" onclick="fn_idChk();"/></td>
-				<td><input type="hidden" id="idChkBox"value="N"/></td>
-			</tr>
-			<tr>
-				<td><label>Password</label></td>
-				<td><input name="password" type="password" id="password" /></td>
-			</tr>
-			<tr>
-				<td><label>대학교 학번</label></td>
-				<td><input name="sno_univ" id="sno_univ" /></td>
-			</tr>	
-			<tr>
-				<td><label>한교원 학번</label></td>
-				<td><input name="sno_acad" id="sno_acad" /></td>
-			</tr>						
-			<tr>
-				<td><label>name_kor</label></td>
-				<td><input name="name_kor" id="name_kor" /></td>
-				<td style="text-align: center;">
-					<label style="font-style: italic; color: red;">외국인 등록증 기준</label>
-				</td>
-			</tr>
-			<tr>
-				<td><label >name_eng</label></td>
-				<td><input name="name_eng" id="name_eng" /></td>
-				<td style="text-align: center;">
-					<label style="font-style: italic; color: red;">외국인 등록증 기준</label>
-				</td>
-			</tr>			
-			<tr>
-				<td><label>Email</label></td>
-				<td><input name="email" id="email" /></td>
-			</tr>
-			<tr>
-				<td><label>Address</label></td>
-				<td><input name="address" id="address" /></td>
-				<td style="text-align: center;">
-					<label style="font-style: italic; color: red;">parent’s address</label>
-				</td>
-			</tr>
-			<tr>
-				<td><label>birthday</label></td>
-				<td><input name="birth" id="birth" placeholder="901124"/></td>
-			</tr>
-			<tr>
-				<td><label >nationality</label></td>
-				<td>
-				    <select name="continent" id="continent">
-				        <option value="Asia">Asia</option>
-				        <option value="Africa">Africa</option>
-				        <option value="North America">North America</option>
-				        <option value="South America">South America</option>
-				        <option value="Antarctica">Antarctica</option>
-				        <option value="Europe">Europe</option>
-				        <option value="Australia">Australia</option>
-					</select>
-				</td>   
-				<td>
-					<input name="nationality" id="nationality" />
-				</td>
-			</tr>	
-			<tr>
-				<td><label >phone</label></td>
-				<td><input name="phone" id="phone" placeholder="01011112222"/></td>
-				<td style="text-align: center;">
-					<label style="font-style: italic; color: red;">휴대폰이 없을 시 '휴대폰 없음'입력</label>
-				</td>
-			</tr>				
-			<tr>
-				<td align="left">
-					<label>sns</label>
-				</td>
-				<td>
-				    <select name="snsType" id="snsType">
-				        <option value="kakotalk">kakotalk</option>
-				        <option value="Line">Line</option>
-					</select>
-				</td>    
-				<td align="center">   
-				    <input name="sns_id" id="sns_id">
-			    </td>
-			    <td style="text-align: center;">
-			    	<label style="font-style: italic; color: red;">'kakaotalk'권장</label>
-			    </td>
-			</tr>	
-			<tr>
-				<td><label >gender</label></td>
-				<td align="center">
-					<input type="radio" id="male" name="sex" value="male" checked="checked" >
-					<label for="male">Male</label></td>
-				<td align="center">
-					<input type="radio" id="female" name="sex" value="female">
-					<label for="female">Female</label><br>
-				</td>
-			</tr>
-			<tr>
-				<td align="left">
-					<label>department</label>
-				</td>
-				<td>
-				    <select name="college" id="college" onchange="itemChange()">
-				        <option value="인문사회대학">인문사회대학</option>
-				        <option value="글로벌비즈니스대학">글로벌비즈니스대학</option>
-				        <option value="신학순결대학">신학순결대학</option>
-				        <option value="건강보건대학">건강보건대학</option>
-				        <option value="공과대학">공과대학</option>
-				        <option value="SW융합대학">SW융합대학</option>
-				        
-					</select>
-				</td> 
-				<td>
-					<select name="dept" id="dept">
-					</select>
-				</td>
-			<tr>
-			</tr>	    
-			<tr>
-				<td></td>
-				<td><button id="register" name="register">Register</button></td>
-				<td><button id="cancel" name="cancel">Cancel</button></td>
-			</tr>
-		</table>
-		
-		
-	</form>
-  <!-- Bootstrap core JavaScript -->
-  <script src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
-  <script src="${pageContext.request.contextPath}/resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<div class="card">
+					<div class="card-header" align="center">Register</div>
+					<form id="regForm" action="/registerProcess" method="post">
+						<table align="center">
+							<tr>
+								<td align="center"><label>Register classification</label></td>
+								<td align="center"><input type="radio" name="registerGroup"
+									id="btnFstudent" value="대학교학생" checked="checked" /> <label
+									for="btnFstudent">대학교학생</label>
+								<td align="center"><input type="radio" name="registerGroup"
+									id="btnKorEdu" value="한교원학생" /> <label for="btnKorEdu">한교원학생</label>
+								</td>
+							</tr>
+							<tr>
+								<td><label>id</label></td>
+								<td><input name="id" id="id" /></td>
+								<td><input type="button" value="중복 확인" id="idChk"
+									onclick="fn_idChk();" /></td>
+								<td><input type="hidden" id="idChkBox" value="N" /></td>
+							</tr>
+							<tr>
+								<td><label>Password</label></td>
+								<td><input name="password" type="password" id="password" /></td>
+							</tr>
+							<tr>
+								<td><label>대학교 학번</label></td>
+								<td><input name="sno_univ" id="sno_univ" /></td>
+							</tr>
+							<tr>
+								<td><label>한교원 학번</label></td>
+								<td><input name="sno_acad" id="sno_acad" /></td>
+							</tr>
+							<tr>
+								<td><label>name_kor</label></td>
+								<td><input name="name_kor" id="name_kor" /></td>
+								<td style="text-align: center;"><label
+									style="font-style: italic; color: red;">외국인 등록증 기준</label></td>
+							</tr>
+							<tr>
+								<td><label>name_eng</label></td>
+								<td><input name="name_eng" id="name_eng" /></td>
+								<td style="text-align: center;"><label
+									style="font-style: italic; color: red;">외국인 등록증 기준</label></td>
+							</tr>
+							<tr>
+								<td><label>Email</label></td>
+								<td><input name="email" id="email" /></td>
+							</tr>
+							<tr>
+								<td><label>Address</label></td>
+								<td><input name="address" id="address" /></td>
+								<td style="text-align: center;"><label
+									style="font-style: italic; color: red;">parent’s address</label>
+								</td>
+							</tr>
+							<tr>
+								<td><label>birthday</label></td>
+								<td><input name="birth" id="birth" placeholder="901124" /></td>
+							</tr>
+							<tr>
+								<td><label>nationality</label></td>
+								<td><input name="nationality" id="nationality" /></td>
+							</tr>
+							<tr>
+								<td><label>phone</label></td>
+								<td><input name="phone" id="phone" placeholder="01011112222" /></td>
+								<td style="text-align: center;"><label
+									style="font-style: italic; color: red;">휴대폰이 없을 시 '휴대폰
+										없음'입력</label></td>
+							</tr>
+							<tr>
+								<td align="left"><label>sns</label></td>
+								<td><select name="snsType" id="snsType">
+										<option value="kakotalk">kakotalk</option>
+										<option value="Line">Line</option>
+								</select></td>
+								<td align="center"><input name="sns_id" id="sns_id">
+								</td>
+								<td style="text-align: center;"><label
+									style="font-style: italic; color: red;">'kakaotalk'권장</label></td>
+							</tr>
+							<tr>
+								<td><label>gender</label></td>
+								<td align="center"><input type="radio" id="male" name="sex"
+									value="male" checked="checked"> <label for="male">Male</label></td>
+								<td align="center"><input type="radio" id="female"
+									name="sex" value="female"> <label for="female">Female</label><br>
+								</td>
+							</tr>
+							<tr>
+								<td align="left"><label>department</label></td>
+								<td><select name="college" id="college"
+									onchange="itemChange()">
+										<option value="인문사회대학">인문사회대학</option>
+										<option value="글로벌비즈니스대학">글로벌비즈니스대학</option>
+										<option value="신학순결대학">신학순결대학</option>
+										<option value="건강보건대학">건강보건대학</option>
+										<option value="공과대학">공과대학</option>
+										<option value="SW융합대학">SW융합대학</option>
+	
+								</select></td>
+								<td><select name="dept" id="dept">
+								</select></td>
+							</tr>
+							
+							<tr>
+							</tr>
+							
+							<tr>
+								<td></td>
+								<td><button id="register" name="register">Register</button></td>
+								<td><button id="cancel" name="cancel">Cancel</button></td>
+							</tr>
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<!-- Bootstrap core JavaScript -->
+<script src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

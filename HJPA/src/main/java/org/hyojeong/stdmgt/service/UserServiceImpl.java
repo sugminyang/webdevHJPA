@@ -223,10 +223,10 @@ public class UserServiceImpl implements UserService {
 		}
 		
 //		대륙
-		if(!updateStudentInfo.getContinent().equalsIgnoreCase(originStudent.getContinent()))	{
-			updatedList += "대륙,";
-			originStudent.setContinent(updateStudentInfo.getContinent());
-		}
+//		if(!updateStudentInfo.getContinent().equalsIgnoreCase(originStudent.getContinent()))	{
+//			updatedList += "대륙,";
+//			originStudent.setContinent(updateStudentInfo.getContinent());
+//		}
 		
 		//마지막 ','제거
 		if(updatedList.length() != 0)	{
@@ -568,6 +568,16 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		
+	}
+
+	@Override
+	public int changepassword(Login vo) {
+		return userDao.changepassword(vo);
+	}
+
+	@Override
+	public User getUserId(int studentPid) {
+		return userDao.getUserId(studentPid);
 	}
 
 }

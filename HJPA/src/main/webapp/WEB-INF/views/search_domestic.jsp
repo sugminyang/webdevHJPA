@@ -38,13 +38,17 @@
             * html .ui-autocomplete {
               height: 100px;
             }
+            #hjIcon {
+        		border: none;
+    			background: none;
+			}
     </style>
 </head>
 <body>
 <!-- Navigation -->
   <nav class="navbar navbar-light bg-light static-top">
     <div class="container">
-      <a class="navbar-brand" href="/">HyoJeong</a>
+      <a class="navbar-brand" href="/"><button id="hjIcon" type="button" ><img src="${pageContext.request.contextPath}/resources/img/hj_top_logo.png" alt=""></button></a>
       <div class= "float-right">
 	      	<c:choose>
       				<c:when test="${sessionScope.auth == null}">

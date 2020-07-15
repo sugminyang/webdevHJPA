@@ -18,6 +18,7 @@ import org.hyojeong.stdmgt.model.ConsultHistory;
 import org.hyojeong.stdmgt.model.GradeHistory;
 import org.hyojeong.stdmgt.model.GrantHistory;
 import org.hyojeong.stdmgt.model.HolyHistory;
+import org.hyojeong.stdmgt.model.Login;
 import org.hyojeong.stdmgt.model.Student;
 import org.hyojeong.stdmgt.model.StudentDomestic;
 import org.hyojeong.stdmgt.model.User;
@@ -26,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -52,6 +54,10 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home() {
 		return "home";
+	}
+	@RequestMapping(value = "/updatepassword", method = RequestMethod.GET)
+	public String updatepassword() {
+		return "updatepassword";
 	}
 	
 	@RequestMapping(value = "/adminpage", method = RequestMethod.GET)
@@ -303,15 +309,8 @@ public class HomeController {
 			mav = new ModelAndView("home");
 		}
 		 
-//		AbsenceHistory test = new AbsenceHistory();
-//		jsonArray = JSONArray.fromObject(test);
-//		model.addAttribute("absenceInfo", jsonArray);
-
-//		GrantHistory temp = new GrantHistory();
-//		jsonArray = JSONArray.fromObject(temp);
-//		model.addAttribute("grantInfo", jsonArray);		
-		
-		
+		User user = userService.getUserId(studentPid);
+		model.addAttribute("uid",user.getId());
 		
 		return mav;
 	}
@@ -335,7 +334,7 @@ public class HomeController {
 //		System.out.println("학생 정보 변경사항: " + items.length);
 		Student updateStdInfo = new Student(items[0], items[1], Integer.parseInt(items[2]),items[3], 
 				items[4], items[5], items[6], items[7], items[8], items[9], items[10],
-				items[11], items[12],items[13], items[14],items[15], items[16],items[17],items[18],items[19]);
+				items[11], items[12],items[13], items[14],items[15], items[16],items[17],items[18]);
 		
 //		System.out.println(updateStdInfo);
 		//학생의 pid 설정
@@ -1121,6 +1120,47 @@ public class HomeController {
 		userService.bulkInsertStudentHistory(target.getAbsolutePath());
 		
 		return "redirect:/adminpage";
+	}
+	
+	@RequestMapping(value = "/changepassword", method = RequestMethod.POST)
+	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
+	public String changepassword(@RequestBody String id, HttpSession session) {
+		System.out.println("changepassword... 학적 정보 수정: ");
+		System.out.println(id);
+		
+		Login vo = new Login();
+		boolean clearPW = true;
+		if(id.contains("@!id:"))	{	//비밀번호 초기화
+			id = id.replace("@!id:", "");
+			vo.setId(id);
+		}
+		else if(id.contains("@!pw:")){	//
+			id = id.replace("@!pw:", "");
+			vo.setId((String)session.getAttribute("id"));
+			vo.setPassword(id);
+			clearPW = false;
+		}
+		
+		System.out.println("changed password: "+vo);
+		
+		int result = -1;
+				
+		if(clearPW)	{ //비밀번호 초기화
+			result = userService.changepassword(vo);
+		}
+		else	{ // 비밀번호 변경
+			System.out.println("비밀번호 새로 변경");
+			result = userService.changepassword(vo);
+		}
+
+		if(result == 1)	{
+			System.out.println("수정 사항이 올바르게 변경되었습니다.");
+		}
+		else	{
+			System.out.println("변경 사항이 올바르지 않습니다.");
+		}
+
+		return vo.getId()+"";
 	}
 	
 	

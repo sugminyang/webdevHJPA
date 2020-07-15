@@ -99,4 +99,8 @@ public interface UserService {
 
 	public void bulkInsertStudentHistory(String absolutePath);
 
+	public int changepassword(Login vo);
+
+	public User getUserId(int studentPid);
+
 }

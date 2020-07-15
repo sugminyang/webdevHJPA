@@ -3,7 +3,7 @@ package org.hyojeong.stdmgt.model;
 public class User {
 	int pid;
 	String id;
-	String password;
+	String password = "0000";
 	String authority; // 0 : student, 1 : teacher, 2 : amdin
 	
 	public User(int pid) {

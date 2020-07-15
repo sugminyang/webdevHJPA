@@ -24,11 +24,12 @@
   <link href="${pageContext.request.contextPath}/resources/css/landing-page.min.css" rel="stylesheet">
 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
-	<script type="text/javascript">
-			$(document).ready(function() { 
-			
-		}); 
-	</script>
+	<style>
+		#hjIcon {
+        	border: none;
+    		background: none;
+		}
+	</style>
 </head>
 
 <body>
@@ -36,7 +37,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-light bg-light static-top">
     <div class="container">
-      <a class="navbar-brand" href="/">HyoJeong</a>
+      <a class="navbar-brand" href="/"><button id="hjIcon" type="button" ><img src="${pageContext.request.contextPath}/resources/img/hj_top_logo.png" alt=""></button></a>
       <div class= "float-right">
 	      	<c:choose>
       				<c:when test="${sessionScope.auth == null}">

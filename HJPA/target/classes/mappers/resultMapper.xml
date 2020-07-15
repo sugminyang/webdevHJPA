@@ -6,8 +6,8 @@
 <mapper namespace="org.hyojeong.stdmgt.mappers.resultMapper">
 
 	<insert id="addStudent" parameterType="StudentVO">
-		insert into StudentInfo(pid,sno_univ,sno_acad,name_kor,name_eng,college,dept,continent,nationality,sex,birth,email,phone,snsType,sns_id,address)
-		values(#{pid},#{sno_univ},#{sno_acad},#{name_kor},#{name_eng},#{college},#{dept},#{continent},#{nationality},#{sex},#{birth},#{email},#{phone},#{snsType},#{sns_id},#{address})
+		insert into StudentInfo(pid,sno_univ,sno_acad,name_kor,name_eng,college,dept,nationality,sex,birth,email,phone,snsType,sns_id,address)
+		values(#{pid},#{sno_univ},#{sno_acad},#{name_kor},#{name_eng},#{college},#{dept},#{nationality},#{sex},#{birth},#{email},#{phone},#{snsType},#{sns_id},#{address})
 	</insert>
 
 	<insert id="register" parameterType="UserVO">
@@ -19,6 +19,13 @@
 			from Users
 			where id = #{id} and password=#{password}
 	</select> 
+	
+	<select id="getUserId" resultType="UserVO" parameterType="int">	 		
+			select * 
+			from Users
+			where pid = #{pid}
+	</select> 
+	
 	
 	<select id="getStudent" resultType="StudentVO"
 		parameterType="int">
@@ -52,7 +59,7 @@
 		email = #{email}, phone = #{phone}, college = #{college}, dept = #{dept},
 	 	snsType = #{snsType}, sns_id = #{sns_id}, address = #{address}, birth = #{birth},
 	 	sex = #{sex}, nationality = #{nationality}, name_eng = #{name_eng}, 
-	 	name_kor = #{name_kor}, continent = #{continent}, yearOfscholarship = #{yearOfscholarship}
+	 	name_kor = #{name_kor}, yearOfscholarship = #{yearOfscholarship}
 		where pid = #{pid};
 	</update>
 
@@ -277,7 +284,7 @@
 		email = #{email}, phone = #{phone}, college = #{college}, dept = #{dept},
 	 	snsType = #{snsType}, sns_id = #{sns_id}, address = #{address}, birth = #{birth},
 	 	sex = #{sex}, nationality = #{nationality}, name_eng = #{name_eng}, 
-	 	name_kor = #{name_kor}, continent = #{continent}, yearOfscholarship = #{yearOfscholarship}
+	 	name_kor = #{name_kor}, yearOfscholarship = #{yearOfscholarship}
 		where pid = #{pid};
 	</update>
 	
@@ -306,7 +313,7 @@
 	<insert id="insertAdminUser" useGeneratedKeys="true" keyProperty="pid" parameterType="UserVO" >
 		insert 
 		into Users(pid,id,password,authority)
-		values(#{pid},#{id},#{password},2);
+		values(#{pid},#{id},#{password},1);
 	</insert>
 	
 	
@@ -317,4 +324,12 @@
 		from StudentInfo 
 		where sno_univ = #{sno_univ}
 	</select>
+	
+	<update id="changepassword" parameterType="LoginVO">
+		update Users
+		set
+			password = #{password}
+		where
+			id = #{id};
+	</update>
 </mapper>

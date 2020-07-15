@@ -109,4 +109,8 @@ public interface UserDao {
 	public int insertAdminUser(User user);
 
 	public List<Student> getPidWithSnoUniv(String sno_univ);
+
+	public int changepassword(Login vo);
+
+	public User getUserId(int studentPid);
 }

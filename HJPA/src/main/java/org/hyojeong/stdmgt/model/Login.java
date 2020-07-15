@@ -3,7 +3,7 @@ package org.hyojeong.stdmgt.model;
 public class Login {
 
 	private String id;
-	private String password;
+	private String password = "0000";
 
 	public String getUsername() {
 		return id;

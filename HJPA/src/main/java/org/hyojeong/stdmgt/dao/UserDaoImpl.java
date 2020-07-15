@@ -40,7 +40,14 @@ public class UserDaoImpl implements UserDao {
 		System.out.println(login);
 		return sqlSession.selectOne(Namespace+".validateUser",login);
 	}
+	
+	@Override
+	public User getUserId(int studentPid) {
+		return sqlSession.selectOne(Namespace+".getUserId",studentPid);
+	}
 
+	
+	
 	@Override
 	public Student getStudent(int pid) {
 		return sqlSession.selectOne(Namespace+".getStudent",pid);
@@ -278,6 +285,12 @@ public class UserDaoImpl implements UserDao {
 		return sqlSession.selectList(Namespace+".getPidWithSnoUniv",sno_univ);
 	}
 
+	@Override
+	public int changepassword(Login vo) {
+		return sqlSession.update(Namespace+".changepassword",vo);
+	}
+
+	
 
 
 
