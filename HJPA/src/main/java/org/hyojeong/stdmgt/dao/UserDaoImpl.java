@@ -15,6 +15,7 @@ import org.hyojeong.stdmgt.model.GradeHistory;
 import org.hyojeong.stdmgt.model.GrantHistory;
 import org.hyojeong.stdmgt.model.HolyHistory;
 import org.hyojeong.stdmgt.model.Login;
+import org.hyojeong.stdmgt.model.Notice;
 import org.hyojeong.stdmgt.model.Student;
 import org.hyojeong.stdmgt.model.UpdateHisory;
 import org.hyojeong.stdmgt.model.User;
@@ -288,6 +289,11 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public int changepassword(Login vo) {
 		return sqlSession.update(Namespace+".changepassword",vo);
+	}
+
+	@Override
+	public List<Notice> getNoticeListAll() {
+		return sqlSession.selectList(Namespace+".getNoticeListAll");
 	}
 
 	

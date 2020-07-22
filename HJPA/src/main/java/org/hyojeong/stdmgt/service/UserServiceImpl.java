@@ -21,6 +21,7 @@ import org.hyojeong.stdmgt.model.GradeHistory;
 import org.hyojeong.stdmgt.model.GrantHistory;
 import org.hyojeong.stdmgt.model.HolyHistory;
 import org.hyojeong.stdmgt.model.Login;
+import org.hyojeong.stdmgt.model.Notice;
 import org.hyojeong.stdmgt.model.Student;
 import org.hyojeong.stdmgt.model.StudentDomestic;
 import org.hyojeong.stdmgt.model.UpdateHisory;
@@ -578,6 +579,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUserId(int studentPid) {
 		return userDao.getUserId(studentPid);
+	}
+
+	@Override
+	public List<Notice> getNoticeListAll() {
+		return userDao.getNoticeListAll();
 	}
 
 }

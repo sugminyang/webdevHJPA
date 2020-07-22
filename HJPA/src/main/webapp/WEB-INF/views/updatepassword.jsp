@@ -65,16 +65,19 @@
       				<c:when test="${sessionScope.auth == null}">
       				</c:when>
       				<c:when test="${sessionScope.auth == 0}">
-      					<a class="btn btn-primary" href="/studentInfo">내 정보 수정</a>   
+      					<a class="btn btn-primary" href="/studentInfo">내 정보 수정</a>
+      					<a class="btn btn-primary" href="/noticeList">공지 사항</a>   
       				</c:when>
       				<c:when test="${sessionScope.auth == 1}">
       					<a class="btn btn-primary" href="/search">학생 정보 검색</a>
+      					<a class="btn btn-primary" href="/noticeList">공지 사항</a>
       				</c:when>
       				<c:when test="${sessionScope.auth == 2}">
       					<a class="btn btn-primary" href="/search">학생 정보 검색</a>
+      					<a class="btn btn-primary" href="/noticeList">공지 사항</a>
       					<!-- <a class="btn btn-primary" href="/search_domestic">국내학생 정보 검색</a> -->
       					<a class="btn btn-primary" href="/adminpage">관리자 모드</a>
-      				</c:when>      				
+      				</c:when>     				
       				<c:otherwise>
       					alert('authority is unknown..')
       				</c:otherwise>

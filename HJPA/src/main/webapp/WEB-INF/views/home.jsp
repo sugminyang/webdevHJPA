@@ -43,13 +43,16 @@
       				<c:when test="${sessionScope.auth == null}">
       				</c:when>
       				<c:when test="${sessionScope.auth == 0}">
-      					<a class="btn btn-primary" href="/studentInfo">내 정보 수정</a>   
+      					<a class="btn btn-primary" href="/studentInfo">내 정보 수정</a>
+      					<a class="btn btn-primary" href="/noticeList">공지 사항</a>   
       				</c:when>
       				<c:when test="${sessionScope.auth == 1}">
       					<a class="btn btn-primary" href="/search">학생 정보 검색</a>
+      					<a class="btn btn-primary" href="/noticeList">공지 사항</a>
       				</c:when>
       				<c:when test="${sessionScope.auth == 2}">
       					<a class="btn btn-primary" href="/search">학생 정보 검색</a>
+      					<a class="btn btn-primary" href="/noticeList">공지 사항</a>
       					<!-- <a class="btn btn-primary" href="/search_domestic">국내학생 정보 검색</a> -->
       					<a class="btn btn-primary" href="/adminpage">관리자 모드</a>
       				</c:when>      				
@@ -97,7 +100,137 @@
     </div>
   </header>
 
-  <!-- Icons Grid -->
+<div class="container">
+		<div class="la_notice">
+			<h2>공지 사항</h2>
+			<style>
+.text_two {
+	zoom: 1;
+	position: relative;
+}
+
+.text_two:after {
+	visibility: hidden;
+	content: "";
+	display: block;
+	clear: both
+}
+
+a.more_latest {
+	position: absolute;
+	right: 0;
+	top: -50px;
+	color: #444;
+	font-size: 12px;
+	letter-spacing: 1px;
+}
+
+.text_two a {
+	text-decoration: none
+}
+
+.text_two .main {
+	margin-top: 20px;
+}
+
+.text_two .main:after {
+	clear: both;
+	display: block;
+	content: '';
+}
+
+.text_two .main>div {
+	width: 100%;
+	font-family: 'malgun gothic';
+}
+
+.text_two .main>div a {
+	color: #000;
+	font-size: 16px;
+	font-weight: 600;
+}
+
+.text_two .main>div span {
+	display: block;
+	font-size: 12px;
+	color: #9f9f9f;
+	margin-top: 7px;
+}
+
+.text_two .main>div p {
+	color: #666;
+	font-size: 13px;
+	margin-top: 2px;
+	line-height: 1.2;
+}
+
+.text_two .sub {
+	
+}
+
+.text_two .sub ul {
+	padding: 0;
+	margin: 0;
+	list-style: none
+}
+
+.text_two .sub ul li {
+	padding: 5px 0;
+	zoom: 1;
+	position: relative;
+	font-family: 'malgun gothic';
+	font-size: 14px;
+}
+
+.text_two .sub ul li a {
+	color: #666;
+}
+
+.text_two .sub ul .fst {
+	padding-top: 20px
+}
+
+.text_two .sub ul li span {
+	position: absolute;
+	right: 0;
+	font-size: 12px;
+	color: #9f9f9f;
+}
+</style>
+			<div class="la_notice">
+				<div class="text_two">
+					<a href='/noticeList' class="more_latest">more</a>
+					<div class="main">
+						<div>
+							<a href="./bbs/board.php?bo_table=41&wr_id=447">[효정평화장학] 2020
+								효정평화장학생 최종 선정자 발…</a> <span class="time">2020-07-16</span>
+							<p>효정평화장학생에 신청해주신 모든 분들께 깊은 감사의 말씀을 전합니다.&nbsp; 아래와 같이 최종
+								선정자를 발표합니다.&nbsp; 문자로도 개별연락을 드렸…</p>
+						</div>
+					</div>
+
+					<div class="sub">
+						<ul>
+							<li class="fst"><a
+								href="./bbs/board.php?bo_table=41&wr_id=446"> [원모장학] 2020
+									인재육성장학 해외부문 서류심사 … <span class="txt_sub">2020-07-14</span>
+							</a></li>
+							<li><a href="./bbs/board.php?bo_table=41&wr_id=445">
+									[효정평화장학] 2020 효정평화장학생 면접대상자 공고 <span class="txt_sub">2020-07-08</span>
+							</a></li>
+							<li><a href="./bbs/board.php?bo_table=41&wr_id=444">
+									[멘토링캠프] '2020 여름 온라인 티앤토멘토링학습캠… <span class="txt_sub">2020-07-02</span>
+							</a></li>
+						</ul>
+					</div>
+				</div>
+				<!-- }  최신글 끝 -->
+			</div>
+	</div>
+</div>
+
+<%-- 
+	<!-- Icons Grid -->
   <section class="features-icons bg-light text-center">
     <div class="container">
       <div class="row">
@@ -161,7 +294,7 @@
   </section>
 
   <!-- Testimonials -->
-  <%-- <section class="testimonials text-center bg-light">
+  <section class="testimonials text-center bg-light">
     <div class="container">
       <h2 class="mb-5">What people are saying...</h2>
       <div class="row">
@@ -188,8 +321,8 @@
         </div>
       </div>
     </div>
-  </section> --%>
-
+  </section>
+ --%>
   <!-- Footer -->
   <footer class="footer bg-light">
     <div class="container">

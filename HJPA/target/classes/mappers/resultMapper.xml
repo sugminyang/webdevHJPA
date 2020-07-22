@@ -289,7 +289,7 @@
 	</update>
 	
 	<select id="getAdminUserAll" resultType="UserVO">
-		select * from Users where authority = 2;
+		select * from Users where authority = 1;
 	</select>
 	
 	
@@ -332,4 +332,11 @@
 		where
 			id = #{id};
 	</update>
+	
+	
+	
+	<select id="getNoticeListAll" resultType="NoticeVO">
+		select * 
+		from push_notice;
+	</select>
 </mapper>

@@ -47,7 +47,7 @@
               height: 100px;
             }
             table {
-        		border: 1px solid #333333;
+        		 border: 1px solid #333333;
             	border-spacing: 5px;
             }
            	div {
@@ -57,7 +57,7 @@
         		font-size: 13px; */
            	}
            	.sinfo	{
-           		border: 1px dashed #bcbcbc;
+           		 border: 1px solid #bcbcbc;
            	}
            	select {
            		width:100%;
@@ -1737,17 +1737,20 @@
 	      	<c:choose>
       				<c:when test="${sessionScope.auth == null}">
       				</c:when>
-      				<c:when test="${sessionScope.auth == 0}">      				
+      				<c:when test="${sessionScope.auth == 0}">
       					<a class="btn btn-primary" href="/studentInfo">내 정보 수정</a>
+      					<a class="btn btn-primary" href="/noticeList">공지 사항</a>   
       				</c:when>
       				<c:when test="${sessionScope.auth == 1}">
       					<a class="btn btn-primary" href="/search">학생 정보 검색</a>
+      					<a class="btn btn-primary" href="/noticeList">공지 사항</a>
       				</c:when>
       				<c:when test="${sessionScope.auth == 2}">
       					<a class="btn btn-primary" href="/search">학생 정보 검색</a>
-      					 <!-- <a class="btn btn-primary" href="/search_domestic">국내학생 정보 검색</a> -->
+      					<a class="btn btn-primary" href="/noticeList">공지 사항</a>
+      					<!-- <a class="btn btn-primary" href="/search_domestic">국내학생 정보 검색</a> -->
       					<a class="btn btn-primary" href="/adminpage">관리자 모드</a>
-      				</c:when>      				
+      				</c:when>       				
       				<c:otherwise>
       					alert('authority is unknown..')
       				</c:otherwise>
@@ -1779,7 +1782,7 @@
 	        	<h3 class="page-header">기본 정보</h3>
 	        </div>
 	        <div class="col-sm-6" style="text-align: right;">
-	        	<button><a href="/updatepassword">비밀번호 변경</a></button>
+	        	<button><a href="/updatepassword" style="color: black;">비밀번호 변경</a></button>
 		        <button id="create_pdf">학생 정보 내보내기</button>
 	        	<button id="btnUpdate" name="register">정보 수정</button> 
 	        </div>

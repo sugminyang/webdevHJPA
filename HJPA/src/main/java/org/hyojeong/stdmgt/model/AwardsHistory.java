@@ -4,7 +4,7 @@ public class AwardsHistory {
 //	pid	year	content	organization	memo	modifiedBy
 //	1	2020	교내 마라톤	대학교	3등	1
 	int pid;
-	int year;
+	String year;
 	String content="";
 	String organization="";
 	String memo="";
@@ -23,10 +23,10 @@ public class AwardsHistory {
 	public void setPid(int pid) {
 		this.pid = pid;
 	}
-	public int getYear() {
+	public String getYear() {
 		return year;
 	}
-	public void setYear(int year) {
+	public void setYear(String year) {
 		this.year = year;
 	}
 	public String getContent() {
@@ -59,7 +59,7 @@ public class AwardsHistory {
 		return "AwardsHistory [pid=" + pid + ", year=" + year + ", content=" + content + ", organization="
 				+ organization + ", memo=" + memo + ", modifiedBy=" + modifiedBy + ", tid=" + tid + "]";
 	}
-	public AwardsHistory(int pid, int tid, int year, String content, String organization, String memo) {
+	public AwardsHistory(int pid, int tid, String year, String content, String organization, String memo) {
 		super();
 		this.pid = pid;
 		this.year = year;

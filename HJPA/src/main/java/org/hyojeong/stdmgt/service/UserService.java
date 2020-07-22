@@ -12,6 +12,7 @@ import org.hyojeong.stdmgt.model.GradeHistory;
 import org.hyojeong.stdmgt.model.GrantHistory;
 import org.hyojeong.stdmgt.model.HolyHistory;
 import org.hyojeong.stdmgt.model.Login;
+import org.hyojeong.stdmgt.model.Notice;
 import org.hyojeong.stdmgt.model.Student;
 import org.hyojeong.stdmgt.model.StudentDomestic;
 import org.hyojeong.stdmgt.model.User;
@@ -102,5 +103,7 @@ public interface UserService {
 	public int changepassword(Login vo);
 
 	public User getUserId(int studentPid);
+
+	public List<Notice> getNoticeListAll();
 
 }

@@ -6,7 +6,7 @@ public class ActiveHistory {
 	int pid;
 	int tid;
 	
-	int year;
+	String year;
 	String content="";
 	String memo="";
 	int modifiedBy;
@@ -24,10 +24,10 @@ public class ActiveHistory {
 	public void setPid(int pid) {
 		this.pid = pid;
 	}
-	public int getYear() {
+	public String getYear() {
 		return year;
 	}
-	public void setYear(int year) {
+	public void setYear(String year) {
 		this.year = year;
 	}
 	public String getContent() {
@@ -58,7 +58,7 @@ public class ActiveHistory {
 	public ActiveHistory() {
 		super();
 	}
-	public ActiveHistory(int pid, int tid, int year, String content, String memo) {
+	public ActiveHistory(int pid, int tid, String year, String content, String memo) {
 		super();
 		this.pid = pid;
 		this.tid = tid;

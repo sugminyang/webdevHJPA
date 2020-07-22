@@ -19,6 +19,7 @@ import org.hyojeong.stdmgt.model.GradeHistory;
 import org.hyojeong.stdmgt.model.GrantHistory;
 import org.hyojeong.stdmgt.model.HolyHistory;
 import org.hyojeong.stdmgt.model.Login;
+import org.hyojeong.stdmgt.model.Notice;
 import org.hyojeong.stdmgt.model.Student;
 import org.hyojeong.stdmgt.model.StudentDomestic;
 import org.hyojeong.stdmgt.model.User;
@@ -27,7 +28,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -437,7 +437,7 @@ public class HomeController {
 		String[] items = filterJSON.split("!@#");
 		System.out.println("학생 정보 변경사항: " + items.length);
 		ActiveHistory aHis = new ActiveHistory(Integer.parseInt(items[4]),Integer.parseInt(items[0]),
-				Integer.parseInt(items[1]), items[2], items[3]);
+				items[1], items[2], items[3]);
 		
 		//학생의 pid 설정
 		String auth = (String) session.getAttribute("auth");
@@ -483,7 +483,7 @@ public class HomeController {
 		
 		String[] items = filterJSON.split("!@#");
 		System.out.println("학생 정보 변경사항: " + items.length);
-		AwardsHistory awHis = new AwardsHistory(Integer.parseInt(items[5]), Integer.parseInt(items[0]), Integer.parseInt(items[1]),
+		AwardsHistory awHis = new AwardsHistory(Integer.parseInt(items[5]), Integer.parseInt(items[0]), items[1],
 				items[2],items[3],items[4]);
 		
 		//학생의 pid 설정
@@ -1123,45 +1123,57 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/changepassword", method = RequestMethod.POST)
-	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
-	public String changepassword(@RequestBody String id, HttpSession session) {
-		System.out.println("changepassword... 학적 정보 수정: ");
-		System.out.println(id);
-		
-		Login vo = new Login();
-		boolean clearPW = true;
-		if(id.contains("@!id:"))	{	//비밀번호 초기화
-			id = id.replace("@!id:", "");
-			vo.setId(id);
-		}
-		else if(id.contains("@!pw:")){	//
-			id = id.replace("@!pw:", "");
-			vo.setId((String)session.getAttribute("id"));
-			vo.setPassword(id);
-			clearPW = false;
-		}
-		
-		System.out.println("changed password: "+vo);
-		
-		int result = -1;
-				
-		if(clearPW)	{ //비밀번호 초기화
-			result = userService.changepassword(vo);
-		}
-		else	{ // 비밀번호 변경
-			System.out.println("비밀번호 새로 변경");
-			result = userService.changepassword(vo);
-		}
+    @ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
+    public String changepassword(@RequestBody String id, HttpSession session) {
+        System.out.println("changepassword... 학적 정보 수정: ");
+        System.out.println(id);
+        
+        Login vo = new Login();
+        boolean clearPW = true;
+        if(id.contains("@!id:"))    {   //비밀번호 초기화
+            id = id.replace("@!id:", "");
+            vo.setId(id);
+        }
+        else if(id.contains("@!pw:")){  //비밀번호 변경
+            id = id.replace("@!pw:", "");
+            
+            String auth = (String) session.getAttribute("auth");
+            int studentPid = -1;
+            
+            if(auth.equalsIgnoreCase("0"))  {   //student이 비밀번호를 변경하는 경우
+                vo.setId((String)session.getAttribute("id"));
+            }
+            else    { //관리자가 비밀번호를 변경하는 경우
+                studentPid = (Integer) session.getAttribute("sid");
+                User uSt = userService.getUserId(studentPid);
+                vo.setId(uSt.getId());
+            }
+            
+            vo.setPassword(id);
+            clearPW = false;
+        }
+        
+        System.out.println("changed password: "+vo);
+        
+        int result = -1;
+                
+        if(clearPW) { //비밀번호 초기화
+            result = userService.changepassword(vo);
+        }
+        else    { // 비밀번호 변경
+            System.out.println("비밀번호 새로 변경");
+            result = userService.changepassword(vo);
+        }
 
-		if(result == 1)	{
-			System.out.println("수정 사항이 올바르게 변경되었습니다.");
-		}
-		else	{
-			System.out.println("변경 사항이 올바르지 않습니다.");
-		}
+        if(result == 1) {
+            System.out.println("수정 사항이 올바르게 변경되었습니다.");
+        }
+        else    {
+            System.out.println("변경 사항이 올바르지 않습니다.");
+        }
 
-		return vo.getId()+"";
-	}
+        return vo.getId()+"";
+    }
 	
 	
 	@Resource(name="uploadPath")
@@ -1206,6 +1218,18 @@ public class HomeController {
 		
 		return "redirect:/studentInfo";
 	}
+	
+	
+	@RequestMapping(value = "/noticeList")
+    public String noticeList(@RequestParam(defaultValue="1") int curPage,Model model) {
+             
+        List<Notice> noticeList = userService.getNoticeListAll();
+        System.out.println(noticeList);
+        JSONArray jsonArray = JSONArray.fromObject(noticeList);
+        model.addAttribute("noticeList", jsonArray);
+        return "noticeList";
+    }
+	
 	
 
 }
