@@ -1231,5 +1231,22 @@ public class HomeController {
     }
 	
 	
+	
+	@RequestMapping(value = "/autosearchNationality", method = RequestMethod.GET)
+	public void autosearchNationality(@RequestParam("query") String query, HttpServletResponse response) {
+		System.out.println("auto complete >> " + query);
+		List<String> resultList = null;
+		JSONArray jsonArray = null;
+			resultList = userService.getAutoNationalityComplete(query);
+			jsonArray = JSONArray.fromObject(resultList);
+			System.out.println(jsonArray);
 
+		try {
+			if(jsonArray == null)	return ;
+			
+			response.getWriter().print(jsonArray);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -26,10 +26,108 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 	<style>
 		#hjIcon {
-        	border: none;
-    		background: none;
+			border: none;
+			background: none;
 		}
-	</style>
+		
+		.la_notice {
+			border-top: 2px solid gray;
+			border-bottom: 2px solid gray;
+		}
+		
+		.text_two {
+			zoom: 1;
+			position: relative;
+		}
+		
+		.text_two:after {
+			visibility: hidden;
+			content: "";
+			display: block;
+			clear: both
+		}
+		
+		a.more_latest {
+			position: absolute;
+			right: 0;
+			top: -50px;
+			color: #444;
+			font-size: 12px;
+			letter-spacing: 1px;
+		}
+		
+		.text_two a {
+			text-decoration: none
+		}
+		
+		.text_two .main {
+			margin-top: 20px;
+		}
+		
+		.text_two .main:after {
+			clear: both;
+			display: block;
+			content: '';
+		}
+		
+		.text_two .main>div {
+			width: 100%;
+			font-family: 'malgun gothic';
+		}
+		
+		.text_two .main>div a {
+			color: #000;
+			font-size: 16px;
+			font-weight: 600;
+		}
+		
+		.text_two .main>div span {
+			display: block;
+			font-size: 12px;
+			color: #9f9f9f;
+			margin-top: 7px;
+		}
+		
+		.text_two .main>div p {
+			color: #666;
+			font-size: 13px;
+			margin-top: 2px;
+			line-height: 1.2;
+		}
+		
+		.text_two .sub {
+			
+		}
+		
+		.text_two .sub ul {
+			padding: 0;
+			margin: 0;
+			list-style: none
+		}
+		
+		.text_two .sub ul li {
+			padding: 5px 0;
+			zoom: 1;
+			position: relative;
+			font-family: 'malgun gothic';
+			font-size: 14px;
+		}
+		
+		.text_two .sub ul li a {
+			color: #666;
+		}
+		
+		.text_two .sub ul .fst {
+			padding-top: 20px
+		}
+		
+		.text_two .sub ul li span {
+			position: absolute;
+			right: 0;
+			font-size: 12px;
+			color: #9f9f9f;
+		}
+</style>
 </head>
 
 <body>
@@ -100,104 +198,12 @@
     </div>
   </header>
 
+</br>
+
 <div class="container">
 		<div class="la_notice">
 			<h2>공지 사항</h2>
-			<style>
-.text_two {
-	zoom: 1;
-	position: relative;
-}
-
-.text_two:after {
-	visibility: hidden;
-	content: "";
-	display: block;
-	clear: both
-}
-
-a.more_latest {
-	position: absolute;
-	right: 0;
-	top: -50px;
-	color: #444;
-	font-size: 12px;
-	letter-spacing: 1px;
-}
-
-.text_two a {
-	text-decoration: none
-}
-
-.text_two .main {
-	margin-top: 20px;
-}
-
-.text_two .main:after {
-	clear: both;
-	display: block;
-	content: '';
-}
-
-.text_two .main>div {
-	width: 100%;
-	font-family: 'malgun gothic';
-}
-
-.text_two .main>div a {
-	color: #000;
-	font-size: 16px;
-	font-weight: 600;
-}
-
-.text_two .main>div span {
-	display: block;
-	font-size: 12px;
-	color: #9f9f9f;
-	margin-top: 7px;
-}
-
-.text_two .main>div p {
-	color: #666;
-	font-size: 13px;
-	margin-top: 2px;
-	line-height: 1.2;
-}
-
-.text_two .sub {
-	
-}
-
-.text_two .sub ul {
-	padding: 0;
-	margin: 0;
-	list-style: none
-}
-
-.text_two .sub ul li {
-	padding: 5px 0;
-	zoom: 1;
-	position: relative;
-	font-family: 'malgun gothic';
-	font-size: 14px;
-}
-
-.text_two .sub ul li a {
-	color: #666;
-}
-
-.text_two .sub ul .fst {
-	padding-top: 20px
-}
-
-.text_two .sub ul li span {
-	position: absolute;
-	right: 0;
-	font-size: 12px;
-	color: #9f9f9f;
-}
-</style>
-			<div class="la_notice">
+			<div>
 				<div class="text_two">
 					<a href='/noticeList' class="more_latest">more</a>
 					<div class="main">
@@ -228,7 +234,8 @@ a.more_latest {
 			</div>
 	</div>
 </div>
-
+</br>
+</br>
 <%-- 
 	<!-- Icons Grid -->
   <section class="features-icons bg-light text-center">

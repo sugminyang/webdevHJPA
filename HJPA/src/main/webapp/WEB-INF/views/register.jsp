@@ -24,11 +24,11 @@
 	rel="stylesheet" type="text/css">
 
 <!-- Custom styles for this template -->
-<link
-	href="${pageContext.request.contextPath}/resources/css/landing-page.min.css"
-	rel="stylesheet">
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
+<link href="${pageContext.request.contextPath}/resources/css/landing-page.min.css" rel="stylesheet">
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+			
 <script type="text/javascript">
 	$(document).on('click', 'input[name="registerGroup"]', function() {
 		if (document.getElementById("btnKorEdu").checked == true) {
@@ -43,6 +43,37 @@
 	});
 
 	$(document).ready(function() {
+		$( "#nationality" ).autocomplete({ 
+	    	source : function( request, response ) { 
+	    		search_query = $('#nationality').val()
+	    			url = "autosearchNationality"
+	    			url += "?query=" + search_query
+	    			url += "&output=json"
+	    				
+	    		$.ajax({ 
+	    			//호출할 URL 
+	    			'url': url, 
+	    			//우선 jsontype json으로 
+	    			'dataType': "json", 
+	    			// parameter 값이다. 여러개를 줄수도 있다. 
+	    			'data': { 
+	    				//request.term >> 이거 자체가 text박스내에 입력된 값이다. 
+	    				searchValue: request.term 
+	    			}, 
+	    			success: function( data ) {
+	    	            response( data );
+	    	          }
+	    		}); 
+	    	}, 
+	    	//최소 몇자 이상되면 통신을 시작하겠다라는 옵션 
+	    	minLength: 1, 
+	    	//자동완성 목록에서 특정 값 선택시 처리하는 동작 구현 
+	    	//구현없으면 단순 text태그내에 값이 들어간다. 
+	    	select: function( event, ui ) {}
+	    });
+		
+		
+		
 		// 취소
 		$(".cancel").on("click", function() {
 			location.href = "/";
@@ -362,7 +393,7 @@
 	</div>
 	
 <!-- Bootstrap core JavaScript -->
-<script src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

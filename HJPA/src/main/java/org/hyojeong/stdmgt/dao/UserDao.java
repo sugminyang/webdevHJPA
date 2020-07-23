@@ -116,4 +116,6 @@ public interface UserDao {
 	public User getUserId(int studentPid);
 
 	public List<Notice> getNoticeListAll();
+
+	public List<String> getAutoNationalityComplete(String query);
 }

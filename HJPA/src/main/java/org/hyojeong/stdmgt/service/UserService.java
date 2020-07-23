@@ -106,4 +106,6 @@ public interface UserService {
 
 	public List<Notice> getNoticeListAll();
 
+	public List<String> getAutoNationalityComplete(String query);
+
 }

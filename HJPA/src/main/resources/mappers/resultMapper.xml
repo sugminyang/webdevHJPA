@@ -317,6 +317,8 @@
 	</insert>
 	
 	
+
+	
 	<!-- bulk student data insert -->
 	
 	<select id="getPidWithSnoUniv" resultType="StudentVO" parameterType="string">
@@ -339,4 +341,10 @@
 		select * 
 		from push_notice;
 	</select>
+	
+	
+		
+	<select id="getAutoNationalityComplete" resultType="string" parameterType="string">
+        SELECT distinct nationality FROM dean.nationalitytable where nationality LIKE CONCAT('',#{query},'%');
+    </select>
 </mapper>

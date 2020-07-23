@@ -586,4 +586,9 @@ public class UserServiceImpl implements UserService {
 		return userDao.getNoticeListAll();
 	}
 
+	@Override
+	public List<String> getAutoNationalityComplete(String query) {
+		return userDao.getAutoNationalityComplete(query);
+	}
+
 }
