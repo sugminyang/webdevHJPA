@@ -71,6 +71,10 @@
         		border: none;
     			background: none;
 			}
+			.btn-primary{
+			background-color: gray;
+    		border-color: gray;
+		}
     </style>
     
 <script type="text/javascript">

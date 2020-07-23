@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -1221,7 +1222,7 @@ public class HomeController {
 	
 	
 	@RequestMapping(value = "/noticeList")
-    public String noticeList(@RequestParam(defaultValue="1") int curPage,Model model) {
+    public String noticeList(Model model) {
              
         List<Notice> noticeList = userService.getNoticeListAll();
         System.out.println(noticeList);
@@ -1231,6 +1232,22 @@ public class HomeController {
     }
 	
 	
+	@RequestMapping(value = "/noticeDetail/{notice_id}")
+    public String noticeEdit(@PathVariable String notice_id, Model model) {
+        logger.info("notice detail page [notice_id = {}]",notice_id);
+        Notice notice = userService.getNoticeList(notice_id);
+        model.addAttribute("notice", notice);
+        return "noticeDetail";
+    }
+	
+	@RequestMapping(value = "/noticeDetail")
+    public String noticeDetailNum(@RequestParam("notice_id") String notice_id,Model model) {
+             
+        Notice notice = userService.getNoticeList(notice_id);
+        System.out.println(notice);
+        model.addAttribute("notice", notice);
+        return "noticeDetail";
+    }
 	
 	@RequestMapping(value = "/autosearchNationality", method = RequestMethod.GET)
 	public void autosearchNationality(@RequestParam("query") String query, HttpServletResponse response) {

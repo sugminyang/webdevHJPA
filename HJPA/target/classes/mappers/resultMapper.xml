@@ -347,4 +347,11 @@
 	<select id="getAutoNationalityComplete" resultType="string" parameterType="string">
         SELECT distinct nationality FROM dean.nationalitytable where nationality LIKE CONCAT('',#{query},'%');
     </select>
+    
+    <select id="getNoticeList" resultType="NoticeVO" parameterType="string">
+		select * 
+		from dean.push_notice
+		where notice_id like #{notice_id};
+	</select>
+    
 </mapper>

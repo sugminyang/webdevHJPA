@@ -118,4 +118,6 @@ public interface UserDao {
 	public List<Notice> getNoticeListAll();
 
 	public List<String> getAutoNationalityComplete(String query);
+
+	public Notice getNoticeList(String notice_id);
 }

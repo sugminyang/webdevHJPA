@@ -246,6 +246,10 @@
 	}
 </script>
 <style>
+.btn-primary{
+			background-color: gray;
+    		border-color: gray;
+		}
 #hjIcon {
 	border: none;
 	background: none;

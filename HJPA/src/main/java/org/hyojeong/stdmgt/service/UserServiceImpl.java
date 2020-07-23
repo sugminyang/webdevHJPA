@@ -591,4 +591,9 @@ public class UserServiceImpl implements UserService {
 		return userDao.getAutoNationalityComplete(query);
 	}
 
+	@Override
+	public Notice getNoticeList(String notice_id) {
+		return userDao.getNoticeList(notice_id);
+	}
+
 }

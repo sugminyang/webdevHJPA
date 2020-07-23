@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Notice</title>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/noticeList.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <link href="${pageContext.request.contextPath}/resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -23,6 +23,10 @@
 <link rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 	<style>
+	.btn-primary{
+			background-color: gray;
+    		border-color: gray;
+		}
 		#hjIcon {
         	border: none;
     		background: none;
@@ -89,7 +93,6 @@
 			<div class="col-md-8">
 				<div class="card">
 					<div class="card-header" align="center">공지사항</div>
-
 					<input type="button" id="notice_regi" value="등록">
 					</br>
 					<div class="table table-bordered table-hover dataTable" id="result"></div>
@@ -191,18 +194,18 @@
         	
         	$('#MydataTable tbody').on( 'click', 'tr', function () {
         		var table = $('#MydataTable').DataTable();
-    			var pid = table.row( this ).data()[0];
+    			var notice_id = table.row( this ).data()[0];
     			$.ajax({
     				'type': "POST", 
-    				'url': 'getStudentInfo',
-    				'data':{pid:pid},
+    				'url': 'noticeDetail',
+    				'data':{notice_id:notice_id},
     				success : function(data) { 
 					}, 
 					error : function(data) { 
 					} 
     			   });
     			
-    			window.location.href = "/studentInfo";
+    			window.location.href = "/noticeDetail/"+notice_id;
         	});
         });
         

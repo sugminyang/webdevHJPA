@@ -301,6 +301,11 @@ public class UserDaoImpl implements UserDao {
 		return sqlSession.selectList(Namespace+".getAutoNationalityComplete",query);
 	}
 
+	@Override
+	public Notice getNoticeList(String notice_id) {
+		return sqlSession.selectOne(Namespace+".getNoticeList",notice_id);
+	}
+
 	
 
 

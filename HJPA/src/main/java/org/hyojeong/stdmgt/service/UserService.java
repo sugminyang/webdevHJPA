@@ -108,4 +108,6 @@ public interface UserService {
 
 	public List<String> getAutoNationalityComplete(String query);
 
+	public Notice getNoticeList(String notice_id);
+
 }

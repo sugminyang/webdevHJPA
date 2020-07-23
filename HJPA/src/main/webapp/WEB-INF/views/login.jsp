@@ -18,6 +18,10 @@
   <link href="${pageContext.request.contextPath}/resources/css/landing-page.min.css" rel="stylesheet">
   
   <style>
+  		.btn-primary{
+			background-color: gray;
+    		border-color: gray;
+		}
 		#hjIcon {
         	border: none;
     		background: none;

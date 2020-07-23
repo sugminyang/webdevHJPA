@@ -21,10 +21,11 @@
   
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
 
-<link rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-
     <style>
+    	.btn-primary	{
+			background-color: gray;
+    		border-color: gray;
+		}
             .ui-autocomplete {
               max-height: 100px;
               overflow-y: auto;
@@ -41,6 +42,7 @@
         	border: none;
     		background: none;
 		}
+		
     </style>
 </head>
 <body>
@@ -181,7 +183,6 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
-    <link href="${pageContext.request.contextPath}/resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	
 <script type="text/javascript">
 

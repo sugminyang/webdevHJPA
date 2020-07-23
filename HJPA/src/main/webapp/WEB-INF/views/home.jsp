@@ -25,6 +25,15 @@
 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 	<style>
+		.btn-primary{
+			background-color: gray;
+    		border-color: gray;
+		}
+		
+		a	{
+			color: gray;
+		}
+		
 		#hjIcon {
 			border: none;
 			background: none;
