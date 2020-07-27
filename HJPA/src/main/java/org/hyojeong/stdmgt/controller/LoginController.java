@@ -30,14 +30,14 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
-	public ModelAndView loginProcess(HttpSession session, @ModelAttribute("login") Login vo) {
+	public String loginProcess(HttpSession session, @ModelAttribute("login") Login vo) {
 		ModelAndView mav = null;
 		System.out.println("enter.. loginProcess");
 		User user = userService.validateUser(vo,session);
 		
 		System.out.println(user);
 		if (null != user) {
-			mav = new ModelAndView("home");
+			mav = new ModelAndView();
 			mav.addObject("authority",user.getAuthority());
 			
 			mav.addObject("student", new Student());
@@ -47,19 +47,19 @@ public class LoginController {
 			mav.addObject("msg", "fail");
 		}
 
-		return mav;
+		return "redirect:/";
 	}
 	
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public ModelAndView showLogout(HttpSession session) {
-		ModelAndView mav = new ModelAndView("home");
+	public String showLogout(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
 		mav.addObject("isLogined",false);
 		mav.addObject("msg","logout");
 		
 		//session정보 초기화
 		session.invalidate();
 		
-		return mav;
+		return "redirect:/";
 	}
 }

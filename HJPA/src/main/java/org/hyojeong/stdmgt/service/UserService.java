@@ -110,4 +110,8 @@ public interface UserService {
 
 	public Notice getNoticeList(String notice_id);
 
+	public int noticeInsert(Notice notice);
+
+	public int noticeDelete(Notice notice);
+
 }

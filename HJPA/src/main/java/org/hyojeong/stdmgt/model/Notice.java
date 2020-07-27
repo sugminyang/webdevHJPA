@@ -6,6 +6,25 @@ public class Notice {
     private String notice_coments;
     private String use_yn;
     private String mod_date;
+    private String writer;
+    
+    
+    
+	public Notice(String notice_title, String notice_coments, String writer) {
+		super();
+		this.notice_title = notice_title;
+		this.notice_coments = notice_coments;
+		this.writer = writer;
+	}
+	public Notice() {
+		super();
+	}
+	public String getWriter() {
+		return writer;
+	}
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
 	public String getNotice_id() {
 		return notice_id;
 	}
@@ -39,8 +58,9 @@ public class Notice {
 	@Override
 	public String toString() {
 		return "Notice [notice_id=" + notice_id + ", notice_title=" + notice_title + ", notice_coments="
-				+ notice_coments + ", use_yn=" + use_yn + ", mod_date=" + mod_date + "]";
+				+ notice_coments + ", use_yn=" + use_yn + ", mod_date=" + mod_date + ", writer=" + writer + "]";
 	}
-    
+
+	
     
 }

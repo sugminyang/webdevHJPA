@@ -126,7 +126,7 @@
         		var table = $('<table id="MydataTable" class="table table-bordered table-hover"></table>')
         		var tr = $("<tr></tr>")
         		//var vars = ['disease','gene','interaction_types','drug_name','drug_summary','interaction_claim_source']	//old
-        		var vars = ['notice_id','notice_title','mod_date']
+        		var vars = ['notice_id','notice_title','mod_date','writer']
         		$(vars).each(function(k, v) {
         			tr.append('<th>' + v + '</th>')
         		})
@@ -168,7 +168,7 @@
                 'info': true,
                 "bFilter": true,
                 "bSort": true,
-                "order": [[ 0, "asc" ]],
+                "order": [[ 2, "desc" ]],
                 'scrollCollapse': true,
                 "retrieve": true
         		});

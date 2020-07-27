@@ -339,7 +339,9 @@
 	
 	<select id="getNoticeListAll" resultType="NoticeVO">
 		select * 
-		from push_notice;
+		from dean.push_notice
+		where use_yn='Y'
+		order by mod_date desc;
 	</select>
 	
 	
@@ -354,4 +356,30 @@
 		where notice_id like #{notice_id};
 	</select>
     
+    
+    <insert id="noticeInsert" parameterType="NoticeVO">
+        insert into dean.push_notice
+        (
+            notice_title,
+            notice_coments,
+            mod_date,
+            writer
+            
+        )
+        values
+        (
+            #{notice_title},
+            #{notice_coments},
+            NOW(),
+            #{writer}
+        )
+    </insert>
+    
+    
+    <update id="noticeDelete" parameterType="NoticeVO">
+		update dean.push_notice
+		set 
+		use_yn='N'
+		where notice_id = #{notice_id};
+	</update>
 </mapper>

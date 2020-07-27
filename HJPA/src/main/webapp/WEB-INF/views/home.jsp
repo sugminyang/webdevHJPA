@@ -4,7 +4,6 @@
 <html lang="en">
 
 <head>
-
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
@@ -24,6 +23,37 @@
   <link href="${pageContext.request.contextPath}/resources/css/landing-page.min.css" rel="stylesheet">
 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
+	
+	<script type="text/javascript">
+		$(document).ready(function() { 
+			data = ${noticeList};
+			var bindings = data;
+			/* var vars = ['notice_id','notice_title','notice_coments','mod_date']; */
+
+			var sub = "<div><ul>";
+    		$(bindings).each(function(k, b) {
+    				if(k == 0)	{
+        				$('.main').html("<div>" +  
+        						"<a href="+ "'/noticeDetail/" + b['notice_id'] + "'>" +
+        						b['notice_title'].substring(0,30) + "..." + 
+        						"<span class='time'>" + b['mod_date'] + "</span>" + 
+        						"<p>" +  b['notice_coments'].substring(0,50) + "..." +
+        						'</p></a></div>');
+        			}
+    				else	{
+    					sub += "<li><a href=" + "'/noticeDetail/" + b['notice_id'] + "'>" +
+    							b['notice_title'].substring(0,30) + "..." +
+    							"<span class='txt_sub'>" + b['mod_date'] + "</span>" +
+    							"</a></li>";
+    				}
+    		})
+    		sub += "</div></ul>";
+    		$('.sub').html(sub);
+		})
+	
+	</script>
+	
+	
 	<style>
 		.btn-primary{
 			background-color: gray;
@@ -216,27 +246,9 @@
 				<div class="text_two">
 					<a href='/noticeList' class="more_latest">more</a>
 					<div class="main">
-						<div>
-							<a href="./bbs/board.php?bo_table=41&wr_id=447">[효정평화장학] 2020
-								효정평화장학생 최종 선정자 발…</a> <span class="time">2020-07-16</span>
-							<p>효정평화장학생에 신청해주신 모든 분들께 깊은 감사의 말씀을 전합니다.&nbsp; 아래와 같이 최종
-								선정자를 발표합니다.&nbsp; 문자로도 개별연락을 드렸…</p>
-						</div>
 					</div>
 
 					<div class="sub">
-						<ul>
-							<li class="fst"><a
-								href="./bbs/board.php?bo_table=41&wr_id=446"> [원모장학] 2020
-									인재육성장학 해외부문 서류심사 … <span class="txt_sub">2020-07-14</span>
-							</a></li>
-							<li><a href="./bbs/board.php?bo_table=41&wr_id=445">
-									[효정평화장학] 2020 효정평화장학생 면접대상자 공고 <span class="txt_sub">2020-07-08</span>
-							</a></li>
-							<li><a href="./bbs/board.php?bo_table=41&wr_id=444">
-									[멘토링캠프] '2020 여름 온라인 티앤토멘토링학습캠… <span class="txt_sub">2020-07-02</span>
-							</a></li>
-						</ul>
 					</div>
 				</div>
 				<!-- }  최신글 끝 -->

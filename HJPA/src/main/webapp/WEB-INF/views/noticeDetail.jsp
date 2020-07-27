@@ -47,28 +47,9 @@
 <script>
     $(document).ready(function(){
          
-        //공지사항 신규 등록
-        $("#notice_regist").on("click",function(){
-            var formData = $("#notice_form").serialize();
-            $.ajax({
-                type : "post",
-                url : "/noticeInsert",
-                data : formData,
-                success : function(data){
-                    if(data==1) alert("등록 완료");
-                    else alert('등록 실패');
-                         
-                },
-                error : function(error){
-                    alert("등록 실패");
-                    console.log("notice insert fail : "+error);
-                }
-            });
-        });
-         
         //공지사항 수정
         $("#notice_edit").on("click",function(){
-            var formData = $("#notice_form").serialize();
+            var id = ${notice.notice_id};
             $.ajax({
                 type : "post",
                 url : "/noticeUpdate",
@@ -86,16 +67,13 @@
          
         //공지사항 삭제
         $("#notice_delete").on("click",function(){
-            var formData = $("#notice_form").serialize();
-            alert(formData);
             $.ajax({
                 type : "post",
-                url : "/noticeDelete",
-                data : formData,
+                url : "/noticeDelete/" + ${notice.notice_id},
                 success : function(data){
                     if(data==1){
                         alert("삭제 완료");
-                        location.href="/push/noticeList";
+                        location.href="/noticeList";
                     }else alert('삭제 실패');
                 },
                 error : function(error){
@@ -141,11 +119,11 @@
       		<c:choose>
       			<c:when test="${sessionScope.id == null}">
 					<a class="btn btn-primary" href="register">Register</a> 
-					<a class="btn btn-primary" id="loginBtn" href="login">Sign In</a>
+					<a class="btn btn-primary" id="loginBtn" href="/login">Sign In</a>
       			</c:when>
       			<c:otherwise>
       				<a class="btn btn-outline-default btn-rounded waves-effect" href="/">${sessionScope.id}</a>
-					<a class="btn btn-primary" id="logoutBtn" href="logout">Logout</a>
+					<a class="btn btn-primary" id="logoutBtn" href="/logout">Logout</a>
       			</c:otherwise>
       		</c:choose>
       </div>
@@ -172,15 +150,21 @@
 							</div>
 						</form>
 				
-						<div class="footer">
-				            <c:if test="${null eq notice }">
-				                <input type="button" id="notice_regist" value="등록">
-				            </c:if>
-				            <c:if test="${null ne notice }">
-				                <input type="button" id="notice_edit" value="수정">
-				            </c:if>       
-				            <input type="button" id="notice_backPage" value="뒤로">
-				            <input type="button" id="notice_delete" value="삭제">
+						<div class="footer" style="text-align:center;">
+							<c:if test="${null ne notice }">
+								<c:choose>
+									<c:when test="${sessionScope.auth == 1}">
+										<input type="button" id="notice_delete" value="삭제">
+										<input type="button" id="notice_edit" value="수정">
+									</c:when>
+									<c:when test="${sessionScope.auth == 2}">
+										<input type="button" id="notice_delete" value="삭제">
+										<input type="button" id="notice_edit" value="수정">
+									</c:when>
+								</c:choose>
+							</c:if>
+							<input type="button" id="notice_backPage" value="뒤로">
+				            
 				        </div>
 				    </div>
 				</div>

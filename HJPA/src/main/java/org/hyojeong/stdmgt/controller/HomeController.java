@@ -53,7 +53,20 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home() {
+	public String home(Model model) {
+		List<Notice> noticeList = userService.getNoticeListAll();
+        System.out.println(noticeList);
+		JSONArray jsonArray = null;
+		if(noticeList.size() > 3)	{
+			jsonArray = JSONArray.fromObject(noticeList.subList(0, 3));
+		}
+		else	{
+			jsonArray = JSONArray.fromObject(noticeList);
+		}
+		
+//        System.out.println(jsonArray);
+        model.addAttribute("noticeList", jsonArray);
+        
 		return "home";
 	}
 	@RequestMapping(value = "/updatepassword", method = RequestMethod.GET)
@@ -1248,6 +1261,52 @@ public class HomeController {
         model.addAttribute("notice", notice);
         return "noticeDetail";
     }
+	
+	@RequestMapping(value = "/noticeRegi")
+    public String noticeRegi() {
+            return "noticeEnroll";
+    }
+	
+	@RequestMapping(value = "/noticeEnroll")
+    public String noticeEnroll(Model model) {
+        return "noticeEnroll";
+    }
+	
+	
+	@ResponseBody
+    @RequestMapping(value = "/noticeInsert", method=RequestMethod.POST)
+    public String noticeInsert(@RequestBody String filterJSON) {
+        logger.info("notice insert");
+        String[] items = filterJSON.split("!@#");
+        System.out.println(filterJSON);
+        Notice notice = new Notice(items[0],items[1],items[2]);
+        
+        System.out.println(notice);
+        int result = userService.noticeInsert(notice);
+        
+        return result + "";
+    }
+     
+//    @ResponseBody
+//    @RequestMapping(value = "/noticeUpdate", method=RequestMethod.POST)
+//    public int noticeUpdate(Notice notice) {
+//        logger.info("notice update {} ", notice.getNotice_id()); 
+//        return userService.NoticeUpdate(notice);
+//    }
+//     
+	
+    @ResponseBody
+    @RequestMapping(value = "/noticeDelete/{notice_id}", method=RequestMethod.POST)
+    public String noticeDelete(@PathVariable String notice_id) {
+    	Notice notice = new Notice();
+    	notice.setNotice_id(notice_id);
+    	System.out.println(notice_id);
+        logger.info("notice delete {} ", notice.getNotice_id());
+        int result = userService.noticeDelete(notice);
+        System.out.println(result);
+        return result + "";
+    }
+	
 	
 	@RequestMapping(value = "/autosearchNationality", method = RequestMethod.GET)
 	public void autosearchNationality(@RequestParam("query") String query, HttpServletResponse response) {

@@ -120,4 +120,8 @@ public interface UserDao {
 	public List<String> getAutoNationalityComplete(String query);
 
 	public Notice getNoticeList(String notice_id);
+
+	public int noticeInsert(Notice notice);
+
+	public int noticeDelete(Notice notice);
 }
