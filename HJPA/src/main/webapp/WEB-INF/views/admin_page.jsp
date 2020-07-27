@@ -329,21 +329,21 @@
 
   <div class="container" >
 		<div class="col-lg-12" align="center">
-	        <h3 class="page-header">system admin page</h3>
+	        <h1 class="page-header">시스템 관리자 페이지</h1>
 	    </div>
-	  	</br>
+	  	<br>
 	  	
 	  	<div class="row">
-	  		<b>관리자 계정 생성</b>
+	  		<h2><b>관리자 계정 생성</b></h2>
 	  	</div>
 	  	<div class="row">
 			<button id="addRow_adminUserInfo">Add new row</button>
 			<div class="table table-bordered table-hover dataTable" id="adminUserInfo"></div>
 	    </div>
-	    </br>
+	    <br>
 	    
 	    <div class="row">
-	  		<b>학생 이력 정보 일괄 삽입</b>
+	  		<h2><b>학생 이력 정보 일괄 삽입</b></h2>
 	  	</div>
 	  	<div class="row">
 	  		<form action="/uploadBulkFile" enctype="multipart/form-data" method="POST">
@@ -352,17 +352,23 @@
 				<button type="button" id="execBtn" class="btn btn-primary mb-2">입력 실행</button>
 			</form>
 	  	</div>
-	  	</br>
+	  	<br>
 	  	
      	<div class="row">
-	  		<b>학생 계정 비밀번호 변경</b>
+	  		<h2><b>학생 계정 비밀번호 변경</b></h2>
 	  	</div>
 		<div class="row">
-			<label>아이디: </label> 
-			<input class="col-sd-3" id="id" name="id" name="file">
-			<button type="button" id="pwClear" class="btn btn-primary mb-2">비밀번호 초기화</button>
+			<div class="col-sm-1">
+				<label>아이디: </label> 
+			</div>
+			<div class="col-sm-2">
+				<input id="id" name="id" name="file">
+			</div>
+			<div class="col-sm">
+				<button type="button" id="pwClear" class="btn btn-primary mb-2">비밀번호 초기화</button>
+			</div>
 		</div>
-		</br>
+		<br>
      	  	
   </div>
 

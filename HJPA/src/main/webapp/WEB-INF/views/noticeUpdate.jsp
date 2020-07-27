@@ -53,28 +53,29 @@
 	  }).on("summernote.enter", function(we, e) {
 		  $(this).summernote("pasteHTML", "<br><br>");
 		  e.preventDefault();
-		  });;
+		  });
     	
-    	/* $('#summernote').summernote ('code', '<b> hello world </ b>'); */
     	
-        //공지사항 신규 등록
-        $("#notice_regist").on("click",function(){
+    	$('#summernote').summernote ('code', '${notice.notice_coments}');
+    	
+        //공지사항 수정
+        $("#notice_edit").on("click",function(){
             var formData = $('#summernote').summernote('code');
+            var id = '${notice.notice_id}';
             var title = $("#title").val();
             var writer = $("#writer").val();
             var deliminator = "!@#";
             var item = title + deliminator +
             			formData + deliminator + 
-            			writer
+            			writer + deliminator + id
             	
             $.ajax({
                 type : "post",
-                url : "/noticeInsert",
+                url : "/noticeEdit",
                 data : item,
                 contentType:"application/json;charset=UTF-8",
 				dataType: "json",
                 success : function(data){
-                	console.log(data);
                     if(data=='1') alert("등록 완료");
                     else alert('등록 실패');
                     $("#notice_backPage").click();
@@ -87,7 +88,7 @@
         });
          
         $("#notice_backPage").on("click",function(){
-            location.href="/noticeList";
+            location.href="/noticeDetail/" + ${notice.notice_id};
         });
     })
 </script>
@@ -144,13 +145,13 @@
 						<div class="contents">
 							<label class="col-md-2">제목:</label> 
 							<input class="col-md-10" id="title"
-								type="text" name="title" placeholder="제목" style="float: right;" />
+								type="text" name="title" placeholder="제목" style="float: right;" value="${notice.notice_title}"/>
 						</div>
 						<div class="contents">
 							<label class="col-md-2">작성자:</label> 
 							<input class="col-md-10" id="writer"
 								type="text" name="writer" placeholder="작성자"
-								style="float: right;" /><br>
+								style="float: right;" value="${notice.writer}"/><br>
 						</div>
 
 						<br>

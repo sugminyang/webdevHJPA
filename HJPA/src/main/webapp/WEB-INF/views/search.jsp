@@ -280,12 +280,14 @@
     				'url': 'getStudentInfo',
     				'data':{pid:pid},
     				success : function(data) { 
+    					console.log(data);
+    					window.location.href = "/studentInfo";
 					}, 
 					error : function(data) { 
 					} 
     			   });
     			
-    			window.location.href = "/studentInfo";
+    			
         	});
         });
         

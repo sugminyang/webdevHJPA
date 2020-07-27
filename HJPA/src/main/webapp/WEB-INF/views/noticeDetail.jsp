@@ -49,20 +49,11 @@
          
         //공지사항 수정
         $("#notice_edit").on("click",function(){
-            var id = ${notice.notice_id};
-            $.ajax({
+            /* $.ajax({
                 type : "post",
-                url : "/noticeUpdate",
-                data : formData,
-                success : function(data){
-                    if(data==1) alert("수정 완료");
-                    else alert('수정 실패');
-                },
-                error : function(error){
-                    alert("수정 실패");
-                    console.log("notice update fail : "+error);
-                }
-            });
+                url : "/noticeUpdate"+
+            }); */
+            location.href="/noticeUpdate/"+${notice.notice_id};
         });
          
         //공지사항 삭제
@@ -163,7 +154,7 @@
 									</c:when>
 								</c:choose>
 							</c:if>
-							<input type="button" id="notice_backPage" value="뒤로">
+							<input type="button" id="notice_backPage" value="목록">
 				            
 				        </div>
 				    </div>

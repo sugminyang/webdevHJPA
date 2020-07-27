@@ -30,14 +30,14 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
-	public String loginProcess(HttpSession session, @ModelAttribute("login") Login vo) {
+	public ModelAndView loginProcess(HttpSession session, @ModelAttribute("login") Login vo) {
 		ModelAndView mav = null;
 		System.out.println("enter.. loginProcess");
 		User user = userService.validateUser(vo,session);
 		
 		System.out.println(user);
 		if (null != user) {
-			mav = new ModelAndView();
+			mav = new ModelAndView("redirect:/");
 			mav.addObject("authority",user.getAuthority());
 			
 			mav.addObject("student", new Student());
@@ -47,7 +47,7 @@ public class LoginController {
 			mav.addObject("msg", "fail");
 		}
 
-		return "redirect:/";
+		return mav;
 	}
 	
 

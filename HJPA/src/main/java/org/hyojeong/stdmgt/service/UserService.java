@@ -114,4 +114,8 @@ public interface UserService {
 
 	public int noticeDelete(Notice notice);
 
+	public int noticeEdit(Notice notice);
+
+	public List<Notice> getNoticeTop3();
+
 }

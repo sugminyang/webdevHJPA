@@ -124,4 +124,8 @@ public interface UserDao {
 	public int noticeInsert(Notice notice);
 
 	public int noticeDelete(Notice notice);
+
+	public int noticeEdit(Notice notice);
+
+	public List<Notice> getNoticeTop3();
 }

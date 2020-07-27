@@ -93,7 +93,7 @@
 			<div class="col-md-8">
 				<div class="card">
 					<div class="card-header" align="center">공지사항</div>
-					<input type="button" id="notice_regi" value="등록">
+					<input type="button" id="notice_regi" value="등록" style="visibility:hidden;">
 					</br>
 					<div class="table table-bordered table-hover dataTable" id="result"></div>
 				</div>
@@ -117,6 +117,13 @@
 	<script type="text/javascript">
 
         $(document).ready( function () {
+        	var auth = '${sessionScope.auth}';
+        	if( auth == '1' || auth == '2')	{	//관리자
+        		$("#notice_regi").css('visibility', 'visible');
+        	}
+        	else	{
+        		$("#notice_regi").css('visibility', 'hidden');
+        	}
         	
         	/* console.log(${data}) */
         	data = ${noticeList}

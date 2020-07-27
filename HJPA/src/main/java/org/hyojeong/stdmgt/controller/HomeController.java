@@ -54,21 +54,14 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
-		List<Notice> noticeList = userService.getNoticeListAll();
-        System.out.println(noticeList);
-		JSONArray jsonArray = null;
-		if(noticeList.size() > 3)	{
-			jsonArray = JSONArray.fromObject(noticeList.subList(0, 3));
-		}
-		else	{
-			jsonArray = JSONArray.fromObject(noticeList);
-		}
-		
-//        System.out.println(jsonArray);
+		List<Notice> noticeList = userService.getNoticeTop3();
+//        System.out.println(noticeList);
+		JSONArray jsonArray = JSONArray.fromObject(noticeList);
         model.addAttribute("noticeList", jsonArray);
         
 		return "home";
 	}
+	
 	@RequestMapping(value = "/updatepassword", method = RequestMethod.GET)
 	public String updatepassword() {
 		return "updatepassword";
@@ -334,7 +327,7 @@ public class HomeController {
 	public String getStudentInfo(HttpSession session, @RequestParam("pid") int pid) {
 		//관심학생 등록
 		session.setAttribute("sid",pid);
-		return "";
+		return "studentInfo";
 	}	
 	
 	@RequestMapping(value = "/updateStudentInfo", method = RequestMethod.POST)
@@ -1236,9 +1229,8 @@ public class HomeController {
 	
 	@RequestMapping(value = "/noticeList")
     public String noticeList(Model model) {
-             
         List<Notice> noticeList = userService.getNoticeListAll();
-        System.out.println(noticeList);
+//        System.out.println(noticeList);
         JSONArray jsonArray = JSONArray.fromObject(noticeList);
         model.addAttribute("noticeList", jsonArray);
         return "noticeList";
@@ -1257,7 +1249,7 @@ public class HomeController {
     public String noticeDetailNum(@RequestParam("notice_id") String notice_id,Model model) {
              
         Notice notice = userService.getNoticeList(notice_id);
-        System.out.println(notice);
+//        System.out.println(notice);
         model.addAttribute("notice", notice);
         return "noticeDetail";
     }
@@ -1278,23 +1270,38 @@ public class HomeController {
     public String noticeInsert(@RequestBody String filterJSON) {
         logger.info("notice insert");
         String[] items = filterJSON.split("!@#");
-        System.out.println(filterJSON);
+//        System.out.println(filterJSON);
         Notice notice = new Notice(items[0],items[1],items[2]);
         
-        System.out.println(notice);
+//        System.out.println(notice);
         int result = userService.noticeInsert(notice);
         
         return result + "";
     }
      
-//    @ResponseBody
-//    @RequestMapping(value = "/noticeUpdate", method=RequestMethod.POST)
-//    public int noticeUpdate(Notice notice) {
-//        logger.info("notice update {} ", notice.getNotice_id()); 
-//        return userService.NoticeUpdate(notice);
-//    }
-//     
-	
+    @RequestMapping(value = "/noticeUpdate/{notice_id}", method=RequestMethod.GET)
+    public String noticeUpdate(@PathVariable String notice_id, Model model) {
+    	Notice notice = userService.getNoticeList(notice_id);
+        model.addAttribute("notice", notice);
+        
+    	return "noticeUpdate";
+    }
+    
+    @ResponseBody
+    @RequestMapping(value = "/noticeEdit", method=RequestMethod.POST)
+    public String noticeEdit(@RequestBody String filterJSON) {
+        logger.info("notice insert");
+        String[] items = filterJSON.split("!@#");
+//        System.out.println(filterJSON);
+        Notice notice = new Notice(items[0],items[1],items[2]);
+        notice.setNotice_id(items[3]);
+        
+//        System.out.println(notice);
+        int result = userService.noticeEdit(notice);
+        
+        return result + "";
+    }
+    
     @ResponseBody
     @RequestMapping(value = "/noticeDelete/{notice_id}", method=RequestMethod.POST)
     public String noticeDelete(@PathVariable String notice_id) {

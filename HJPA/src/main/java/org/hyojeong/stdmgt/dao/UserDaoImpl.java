@@ -316,4 +316,14 @@ public class UserDaoImpl implements UserDao {
 		return sqlSession.update(Namespace+".noticeDelete",notice);
 	}
 
+	@Override
+	public int noticeEdit(Notice notice) {
+		return sqlSession.update(Namespace+".noticeEdit",notice);
+	}
+
+	@Override
+	public List<Notice> getNoticeTop3() {
+		return sqlSession.selectList(Namespace+".getNoticeTop3");
+	}
+
 }

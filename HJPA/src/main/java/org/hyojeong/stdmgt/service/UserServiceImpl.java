@@ -606,4 +606,14 @@ public class UserServiceImpl implements UserService {
 		return userDao.noticeDelete(notice);
 	}
 
+	@Override
+	public int noticeEdit(Notice notice) {
+		return userDao.noticeEdit(notice);
+	}
+
+	@Override
+	public List<Notice> getNoticeTop3() {
+		return userDao.getNoticeTop3();
+	}
+
 }

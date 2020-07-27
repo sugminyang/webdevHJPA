@@ -344,6 +344,13 @@
 		order by mod_date desc;
 	</select>
 	
+	<select id="getNoticeTop3" resultType="NoticeVO">
+		select * 
+		from dean.push_notice
+		where use_yn='Y'
+		order by mod_date desc
+		limit 3;
+	</select>
 	
 		
 	<select id="getAutoNationalityComplete" resultType="string" parameterType="string">
@@ -375,11 +382,21 @@
         )
     </insert>
     
-    
     <update id="noticeDelete" parameterType="NoticeVO">
 		update dean.push_notice
 		set 
 		use_yn='N'
+		where notice_id = #{notice_id};
+	</update>
+	
+	
+	<update id="noticeEdit" parameterType="NoticeVO">
+		update dean.push_notice
+		set 
+			notice_title =  #{notice_title},
+            notice_coments = #{notice_coments},
+            mod_date = NOW(),
+            writer = #{writer}
 		where notice_id = #{notice_id};
 	</update>
 </mapper>
