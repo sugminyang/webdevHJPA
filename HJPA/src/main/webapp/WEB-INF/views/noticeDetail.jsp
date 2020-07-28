@@ -129,17 +129,27 @@
 					</br>
 					
 				 	<div class="big_contents">
-						<form id="notice_form">
+						<div id="notice_form">
 							<input type="hidden" id="notice_id" name="notice_id"
 								value="${notice.notice_id}">
 							<div class="rows notice_title">
 								<%-- <input type="text" id="notice_title" name="notice_title" value="${notice.notice_title}"> --%>
 								<p type="text" id="notice_title" name="notice_title">${notice.notice_title}</p>
 							</div>
+							<div class="fileLink">
+								<form name="download_form" action="/download" method="post">
+									<input type="hidden" name="filename" value="${filename}">
+									<ui>
+										<li>
+										첨부 파일명 : <a href="javascript:download_form.submit();">${filename}</a>
+										</li>
+									</ui>
+								</form>
+							</div>
 							<div class="rows">
 								<p id="notice_coments" name="notice_coments">${notice.notice_coments}</p>
 							</div>
-						</form>
+						</div>
 				
 						<div class="footer" style="text-align:center;">
 							<c:if test="${null ne notice }">

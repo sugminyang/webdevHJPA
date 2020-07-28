@@ -370,15 +370,16 @@
             notice_title,
             notice_coments,
             mod_date,
-            writer
-            
+            writer,
+            filename
         )
         values
         (
             #{notice_title},
             #{notice_coments},
             NOW(),
-            #{writer}
+            #{writer},
+            #{filename}
         )
     </insert>
     
@@ -396,7 +397,8 @@
 			notice_title =  #{notice_title},
             notice_coments = #{notice_coments},
             mod_date = NOW(),
-            writer = #{writer}
+            writer = #{writer},
+            filename = #{filename}
 		where notice_id = #{notice_id};
 	</update>
 </mapper>

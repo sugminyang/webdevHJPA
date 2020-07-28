@@ -1,7 +1,10 @@
 package org.hyojeong.stdmgt.controller;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,6 +25,7 @@ import org.hyojeong.stdmgt.model.Login;
 import org.hyojeong.stdmgt.model.Notice;
 import org.hyojeong.stdmgt.model.Student;
 import org.hyojeong.stdmgt.model.StudentDomestic;
+import org.hyojeong.stdmgt.model.UploadFile;
 import org.hyojeong.stdmgt.model.User;
 import org.hyojeong.stdmgt.service.UserService;
 import org.slf4j.Logger;
@@ -1242,6 +1246,9 @@ public class HomeController {
         logger.info("notice detail page [notice_id = {}]",notice_id);
         Notice notice = userService.getNoticeList(notice_id);
         model.addAttribute("notice", notice);
+//        System.out.println(notice.getFilename());
+        model.addAttribute("filename", notice.getFilename());
+        
         return "noticeDetail";
     }
 	
@@ -1271,8 +1278,7 @@ public class HomeController {
         logger.info("notice insert");
         String[] items = filterJSON.split("!@#");
 //        System.out.println(filterJSON);
-        Notice notice = new Notice(items[0],items[1],items[2]);
-        
+        Notice notice = new Notice(items[0],items[1],items[2],items[3]); //filename
 //        System.out.println(notice);
         int result = userService.noticeInsert(notice);
         
@@ -1283,7 +1289,8 @@ public class HomeController {
     public String noticeUpdate(@PathVariable String notice_id, Model model) {
     	Notice notice = userService.getNoticeList(notice_id);
         model.addAttribute("notice", notice);
-        
+        model.addAttribute("filename", notice.getFilename());
+        System.out.println("noticeUpdate.. " + notice.getFilename());
     	return "noticeUpdate";
     }
     
@@ -1292,12 +1299,15 @@ public class HomeController {
     public String noticeEdit(@RequestBody String filterJSON) {
         logger.info("notice insert");
         String[] items = filterJSON.split("!@#");
-//        System.out.println(filterJSON);
-        Notice notice = new Notice(items[0],items[1],items[2]);
-        notice.setNotice_id(items[3]);
+        System.out.println(filterJSON);
+        Notice notice_ori = userService.getNoticeList(items[3]);
+        Notice notice_new = new Notice(items[0],items[1],items[2],items[3], items[4]);
+        if(notice_new.getFilename().length() == 0 || notice_new.getFilename() == null)	{
+        	notice_new.setFilename(notice_ori.getFilename());
+        }
         
-//        System.out.println(notice);
-        int result = userService.noticeEdit(notice);
+        System.out.println(notice_new);
+        int result = userService.noticeEdit(notice_new);
         
         return result + "";
     }

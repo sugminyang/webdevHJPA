@@ -60,31 +60,85 @@
     	
         //공지사항 수정
         $("#notice_edit").on("click",function(){
-            var formData = $('#summernote').summernote('code');
-            var id = '${notice.notice_id}';
-            var title = $("#title").val();
-            var writer = $("#writer").val();
-            var deliminator = "!@#";
-            var item = title + deliminator +
-            			formData + deliminator + 
-            			writer + deliminator + id
-            	
-            $.ajax({
-                type : "post",
-                url : "/noticeEdit",
-                data : item,
-                contentType:"application/json;charset=UTF-8",
-				dataType: "json",
-                success : function(data){
-                    if(data=='1') alert("등록 완료");
-                    else alert('등록 실패');
-                    $("#notice_backPage").click();
-                },
-                error : function(error){
-                    alert("등록 실패");
-                    console.log("notice insert fail : "+error);
-                }
-            });
+        	
+	       	if($("#upload_file").val().length == 0)	{
+	       		var formData = $('#summernote').summernote('code');
+                var id = '${notice.notice_id}';
+                var title = $("#title").val();
+                var writer = $("#writer").val();
+                var deliminator = "!@#";
+                var uplad_file = '${filename}';
+                
+                var item = title + deliminator +
+                			formData + deliminator + 
+                			writer + deliminator + 
+                			id + deliminator +
+                			uplad_file
+                	
+                $.ajax({
+                    type : "post",
+                    url : "/noticeEdit",
+                    data : item,
+                    contentType:"application/json;charset=UTF-8",
+    				dataType: "json",
+                    success : function(data){
+                        if(data=='1') alert("등록 완료");
+                        else alert('등록 실패');
+                        $("#notice_backPage").click();
+                    },
+                    error : function(error){
+                        alert("등록 실패");
+                        console.log("notice insert fail : "+error);
+                    }
+                });
+	       	}
+	       	else	{
+	       		var formData_file = new FormData($('#file_form')[0]);
+	       		$.ajax({
+	                url: "/upload",
+	                type: 'POST',
+	                data: formData_file,
+	                success: function (data) {
+	                    var formData = $('#summernote').summernote('code');
+	                    var id = '${notice.notice_id}';
+	                    var title = $("#title").val();
+	                    var writer = $("#writer").val();
+	                    var deliminator = "!@#";
+	                    var uplad_file = $("#upload_file").val();
+	                   	alert(uplad_file);
+	                    
+	                    var item = title + deliminator +
+	                    			formData + deliminator + 
+	                    			writer + deliminator + 
+	                    			id + deliminator +
+	                    			uplad_file
+	                    	
+	                    $.ajax({
+	                        type : "post",
+	                        url : "/noticeEdit",
+	                        data : item,
+	                        contentType:"application/json;charset=UTF-8",
+	        				dataType: "json",
+	                        success : function(data){
+	                            if(data=='1') alert("등록 완료");
+	                            else alert('등록 실패');
+	                            $("#notice_backPage").click();
+	                        },
+	                        error : function(error){
+	                            alert("등록 실패");
+	                            console.log("notice insert fail : "+error);
+	                        }
+	                    });
+	                },
+	                cache: false,
+	                contentType: false,
+	                processData: false
+	            });
+	       	}
+        	
+        	
+        	
+            
         });
          
         $("#notice_backPage").on("click",function(){
@@ -156,6 +210,14 @@
 
 						<br>
 						<textarea id="summernote" name="content"></textarea>
+						<br> 
+						<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+						<form:form id="file_form" enctype="multipart/form-data" modelAttribute="uploadFile" method="POST">
+							<label>업로드할 파일 선택 :</label>
+							<input type="file" id = "upload_file" name='file'>
+							<form:errors path="file" cssStyle="color:red" />
+						</form:form> 
+						<br>
 					</div>
 					<br>
 					

@@ -20,6 +20,7 @@
 <!-- Custom styles for this template -->
 <link href="${pageContext.request.contextPath}/resources/css/landing-page.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
     <style>
     	.btn-primary{
 			background-color: gray;
@@ -59,36 +60,53 @@
     	
         //공지사항 신규 등록
         $("#notice_regist").on("click",function(){
-            var formData = $('#summernote').summernote('code');
-            var title = $("#title").val();
-            var writer = $("#writer").val();
-            var deliminator = "!@#";
-            var item = title + deliminator +
-            			formData + deliminator + 
-            			writer
-            	
-            $.ajax({
-                type : "post",
-                url : "/noticeInsert",
-                data : item,
-                contentType:"application/json;charset=UTF-8",
-				dataType: "json",
-                success : function(data){
-                	console.log(data);
-                    if(data=='1') alert("등록 완료");
-                    else alert('등록 실패');
-                    $("#notice_backPage").click();
+        	var formData_file = new FormData($('#file_form')[0]);    
+        	
+        	$.ajax({
+                url: "/upload",
+                type: 'POST',
+                data: formData_file,
+                success: function (data) {
+                	var formData = $('#summernote').summernote('code');
+                    var title = $("#title").val();
+                    var writer = $("#writer").val();
+                    var deliminator = "!@#";
+                    var uplad_file = $("#upload_file").val();
+                    var item = title + deliminator +
+                    			formData + deliminator + 
+                    			writer + deliminator +
+                    			uplad_file;
+                    	
+                    $.ajax({
+                        type : "post",
+                        url : "/noticeInsert",
+                        data : item,
+                        contentType:"application/json;charset=UTF-8",
+        				dataType: "json",
+                        success : function(data){
+                        	console.log(data);
+                            if(data=='1') alert("등록 완료");
+                            else alert('등록 실패');
+                            $("#notice_backPage").click();
+                        },
+                        error : function(error){
+                            alert("등록 실패");
+                            console.log("notice insert fail : "+error);
+                        }
+                    });
                 },
-                error : function(error){
-                    alert("등록 실패");
-                    console.log("notice insert fail : "+error);
-                }
+                cache: false,
+                contentType: false,
+                processData: false
             });
+        	
+            
         });
          
         $("#notice_backPage").on("click",function(){
             location.href="/noticeList";
         });
+        
     })
 </script>
 
@@ -138,7 +156,7 @@
 			<div class="col-md-8">
 				<div class="card">
 					<div class="card-header" align="center">공지사항 등록</div>
-					</br>
+					<br>
 
 					<div>
 						<div class="contents">
@@ -155,6 +173,14 @@
 
 						<br>
 						<textarea id="summernote" name="content"></textarea>
+						<br> 
+						<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+						<form:form id="file_form" enctype="multipart/form-data" modelAttribute="uploadFile" method="POST">
+							<label>업로드할 파일 선택 :</label>
+							<input type="file" id = "upload_file" name="file">
+							<form:errors path="file" cssStyle="color:red" />
+						</form:form> 
+						<br>
 					</div>
 					<br>
 					

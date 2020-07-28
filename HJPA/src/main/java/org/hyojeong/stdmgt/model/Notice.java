@@ -7,9 +7,35 @@ public class Notice {
     private String use_yn;
     private String mod_date;
     private String writer;
+    private String filename;
     
     
     
+	public String getFilename() {
+		return filename;
+	}
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+	
+	
+	
+	
+	public Notice(String notice_title, String notice_coments, String writer, String notice_id, String filename) {
+		super();
+		this.notice_id = notice_id;
+		this.notice_title = notice_title;
+		this.notice_coments = notice_coments;
+		this.writer = writer;
+		this.filename = filename.replace("C:\\fakepath\\", "");
+	}
+	public Notice(String notice_title, String notice_coments, String writer, String filename) {
+		super();
+		this.notice_title = notice_title;
+		this.notice_coments = notice_coments;
+		this.writer = writer;
+		this.filename = filename.replace("C:\\fakepath\\", "");
+	}
 	public Notice(String notice_title, String notice_coments, String writer) {
 		super();
 		this.notice_title = notice_title;
@@ -55,10 +81,12 @@ public class Notice {
 	public void setMod_date(String mod_date) {
 		this.mod_date = mod_date;
 	}
+	
 	@Override
 	public String toString() {
 		return "Notice [notice_id=" + notice_id + ", notice_title=" + notice_title + ", notice_coments="
-				+ notice_coments + ", use_yn=" + use_yn + ", mod_date=" + mod_date + ", writer=" + writer + "]";
+				+ notice_coments + ", use_yn=" + use_yn + ", mod_date=" + mod_date + ", writer=" + writer
+				+ ", filename=" + filename + "]";
 	}
 
 	
