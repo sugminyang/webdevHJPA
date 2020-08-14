@@ -39,7 +39,8 @@ public class UploadController {
         try {
             inputStream = file.getInputStream();
             
-            File newFile = new File("/Users/dean/Documents/etc/project/HJPA/develop/uploadFile/" + fileName);
+//            File newFile = new File("/Users/dean/Documents/etc/project/HJPA/develop/uploadFile/" + fileName);
+            File newFile = new File("/data/" + fileName);
             if(newFile.exists()) {
                 newFile.createNewFile();
             }

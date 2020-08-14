@@ -339,14 +339,14 @@
 	
 	<select id="getNoticeListAll" resultType="NoticeVO">
 		select * 
-		from dean.push_notice
+		from hjpa.push_notice
 		where use_yn='Y'
 		order by mod_date desc;
 	</select>
 	
 	<select id="getNoticeTop3" resultType="NoticeVO">
 		select * 
-		from dean.push_notice
+		from hjpa.push_notice
 		where use_yn='Y'
 		order by mod_date desc
 		limit 3;
@@ -354,18 +354,18 @@
 	
 		
 	<select id="getAutoNationalityComplete" resultType="string" parameterType="string">
-        SELECT distinct nationality FROM dean.nationalitytable where nationality LIKE CONCAT('',#{query},'%');
+        SELECT distinct nationality FROM hjpa.nationalitytable where nationality LIKE CONCAT('',#{query},'%');
     </select>
     
     <select id="getNoticeList" resultType="NoticeVO" parameterType="string">
 		select * 
-		from dean.push_notice
+		from hjpa.push_notice
 		where notice_id like #{notice_id};
 	</select>
     
     
     <insert id="noticeInsert" parameterType="NoticeVO">
-        insert into dean.push_notice
+        insert into hjpa.push_notice
         (
             notice_title,
             notice_coments,
@@ -384,7 +384,7 @@
     </insert>
     
     <update id="noticeDelete" parameterType="NoticeVO">
-		update dean.push_notice
+		update hjpa.push_notice
 		set 
 		use_yn='N'
 		where notice_id = #{notice_id};
@@ -392,7 +392,7 @@
 	
 	
 	<update id="noticeEdit" parameterType="NoticeVO">
-		update dean.push_notice
+		update hjpa.push_notice
 		set 
 			notice_title =  #{notice_title},
             notice_coments = #{notice_coments},

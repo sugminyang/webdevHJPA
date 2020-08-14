@@ -1,11 +1,14 @@
 package org.hyojeong.stdmgt.controller;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.hyojeong.stdmgt.model.Login;
+import org.hyojeong.stdmgt.model.Notice;
 import org.hyojeong.stdmgt.model.Student;
 import org.hyojeong.stdmgt.model.User;
 import org.hyojeong.stdmgt.service.UserService;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import net.sf.json.JSONArray;
 
 @Controller
 public class LoginController {

@@ -61,6 +61,7 @@ public class HomeController {
 		List<Notice> noticeList = userService.getNoticeTop3();
 //        System.out.println(noticeList);
 		JSONArray jsonArray = JSONArray.fromObject(noticeList);
+//		System.out.println("####HomeController: "+jsonArray);
         model.addAttribute("noticeList", jsonArray);
         
 		return "home";
@@ -109,7 +110,7 @@ public class HomeController {
 		List<Student> voList = userService.getStudentAll();
 //		List<Student> voList = new ArrayList<Student>();
 //		voList.add(userService.getStudent(1));
-		System.out.println(voList);
+//		System.out.println(voList);
 		
 		JSONArray jsonArray = null;
 		
@@ -156,7 +157,7 @@ public class HomeController {
 		if(voList != null)	{
 			response.setContentType("json;charset=UTF-8"); 
 			jsonArray = JSONArray.fromObject(voList);
-			System.out.println(jsonArray);
+//			System.out.println(jsonArray);
 		}
 
 		return jsonArray.toString();
@@ -174,7 +175,7 @@ public class HomeController {
 		
 		if(voList != null)	{
 			jsonArray = JSONArray.fromObject(voList);
-			System.out.println(jsonArray);
+//			System.out.println(jsonArray);
 			
 			model.addAttribute("data", jsonArray);
 		}
@@ -185,7 +186,7 @@ public class HomeController {
 	
 	@RequestMapping(value = "/studentInfo", method = RequestMethod.GET)
 	public ModelAndView studentInfo(HttpSession session, Model model) {
-		System.out.println("Welcome studentInfo");
+//		System.out.println("Welcome studentInfo");
 		
 		//자신의 학생 정보를 DB에서 가져오기
 		String auth = (String) session.getAttribute("auth");
@@ -197,14 +198,14 @@ public class HomeController {
 			studentPid = (Integer) session.getAttribute("sid");
 		}
 		
-		System.out.println("[학생] pid=>"+ studentPid);				
+//		System.out.println("[학생] pid=>"+ studentPid);				
 		Student student = userService.getStudent(studentPid);
 		
 		ModelAndView mav = new ModelAndView("studentInfo");
 		JSONArray jsonArray = null;
 		
 		if(student != null)	{
-			System.out.println(student);
+//			System.out.println(student);
 			
 			mav.addObject("student", student);
 			
@@ -337,8 +338,8 @@ public class HomeController {
 	@RequestMapping(value = "/updateStudentInfo", method = RequestMethod.POST)
 	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
 	public String updateStudentInfo(@RequestBody String filterJSON, HttpSession session) {
-		System.out.println("updateStudentInfo... 학생 정보 수정..request: ");
-		System.out.println(filterJSON);
+//		System.out.println("updateStudentInfo... 학생 정보 수정..request: ");
+//		System.out.println(filterJSON);
 		
 		
 		String[] items = filterJSON.split("!@#");
@@ -356,25 +357,25 @@ public class HomeController {
 		if(auth.equalsIgnoreCase("0"))	{	//student
 			studentPid = (Integer) session.getAttribute("pid");
 			updateStdInfo.setPid(studentPid);
-			System.out.println(updateStdInfo);
+//			System.out.println(updateStdInfo);
 			result = userService.updateStudentInfo(updateStdInfo);
 		}
 		else	{
 			int modifiedUser = (Integer) session.getAttribute("pid");
 			studentPid = (Integer) session.getAttribute("sid");
 			updateStdInfo.setPid(studentPid);
-			System.out.println(updateStdInfo);
+//			System.out.println(updateStdInfo);
 			result = userService.updateAllItemsStudentInfo(updateStdInfo,modifiedUser);
 		}
 		
 		
 		String test = "";
 		if(result == 1)	{
-			System.out.println("수정 사항이 올바르게 변경되었습니다.");
+//			System.out.println("수정 사항이 올바르게 변경되었습니다.");
 			test = "1";
 		}
 		else	{
-			System.out.println("변경 사항이 올바르지 않습니다.");
+//			System.out.println("변경 사항이 올바르지 않습니다.");
 			test = "0";
 		}
 		
@@ -384,7 +385,7 @@ public class HomeController {
 	@RequestMapping(value = "/gradeHistoryInfo", method = RequestMethod.POST)
 	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
 	public String gradeHistoryInfo(@RequestBody String filterJSON, HttpSession session) {
-		System.out.println("gradeHistoryInfo... 학적 정보 수정: ");
+//		System.out.println("gradeHistoryInfo... 학적 정보 수정: ");
 //		System.out.println(filterJSON);
 		
 		String[] items = filterJSON.split("!@#");
@@ -426,14 +427,14 @@ public class HomeController {
 		userService.saveTotalGradeWarning(student);
 		
 		
-		System.out.println(gHis);
-		System.out.println("update result: "+result);
+//		System.out.println(gHis);
+//		System.out.println("update result: "+result);
 		
 		if(result == 1)	{
-			System.out.println("수정 사항이 올바르게 변경되었습니다.");
+//			System.out.println("수정 사항이 올바르게 변경되었습니다.");
 		}
 		else	{
-			System.out.println("변경 사항이 올바르지 않습니다.");
+//			System.out.println("변경 사항이 올바르지 않습니다.");
 		}
 		
 		return gHis.getTid()+"";
@@ -442,11 +443,11 @@ public class HomeController {
 	@RequestMapping(value = "/activeHistoryInfo", method = RequestMethod.POST)
 	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
 	public String activeHistoryInfo(@RequestBody String filterJSON, HttpSession session) {
-		System.out.println("activeHistoryInfo... 학적 정보 수정: ");
-		System.out.println(filterJSON);
+//		System.out.println("activeHistoryInfo... 학적 정보 수정: ");
+//		System.out.println(filterJSON);
 		
 		String[] items = filterJSON.split("!@#");
-		System.out.println("학생 정보 변경사항: " + items.length);
+//		System.out.println("학생 정보 변경사항: " + items.length);
 		ActiveHistory aHis = new ActiveHistory(Integer.parseInt(items[4]),Integer.parseInt(items[0]),
 				items[1], items[2], items[3]);
 		
@@ -470,16 +471,16 @@ public class HomeController {
 			result = userService.updateActiveHistory(aHis);
 		}
 		
-		System.out.println(aHis);
-		System.out.println("update result: "+result);
+//		System.out.println(aHis);
+//		System.out.println("update result: "+result);
 		
 		String test = "";
 		if(result == 1)	{
-			System.out.println("수정 사항이 올바르게 변경되었습니다.");
+//			System.out.println("수정 사항이 올바르게 변경되었습니다.");
 			test = "1";
 		}
 		else	{
-			System.out.println("변경 사항이 올바르지 않습니다.");
+//			System.out.println("변경 사항이 올바르지 않습니다.");
 			test = "0";
 		}
 		
@@ -489,11 +490,11 @@ public class HomeController {
 	@RequestMapping(value = "/awardsHistoryInfo", method = RequestMethod.POST)
 	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
 	public String awardsHistoryInfo(@RequestBody String filterJSON, HttpSession session) {
-		System.out.println("awardsHistoryInfo... 학적 정보 수정: ");
-		System.out.println(filterJSON);
+//		System.out.println("awardsHistoryInfo... 학적 정보 수정: ");
+//		System.out.println(filterJSON);
 		
 		String[] items = filterJSON.split("!@#");
-		System.out.println("학생 정보 변경사항: " + items.length);
+//		System.out.println("학생 정보 변경사항: " + items.length);
 		AwardsHistory awHis = new AwardsHistory(Integer.parseInt(items[5]), Integer.parseInt(items[0]), items[1],
 				items[2],items[3],items[4]);
 		
@@ -517,15 +518,15 @@ public class HomeController {
 			result = userService.updateAwardsHistory(awHis);
 		}
 
-		System.out.println(awHis);
+//		System.out.println(awHis);
 		
 		String test = "";
 		if(result == 1)	{
-			System.out.println("수정 사항이 올바르게 변경되었습니다.");
+//			System.out.println("수정 사항이 올바르게 변경되었습니다.");
 			test = "1";
 		}
 		else	{
-			System.out.println("변경 사항이 올바르지 않습니다.");
+//			System.out.println("변경 사항이 올바르지 않습니다.");
 			test = "0";
 		}
 		
@@ -539,11 +540,11 @@ public class HomeController {
 	@RequestMapping(value = "/activeHistoryRemoveInfo", method = RequestMethod.POST)
 	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
 	public String activeHistoryRemoveInfo(@RequestBody String filterJSON, HttpSession session) {
-		System.out.println("activeHistoryRemoveInfo... 학적 정보 삭제: ");
-		System.out.println(filterJSON);
+//		System.out.println("activeHistoryRemoveInfo... 학적 정보 삭제: ");
+//		System.out.println(filterJSON);
 		
 		String[] items = filterJSON.split("!@#");
-		System.out.println("학생 정보 변경사항: " + items.length);
+//		System.out.println("학생 정보 변경사항: " + items.length);
 		ActiveHistory aHis = new ActiveHistory(Integer.parseInt(items[1]), Integer.parseInt(items[0]));
 		
 		//학생의 pid 설정
@@ -562,16 +563,16 @@ public class HomeController {
 			result = userService.removeActiveHistory(aHis);
 		}
 		
-		System.out.println(aHis);
-		System.out.println("update result: "+result);
+//		System.out.println(aHis);
+//		System.out.println("update result: "+result);
 		
 		String test = "";
 		if(result == 1)	{
-			System.out.println("수정 사항이 올바르게 변경되었습니다.");
+//			System.out.println("수정 사항이 올바르게 변경되었습니다.");
 			test = "1";
 		}
 		else	{
-			System.out.println("변경 사항이 올바르지 않습니다.");
+//			System.out.println("변경 사항이 올바르지 않습니다.");
 			test = "0";
 		}
 		
@@ -583,11 +584,11 @@ public class HomeController {
 	@RequestMapping(value = "/awardsHistoryRemoveInfo", method = RequestMethod.POST)
 	@ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
 	public String awardsHistoryRemoveInfo(@RequestBody String filterJSON, HttpSession session) {
-		System.out.println("awardsHistoryRemoveInfo... 학적 정보 삭제: ");
-		System.out.println(filterJSON);
+//		System.out.println("awardsHistoryRemoveInfo... 학적 정보 삭제: ");
+//		System.out.println(filterJSON);
 		
 		String[] items = filterJSON.split("!@#");
-		System.out.println("학생 정보 변경사항: " + items.length);
+//		System.out.println("학생 정보 변경사항: " + items.length);
 		AwardsHistory awHis = new AwardsHistory(Integer.parseInt(items[1]), Integer.parseInt(items[0]));
 		
 		//학생의 pid 설정
@@ -833,7 +834,7 @@ public class HomeController {
 		System.out.println(filterJSON);
 		
 		String[] items = filterJSON.split("!@#");
-		System.out.println("학생 정보 변경사항: " + items.length);
+//		System.out.println("학생 정보 변경사항: " + items.length);
 		
 		ConsultHistory cHis = new ConsultHistory(Integer.parseInt(items[5]), items[1], items[2],
 				items[3],items[4],Integer.parseInt(items[0]));
@@ -877,7 +878,7 @@ public class HomeController {
 		System.out.println(filterJSON);
 		
 		String[] items = filterJSON.split("!@#");
-		System.out.println("학생 정보 변경사항: " + items.length);
+//		System.out.println("학생 정보 변경사항: " + items.length);
 		
 		AbsenceHistory aHis = new AbsenceHistory(Integer.parseInt(items[1]), Integer.parseInt(items[0]));
 		
@@ -922,7 +923,7 @@ public class HomeController {
 		System.out.println(filterJSON);
 		
 		String[] items = filterJSON.split("!@#");
-		System.out.println("학생 정보 변경사항: " + items.length);
+//		System.out.println("학생 정보 변경사항: " + items.length);
 		
 		AbsenceHistory aHis = new AbsenceHistory(Integer.parseInt(items[5]), items[1], items[2],
 				items[3],items[4],Integer.parseInt(items[0]));
@@ -1111,17 +1112,19 @@ public class HomeController {
 	
 	@RequestMapping(value = "/uploadBulkFile", method = RequestMethod.POST)
 	public String uploadBulkFile(HttpSession session, HttpServletRequest request, MultipartFile file) throws IOException {
-		System.out.println("Enter....uploadBulkFile");
-		System.out.println("컨텐츠 타입: " + file.getContentType());
+//		System.out.println("Enter....uploadBulkFile");
+//		System.out.println("컨텐츠 타입: " + file.getContentType());
 		
-		String uploadPath = "/Users/dean/Documents/etc/project/HJPA/develop/uploadImg/";
-		System.out.println("경로: " + uploadPath);
+//		String uploadPath = "/Users/dean/Documents/etc/project/HJPA/develop/uploadImg/";
+		String uploadPath = "/data/";
+		
+//		System.out.println("경로: " + uploadPath);
 
 		UUID uuid = UUID.randomUUID();
 		String savedName = uuid + "_" + file.getOriginalFilename();
 		
 		File target = new File(uploadPath,savedName);
-		System.out.println("File...: "+target.getAbsolutePath());
+//		System.out.println("File...: "+target.getAbsolutePath());
 		
 		//임시디렉토리에 저장된 업로드된 파일을 지정된 디렉토리로 복사 
 //		FileCopyUtils.copy(file.getBytes(),target);
@@ -1136,8 +1139,8 @@ public class HomeController {
 	@RequestMapping(value = "/changepassword", method = RequestMethod.POST)
     @ResponseBody // 클라이언트에게 전송할 응답 데이터를 JSON 객체로 변환
     public String changepassword(@RequestBody String id, HttpSession session) {
-        System.out.println("changepassword... 학적 정보 수정: ");
-        System.out.println(id);
+//        System.out.println("changepassword... 학적 정보 수정: ");
+//        System.out.println(id);
         
         Login vo = new Login();
         boolean clearPW = true;
@@ -1193,13 +1196,15 @@ public class HomeController {
 	
 	@RequestMapping(value = "/uploadform", method = RequestMethod.POST)
 	public String uploadForm(HttpSession session, HttpServletRequest request, MultipartFile file) throws IOException {
-		System.out.println("Enter....uploadForm");
-		System.out.println("파일 이름: " + file.getOriginalFilename());
-		System.out.println("파일 크기: " + file.getSize());
-		System.out.println("컨텐츠 타입: " + file.getContentType());
+//		System.out.println("Enter....uploadForm");
+//		System.out.println("파일 이름: " + file.getOriginalFilename());
+//		System.out.println("파일 크기: " + file.getSize());
+//		System.out.println("컨텐츠 타입: " + file.getContentType());
 		
-		String uploadPath = "/Users/dean/Documents/etc/project/HJPA/develop/uploadImg/";
-		System.out.println("경로: " + uploadPath);
+//		String uploadPath = "/Users/dean/Documents/etc/project/HJPA/develop/uploadImg/";
+		String uploadPath = "/data/";
+		
+//		System.out.println("경로: " + uploadPath);
 		
 		String auth = (String) session.getAttribute("auth");
 		int studentPid = -1;
@@ -1215,7 +1220,7 @@ public class HomeController {
 		String savedName = "pid"+studentPid + "_"+uuid+"_"+file.getOriginalFilename();
 		
 		File target = new File(uploadPath,savedName);
-		System.out.println("File...: "+target.getAbsolutePath());
+//		System.out.println("File...: "+target.getAbsolutePath());
 		
 		//임시디렉토리에 저장된 업로드된 파일을 지정된 디렉토리로 복사 
 //		FileCopyUtils.copy(file.getBytes(),target);
@@ -1278,7 +1283,14 @@ public class HomeController {
         logger.info("notice insert");
         String[] items = filterJSON.split("!@#");
 //        System.out.println(filterJSON);
-        Notice notice = new Notice(items[0],items[1],items[2],items[3]); //filename
+        Notice notice = null;
+        
+        if(items.length == 4)	{
+        	notice = new Notice(items[0],items[1],items[2],items[3]); //filename
+        }
+        else	{
+        	notice = new Notice(items[0],items[1],items[2]); //filename
+        }
 //        System.out.println(notice);
         int result = userService.noticeInsert(notice);
         
@@ -1290,7 +1302,7 @@ public class HomeController {
     	Notice notice = userService.getNoticeList(notice_id);
         model.addAttribute("notice", notice);
         model.addAttribute("filename", notice.getFilename());
-        System.out.println("noticeUpdate.. " + notice.getFilename());
+//        System.out.println("noticeUpdate.. " + notice.getFilename());
     	return "noticeUpdate";
     }
     
@@ -1299,7 +1311,7 @@ public class HomeController {
     public String noticeEdit(@RequestBody String filterJSON) {
         logger.info("notice insert");
         String[] items = filterJSON.split("!@#");
-        System.out.println(filterJSON);
+//        System.out.println(filterJSON);
         Notice notice_ori = userService.getNoticeList(items[3]);
         Notice notice_new = new Notice(items[0],items[1],items[2],items[3], items[4]);
         if(notice_new.getFilename().length() == 0 || notice_new.getFilename() == null)	{
@@ -1327,12 +1339,12 @@ public class HomeController {
 	
 	@RequestMapping(value = "/autosearchNationality", method = RequestMethod.GET)
 	public void autosearchNationality(@RequestParam("query") String query, HttpServletResponse response) {
-		System.out.println("auto complete >> " + query);
+//		System.out.println("auto complete >> " + query);
 		List<String> resultList = null;
 		JSONArray jsonArray = null;
 			resultList = userService.getAutoNationalityComplete(query);
 			jsonArray = JSONArray.fromObject(resultList);
-			System.out.println(jsonArray);
+//			System.out.println(jsonArray);
 
 		try {
 			if(jsonArray == null)	return ;

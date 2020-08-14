@@ -18,7 +18,8 @@ public class DownloadController {
     public byte[] downProcess(HttpServletResponse response,
         @RequestParam String filename) throws IOException{
     	System.out.println("downProcess..." + filename);
-        File file = new File("/Users/dean/Documents/etc/project/HJPA/develop/uploadFile/" + filename);
+//        File file = new File("/Users/dean/Documents/etc/project/HJPA/develop/uploadFile/" + filename);
+        File file = new File("/data/" + filename);
         byte[] bytes = FileCopyUtils.copyToByteArray(file);
         
         String fn = new String(file.getName().getBytes(), "utf-8");

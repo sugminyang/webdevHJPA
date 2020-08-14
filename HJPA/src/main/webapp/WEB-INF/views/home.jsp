@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page errorPage="error.jsp" %>
 <%@pagepageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,6 +28,7 @@
 	<script type="text/javascript">
 		$(document).ready(function() { 
 			data = ${noticeList};
+				
 			var bindings = data;
 			/* var vars = ['notice_id','notice_title','notice_coments','mod_date']; */
 

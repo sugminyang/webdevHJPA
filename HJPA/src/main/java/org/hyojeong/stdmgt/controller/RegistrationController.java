@@ -33,7 +33,7 @@ public class RegistrationController {
 	@RequestMapping(value = "/registerProcess", method = RequestMethod.POST)
 	public ModelAndView addUser(HttpServletRequest request, HttpServletResponse response,
 			@ModelAttribute("student") Student student, @ModelAttribute("user") User user, HttpSession session) {
-		ModelAndView mav = new ModelAndView("home");
+		ModelAndView mav = new ModelAndView("redirect:/");
 		System.out.println(user);
 		System.out.println(student);
 		if(userService.idCheck(user.getId()) == 0)	{	//신규 
@@ -42,8 +42,8 @@ public class RegistrationController {
 			User validUser = userService.validateUser(vo,session);
 			student.setPid(validUser.getPid());
 			
-			System.out.println("new user pid: " +validUser.getPid());
-			System.out.println(student);
+//			System.out.println("new user pid: " +validUser.getPid());
+//			System.out.println(student);
 			userService.addStudent(student);
 		}
 		else	{
